@@ -82,8 +82,23 @@ a {
   color: inherit;
   text-decoration: none;
 }
-section{
-  padding: 2rem 0;
+section {
+  padding: 0;
+  width: 100%;
+}
+.morph {
+  opacity: 0;
+  background-color: aqua;
+  animation: fadeAnimation 10s infinite alternate;
+}
+@keyframes fadeAnimation {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 /* html,
 body {
