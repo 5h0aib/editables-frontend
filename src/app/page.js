@@ -7,6 +7,7 @@ import ServiceCard from "@/components/ServiceCard"
 import Nav from "@/components/Nav"
 import EmailToSignup from "@/components/EmailToSignup"
 import MorphImage from "./MorphImage"
+import StaggeredText from "./StaggeredText"
 export default function Home() {
   return (
     <main className={styles.main}>
@@ -83,6 +84,7 @@ export default function Home() {
             <Typography variant='h4' gutterBottom align='center'>
               What people have to say about us
             </Typography>
+            <StaggeredText/>
           </Grid>
           <Grid item xs={6}>
             <MorphImage/>

@@ -4,14 +4,13 @@ import React from "react"
 const MorphImage = () => {
   return (
     <div
-      style={{ position: "relative", background: "yellow", height: "300px" }}
+      style={{ position: "relative", height: "60vh" }}
     >
       <div
         style={{
           position: "absolute",
           top: 0,
           left: 0,
-          background: "red",
           height: "100%",
           width: "100%",
         }}
