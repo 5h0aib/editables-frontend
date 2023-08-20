@@ -3,13 +3,13 @@ import Link from "next/link"
 
 import styles from "./page.module.css"
 import { Grid, Stack, Typography } from "@mui/material/"
-import ServiceCard from "@/components/ServiceCard"
+import FullServiceCard from "./FullServiceCard"
 import Nav from "@/components/Nav"
-import EmailToSignup from "@/components/EmailToSignup"
+import EmailToSignup from "@/app/EmailToSignup"
 import MorphImage from "./MorphImage"
 import StaggeredText from "./StaggeredText"
-import Testimonials from "@/components/Testimonials"
-import Faq from "@/components/Faq"
+import Testimonials from "@/app/Testimonials"
+import Faq from "@/app/Faq"
 export default function Home() {
   return (
     <main className={styles.main}>
@@ -52,15 +52,9 @@ export default function Home() {
           <Typography variant='h4' gutterBottom align='center'>
             Select the service you want for your picture
           </Typography>
-          <Stack
-            spacing={2}
-            direction='row'
-            alignItems='top'
-            justifyContent='center'
-            useFlexGap
-            flexWrap='wrap'
-          >
-            <ServiceCard
+          <Grid container spacing={2}>
+            <FullServiceCard
+              icon='/basic.png'
               title='Basic'
               list={[
                 "Lightroom Editing",
@@ -69,7 +63,8 @@ export default function Home() {
                 "Delivery in 10 days",
               ]}
             />
-            <ServiceCard
+            <FullServiceCard
+              icon='/express.png'
               title='Express'
               list={[
                 "Access to 4 Presets",
@@ -78,7 +73,8 @@ export default function Home() {
                 "Editing using inhouse guidelines",
               ]}
             />
-            <ServiceCard
+            <FullServiceCard
+              icon='/custom.png'
               title='Custom'
               list={[
                 "Any preset of your liking",
@@ -88,7 +84,7 @@ export default function Home() {
                 "Service delivered within 4 days",
               ]}
             />
-          </Stack>
+          </Grid>
         </Stack>
       </section>
       <section>
@@ -120,9 +116,7 @@ export default function Home() {
         </Grid>
       </section>
       <section>
-        <Stack
-          spacing={4}
-        >
+        <Stack spacing={4}>
           <Typography variant='h4' gutterBottom align='center'>
             Frequently Asked Questions
           </Typography>
