@@ -10,8 +10,8 @@ const ServiceCard = ({ title, list }) => {
                  {title}
              </Typography>
              <ul>
-                 {list?.map((item) => (
-                 <li>{item}</li>
+                 {list?.map((item,i) => (
+                 <li key={i}>{item}</li>
                  ))}
              </ul>
         </CardContent>

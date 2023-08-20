@@ -91,7 +91,7 @@ export default function Home() {
         <Grid container spacing={2} alignItems={"center"}>
           <Grid item xs={12} md={6}>
             <Typography variant='h4' gutterBottom>
-              We don't just edit your pictures
+              We don&apos;t just edit your pictures
             </Typography>
             <StaggeredText />
           </Grid>
