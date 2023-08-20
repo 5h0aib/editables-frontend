@@ -44,9 +44,6 @@ let theme = createTheme({
         contrastText: "#616161",
       },
     },
-    shape:{
-        borderRadius:0,
-    }
   });
 
 export default theme;

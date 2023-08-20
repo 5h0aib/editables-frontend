@@ -83,7 +83,9 @@ a {
   text-decoration: none;
 }
 section {
-  padding: 0;
+  padding: 5em 6rem;
+  border-bottom: 1px solid gray;
+  /* min-height: 100vh; */
   width: 100%;
 }
 .morph {

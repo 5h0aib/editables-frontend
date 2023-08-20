@@ -3,19 +3,19 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 0 6rem;
   min-height: 100vh;
 }
 
 .heroSection{
-  color: white;
+  /* color: white; */
+  height: 100vh;
 }
 .heroBackground{
   height: 100vh;
   z-index: -1;
 }
 .heroContent{
-  height: 100vh;
+  
 }
 
 /* .staggered-text {

@@ -1,4 +1,5 @@
 "use client"
+import { Typography } from "@mui/material"
 import React, { useEffect, useState } from "react"
 
 const StaggeredText = () => {
@@ -34,16 +35,9 @@ const StaggeredText = () => {
   }, [count])
 
   return (
-    <div className='staggered-text'>
-      {/* {letters.reduce((mappedArray, letter, index) => {
-        if (index < displayText) {
-          // Whatever range condition you want
-          mappedArray.push(<span key={index}>{letter}</span>)
-        }
-        return mappedArray
-      }, [])} */}
+    <Typography variant='h5' gutterBottom>
       {weDo ? doText.slice(0, count) : dontText.slice(0, count)}
-    </div>
+    </Typography>
   )
 }
 
