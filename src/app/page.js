@@ -89,23 +89,23 @@ export default function Home() {
       </section>
       <section>
         <Grid container spacing={2} alignItems={"center"}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Typography variant='h4' gutterBottom>
               We don't just edit your pictures
             </Typography>
             <StaggeredText />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <MorphImage />
           </Grid>
         </Grid>
       </section>
       <section>
-        <Grid container spacing={2} alignItems={"center"}>
-          <Grid item xs={6}>
+        <Grid container spacing={2} alignItems={"center"} direction={{ xs: "column-reverse", sm: "row" }}>
+          <Grid item xs={12} md={6}>
             <Testimonials />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <Typography variant='h4' gutterBottom>
               What people have to say about us
             </Typography>
@@ -116,7 +116,7 @@ export default function Home() {
         </Grid>
       </section>
       <section>
-        <Stack spacing={4}>
+        <Stack spacing={4} >
           <Typography variant='h4' gutterBottom align='center'>
             Frequently Asked Questions
           </Typography>

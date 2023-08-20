@@ -8,10 +8,10 @@ const EmailToSignup = () => {
         Ready to start editing? Sign up with your email address
       </Typography>
       <Stack
-        direction={"row"}
+        direction={{ xs: "column", sm: "row" }}
         spacing={2}
         fullWidth
-        style={{ maxWidth: "90vw" }}
+        style={{ width: "100%" }}
         justifyContent={"center"}
       >
         <TextField
@@ -25,6 +25,7 @@ const EmailToSignup = () => {
           <Button
             variant='contained'
             size='large'
+            fullWidth={{ xs: true, sm: false }}
             style={{ whiteSpace: "nowrap", padding: "15px" }}
           >
             Start Editing
