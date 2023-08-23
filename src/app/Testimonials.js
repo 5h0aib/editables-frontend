@@ -1,9 +1,8 @@
 "use client"
-import Head from "next/head"
 import { Typography } from "@mui/material"
 import Image from "next/image"
 import React from "react"
-import Slider from "react-slick"
+
 const Testimonials = () => {
   //create nested array for carousel
   const testimonials = [
