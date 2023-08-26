@@ -35,7 +35,7 @@ const StaggeredText = () => {
   }, [count])
 
   return (
-    <Typography variant='h5' gutterBottom>
+    <Typography variant='h5' gutterBottom className="staggeredText" minHeight="1.5em">
       {weDo ? doText.slice(0, count) : dontText.slice(0, count)}
     </Typography>
   )

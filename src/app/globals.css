@@ -82,12 +82,19 @@ a {
   color: inherit;
   text-decoration: none;
 }
+li{
+  margin-bottom: 20px;
+}
+li:last-child {
+  margin-bottom: 0px;
+}
 section {
   padding: 5em 6rem;
   border-bottom: 1px solid gray;
   /* min-height: 100vh; */
   width: 100%;
 }
+
 .morph {
   opacity: 0;
   animation: fadeAnimation 6s infinite alternate;
