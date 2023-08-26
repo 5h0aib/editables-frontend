@@ -101,7 +101,12 @@ export default function Home() {
         </Grid>
       </section>
       <section>
-        <Grid container spacing={2} alignItems={"center"} direction={{ xs: "column-reverse", sm: "row" }}>
+        <Grid
+          container
+          spacing={2}
+          alignItems={"center"}
+          direction={{ xs: "column-reverse", sm: "row" }}
+        >
           <Grid item xs={12} md={6}>
             <Testimonials />
           </Grid>
@@ -116,7 +121,7 @@ export default function Home() {
         </Grid>
       </section>
       <section>
-        <Stack spacing={4} >
+        <Stack spacing={4}>
           <Typography variant='h4' gutterBottom align='center'>
             Frequently Asked Questions
           </Typography>

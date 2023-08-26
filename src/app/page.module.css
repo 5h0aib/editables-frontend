@@ -6,16 +6,19 @@
   min-height: 100vh;
 }
 
-.heroSection{
+.heroSection {
   /* color: white; */
   height: 100vh;
 }
-.heroBackground{
+.heroBackground {
   height: 100vh;
   z-index: -1;
 }
-.heroContent{
-  
+.heroContent {
+  display: grid;
+  grid-template-rows: max-content 1fr;
+  height: 100%;
+  align-items: center;
 }
 
 /* .staggered-text {
