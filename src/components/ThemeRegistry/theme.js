@@ -26,6 +26,46 @@ const roboto = Roboto({
 //     },
 //   },
 // });
+const button = {
+  // variants: [
+  //   {
+  //     props: { variant: 'dashed' },
+  //     style: {
+  //       textTransform: 'none',
+  //       border: `2px dashed ${blue[500]}`,
+  //     },
+  //   },
+  //   {
+  //     props: { variant: 'dashed', color: 'secondary' },
+  //     style: {
+  //       border: `4px dashed ${red[500]}`,
+  //     },
+  //   },
+  // ],
+  styleOverrides: {
+    root: {
+      borderRadius: "10px",
+    },
+  },
+}
+const textField = {
+  styleOverrides: {
+    root: {
+      background: "white",
+      borderRadius: "10px",
+    },
+  },
+}
+const paper={
+  styleOverrides: {
+    root: {
+      background: "white",
+      borderRadius:"10px",
+      border:"3px solid black",
+      padding:"20px"
+    },
+  },
+}
 let theme = createTheme({
   palette: {
     primary: {
@@ -35,7 +75,7 @@ let theme = createTheme({
       contrastText: "white",
     },
     secondary: {
-      main: "#E0E0E0",
+      main: "#f4f4f8",
     },
     gray: {
       main: "#E0E0E0",
@@ -43,6 +83,11 @@ let theme = createTheme({
       dark: "#A1A1A1",
       contrastText: "#616161",
     },
+  },
+  components: {
+    MuiButton: button,
+    MuiTextField: textField,
+    MuiPaper: paper
   },
 })
 
