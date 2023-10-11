@@ -17,12 +17,22 @@ const CategorySelection = () => {
         }}
       >
         <SplitLayout>
-          <Link href='step_one'>
-            <Button variant='contained' size='large'>
-              Get Started
-            </Button>
-          </Link>
-          <Paper color='gray' padding>hello world</Paper>
+          <div>
+            <Typography variant='h6' gutterBottom >
+              Choose from more than 7 different image categories{" "}
+            </Typography>
+            <Typography variant='p' gutterBottom >
+            Category description loren ipsum loren ipsum category description loren ipsum loren ipsum category description loren ipsum loren ipsum category description loren ipsum loren
+            </Typography><br/><br/>
+            <Link href='step_one'>
+              <Button variant='contained' size='large'>
+                Get Started
+              </Button>
+            </Link>
+          </div>
+          <Paper color='gray' padding sx={{minHeight:"60vh"}}>
+            
+          </Paper>
         </SplitLayout>
       </div>
     </section>

@@ -1,9 +1,9 @@
-'use client'
+"use client"
 import React, { useState } from "react"
 import { Button, Stack, TextField, Typography } from "@mui/material"
 import Link from "next/link"
 const EmailToSignup = () => {
-  const [emailAddress,setEmail] = useState()
+  const [emailAddress, setEmail] = useState()
   return (
     <>
       <Typography variant='subtitle1' gutterBottom align='center'>
@@ -20,17 +20,17 @@ const EmailToSignup = () => {
         <TextField
           style={{ maxWidth: "600px" }}
           placeholder='Enter email address'
-          onChange={(e)=>setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           size='normal'
           variant='outlined'
           fullWidth
         />
-        <Link href={`auth?email=${emailAddress}`} >
+        <Link href={`auth?email=${emailAddress}`}>
           <Button
             variant='contained'
-            size='large'
+            large
             fullWidth={{ xs: true, sm: false }}
-            style={{ whiteSpace: "nowrap",  }}
+            style={{ whiteSpace: "nowrap" }}
           >
             Start Editing
           </Button>
