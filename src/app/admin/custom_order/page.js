@@ -4,11 +4,14 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material"
 import React from "react"
 import AdminLayout from "../AdminLayout"
+import { categories, styles } from "@/hardCode/all_style_catergories"
 
 const CustomOrder = () => {
   return (
@@ -47,13 +50,41 @@ const CustomOrder = () => {
               <Typography variant='p' gutterBottom display={"block"}>
                 Category
               </Typography>
-              <TextField size='small' fullWidth />
+              <Select
+                size='small'
+                style={{ background: "white" }}
+                fullWidth
+                // onChange={handleChange}
+              >
+                {categories.map((category) => (
+                  <MenuItem value={category} key={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
                 Style
               </Typography>
-              <TextField size='small' fullWidth />
+              <Select
+                size='small'
+                style={{ background: "white" }}
+                fullWidth
+                // onChange={handleChange}
+              >
+                {styles.map((style) => (
+                  <MenuItem value={style} key={style}>
+                    {style}
+                  </MenuItem>
+                ))}
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>

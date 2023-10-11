@@ -20,8 +20,26 @@ import AdminLayout from "../AdminLayout"
 const AllOrders = () => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
-  function createData(order, dateOfIssue, statuss, delivery, rating, type, style) {
-    return { order, dateOfIssue, statuss, delivery, rating, type, style}
+  function createData(
+    order,
+    dateOfIssue,
+    statuss,
+    delivery,
+    rating,
+    type,
+    style,
+    totalBill
+  ) {
+    return {
+      order,
+      dateOfIssue,
+      statuss,
+      delivery,
+      rating,
+      type,
+      style,
+      totalBill,
+    }
   }
   const rows = [
     createData(
@@ -31,7 +49,8 @@ const AllOrders = () => {
       "3rd September 2023",
       5,
       "basic",
-      "Classic film tones"
+      "Classic film tones",
+      "$1200"
     ),
     createData(
       `Helix’s wedding Order No. 9965`,
@@ -40,7 +59,8 @@ const AllOrders = () => {
       "3rd September 2023",
       0,
       "express",
-      "Basic color correction"
+      "Basic color correction",
+      "$1200"
     ),
     createData(
       `Helix’s wedding Order No. 9965`,
@@ -49,7 +69,8 @@ const AllOrders = () => {
       "3rd September 2023",
       0,
       "basic",
-      "Dark & moody"
+      "Dark & moody",
+      "$1200"
     ),
     createData(
       `Helix’s wedding Order No. 9965`,
@@ -58,7 +79,8 @@ const AllOrders = () => {
       "3rd September 2023",
       4,
       "basic",
-      "Classic film tones"
+      "Classic film tones",
+      "$1200"
     ),
     createData(
       `Helix’s wedding Order No. 9965`,
@@ -67,7 +89,8 @@ const AllOrders = () => {
       "3rd September 2023",
       0,
       "custom",
-      "Custom"
+      "Custom",
+      "$1200"
     ),
     createData(
       `Helix’s wedding Order No. 9965`,
@@ -76,7 +99,8 @@ const AllOrders = () => {
       "3rd September 2023",
       3,
       "custom",
-      "Custom"
+      "Custom",
+      "$1200"
     ),
   ]
 
@@ -139,29 +163,10 @@ const AllOrders = () => {
               <TableRow>
                 <TableCell>Order</TableCell>
                 <TableCell>Issue Date</TableCell>
-                <TableCell>
-                  <FormControl fullWidth>
-                    <InputLabel id='demo-simple-select-label'>
-                      Status
-                    </InputLabel>
-                    <Select
-                      labelId='demo-multiple-name-label'
-                      id='demo-multiple-name'
-                      value={selectedStatus}
-                      label='Status'
-                      onChange={handleChange}
-                      size='small'
-                    >
-                      <MenuItem value={"In review"}>In review</MenuItem>
-                      <MenuItem value={"processing"}>processing</MenuItem>
-                      <MenuItem value={"payment due"}>payment due</MenuItem>
-                      <MenuItem value={"completed"}>completed</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Delivery</TableCell>
-                <TableCell>Images</TableCell>
-                <TableCell>Style</TableCell>
+                <TableCell>Total Bill</TableCell>
+                <TableCell>Invoice</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -178,15 +183,25 @@ const AllOrders = () => {
                     {row.dateOfIssue}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.statuss}
+                    <Select
+                      value={row.statuss}
+                      placeholder='Status'
+                      onChange={handleChange}
+                      size='small'
+                      fullWidth
+                      style={{ color: "black" }}
+                    >
+                      <MenuItem value={"In review"}>In review</MenuItem>
+                      <MenuItem value={"Processing"}>processing</MenuItem>
+                      <MenuItem value={"Payment due"}>payment due</MenuItem>
+                      <MenuItem value={"Completed"}>completed</MenuItem>
+                    </Select>
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     {row.delivery}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    <Button>Download</Button>
-                    <br />
-                    <Button>Upload</Button>
+                    {row.totalBill}
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     {row.style}

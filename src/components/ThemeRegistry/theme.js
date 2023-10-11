@@ -27,24 +27,32 @@ const roboto = Roboto({
 //   },
 // });
 const button = {
-  // variants: [
-  //   {
-  //     props: { variant: 'dashed' },
-  //     style: {
-  //       textTransform: 'none',
-  //       border: `2px dashed ${blue[500]}`,
-  //     },
-  //   },
-  //   {
-  //     props: { variant: 'dashed', color: 'secondary' },
-  //     style: {
-  //       border: `4px dashed ${red[500]}`,
-  //     },
-  //   },
-  // ],
+  variants: [
+    {
+      props: { variant: "outlined" },
+      style: {
+        // textTransform: 'none',
+        border: `2px solid black`,
+        fontWeight: "500",
+      },
+    },
+    {
+      props: { variant: "contained" },
+      style: {
+        background: "black",
+      },
+    },
+    // {
+    //   props: { variant: 'dashed', color: 'secondary' },
+    //   style: {
+    //     border: `4px dashed ${red[500]}`,
+    //   },
+    // },
+  ],
   styleOverrides: {
     root: {
       borderRadius: "10px",
+      background: "white",
     },
   },
 }
@@ -56,13 +64,13 @@ const textField = {
     },
   },
 }
-const paper={
+const paper = {
   styleOverrides: {
     root: {
       background: "white",
-      borderRadius:"10px",
-      border:"3px solid black",
-      padding:"20px"
+      borderRadius: "10px",
+      border: "3px solid black",
+      padding: "20px",
     },
   },
 }
@@ -87,7 +95,7 @@ let theme = createTheme({
   components: {
     MuiButton: button,
     MuiTextField: textField,
-    MuiPaper: paper
+    MuiPaper: paper,
   },
 })
 

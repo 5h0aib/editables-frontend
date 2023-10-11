@@ -75,7 +75,7 @@ function AdminLayout(props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }} onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}>
+              <Button key={item} variant="contained" onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}>
                 {item}
               </Button>
             ))}
