@@ -30,7 +30,7 @@ const EmailToSignup = () => {
             variant='contained'
             size='large'
             fullWidth={{ xs: true, sm: false }}
-            style={{ whiteSpace: "nowrap", padding: "15px" }}
+            style={{ whiteSpace: "nowrap",  }}
           >
             Start Editing
           </Button>

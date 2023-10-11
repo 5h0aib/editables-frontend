@@ -73,14 +73,24 @@ const StepFinal = () => {
           </RadioGroup>
         </div>
         <Paper sx={{ height: "100%" }}>
-          <div style={{ border: "1px dashed 5px", textAlign: "center",padding:"20px" }}>
+          <div
+            style={{
+              border: "1px dashed 5px",
+              textAlign: "center",
+              padding: "20px",
+            }}
+          >
             <Typography variant='h5' gutterBottom>
               <b>Drag & drop images here</b>
             </Typography>
 
             <BackupOutlinedIcon style={{ fontSize: "130px" }} />
 
-            <Typography variant='body1' gutterBottom style={{marginTop:"-10px",marginBottom:"18px"}}>
+            <Typography
+              variant='body1'
+              gutterBottom
+              style={{ marginTop: "-10px", marginBottom: "18px" }}
+            >
               or
             </Typography>
             <Button variant='outlined' size='large'>
@@ -89,16 +99,18 @@ const StepFinal = () => {
           </div>
         </Paper>
       </SplitLayout>
-      <Link href='user/123'>
-        <Button variant='contained' size='large'>
-          Save & go to dashboard
-        </Button>
-      </Link>
-      <Link href='step_one'>
-        <Button variant='contained' size='large'>
-          Create new order
-        </Button>
-      </Link>
+      <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+        <Link href='user/123'>
+          <Button variant='contained' size='large'>
+            Save & go to dashboard
+          </Button>
+        </Link>
+        <Link href='step_one'>
+          <Button variant='contained' size='large'>
+            Create new order
+          </Button>
+        </Link>
+      </div>
     </ServiceLayout>
   )
 }

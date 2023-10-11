@@ -52,7 +52,7 @@ export default function Home() {
 
       <section>
         <SplitLayout>
-          <Paper>
+          <Paper padding>
             <MorphImage />
           </Paper>
           <>

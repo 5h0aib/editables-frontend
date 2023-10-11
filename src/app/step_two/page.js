@@ -106,7 +106,7 @@ const StepTwo = () => {
             Select delivery turnover
           </Typography>
           <Stack direction={"row"}>
-            <Paper>
+            <Paper padding>
               <Stack
                 spacing={3}
                 direction='row'
@@ -124,7 +124,7 @@ const StepTwo = () => {
                 standard pricing, delivery time: 10 days
               </Typography>
             </Paper>
-            <Paper>
+            <Paper padding>
               <Stack
                 direction='row'
                 alignItems={"center"}
@@ -145,7 +145,7 @@ const StepTwo = () => {
         </div>
 
         <div>
-          <Paper elevation={4} sx={{ background: "white" }}>
+          <Paper padding elevation={4} sx={{ background: "white" }}>
             <Typography variant='h6' gutterBottom>
               Category
             </Typography>

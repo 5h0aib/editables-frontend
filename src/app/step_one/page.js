@@ -26,7 +26,7 @@ const StepOne = () => {
             {categories.map((category, i) => (
               <Button
                 variant={
-                  category == selectedCategory ? "contained" : "outlined"
+                  category == selectedCategory ? "outlined" : "standard"
                 }
                 onClick={() => setCategory(category)}
               >
@@ -35,16 +35,17 @@ const StepOne = () => {
             ))}
           </div>
         </div>
-
+        <Paper padding>
         <div>
           <Image
             src='/morphTo.jpg'
             // fill={true}
             height={300}
             width={400}
-            style={{ objectFit: "cover", float:"right", borderRadius:"20px" }}
+            style={{ objectFit: "cover", borderRadius:"20px" }}
           ></Image>
         </div>
+        </Paper>
       </SplitLayout>
       <div>
         <br />
@@ -53,7 +54,7 @@ const StepOne = () => {
         </Typography>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           {styles.map((style, i) => (
-            <Button
+            <Button large
               variant={style == selectedStyle ? "contained" : "outlined"}
               onClick={() => setStyle(style)}
             >

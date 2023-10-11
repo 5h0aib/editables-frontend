@@ -42,17 +42,16 @@ const button = {
         background: "black",
       },
     },
-    // {
-    //   props: { variant: 'dashed', color: 'secondary' },
-    //   style: {
-    //     border: `4px dashed ${red[500]}`,
-    //   },
-    // },
+    {
+      props: { large: true },
+      style: { padding: "18px" },
+    },
   ],
   styleOverrides: {
     root: {
       borderRadius: "10px",
       background: "white",
+      padding: "12px",
     },
   },
 }
@@ -61,6 +60,7 @@ const textField = {
     root: {
       background: "white",
       borderRadius: "10px",
+      border: "3px solid black",
     },
   },
 }
@@ -70,9 +70,18 @@ const paper = {
       background: "white",
       borderRadius: "10px",
       border: "3px solid black",
-      padding: "20px",
     },
   },
+  variants: [
+    {
+      props: { color: "gray" },
+      style: { background: "#f4f4f8" },
+    },
+    {
+      props: { padding: true },
+      style: { padding: "20px" },
+    },
+  ],
 }
 let theme = createTheme({
   palette: {
