@@ -117,7 +117,7 @@ const CustomOrder = () => {
               Narrow down the number of images you want
             </Typography>
             <br />
-            <TextField size='small' variant='outlined' size='small' fullWidth />
+            <TextField size='small' variant='outlined' fullWidth />
           </div>
 
           <div>
