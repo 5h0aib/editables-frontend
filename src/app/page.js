@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-
+import FacebookIcon from '@mui/icons-material/Facebook';
 import styles from "./page.module.css"
 import { Grid, Paper, Stack, Typography } from "@mui/material/"
 // import FullServiceCard from "./FullServiceCard"
@@ -28,23 +28,23 @@ export default function Home() {
 
         <div className={""}>
           <Nav />
-            <div>
-              <Typography
-                variant='h4'
-                gutterBottom
-                align='center'
-                style={{ marginTop: "4hw" }}
-              >
-                Beautiful pictures, amazing outcomes
-              </Typography>
-              <Typography variant='subtitle1' gutterBottom align='center'>
-                Get your images edited by professionals, anytime
-              </Typography>
-            </div>
-            <Demo />
-            <div style={{ width: "100%" }}>
-              <EmailToSignup />
-            </div>
+          <div>
+            <Typography
+              variant='h4'
+              gutterBottom
+              align='center'
+              style={{ marginTop: "4hw" }}
+            >
+              Beautiful pictures, amazing outcomes
+            </Typography>
+            <Typography variant='subtitle1' gutterBottom align='center'>
+              Get your images edited by professionals, anytime
+            </Typography>
+          </div>
+          <Demo />
+          <div style={{ width: "100%" }}>
+            <EmailToSignup />
+          </div>
         </div>
       </section>
 
@@ -93,7 +93,17 @@ export default function Home() {
         </Stack>
       </section>
       <footer>
-        <h2>Footer</h2>
+        {/* <div style={{ display: "flex", justifyContent: "right" }}>
+          <Grid container spacing={3} sx={{width:"min(100%,600px)"}}>
+            <Grid item xs={12} sm={6} >
+              <FacebookIcon/>
+              <Typography variant='body1' gutterBottom sx={{display:"inline"}}>
+                Frequently Asked Questions
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
+          </Grid>
+        </div> */}
       </footer>
     </main>
   )

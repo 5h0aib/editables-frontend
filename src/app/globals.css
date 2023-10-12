@@ -77,14 +77,14 @@
   padding: 0;
   margin: 0;
 }
-body{
+body {
   background: #f4f4f8 !important;
 }
 a {
   color: inherit;
   text-decoration: none;
 }
-li{
+li {
   margin-bottom: 20px;
 }
 li:last-child {
@@ -92,8 +92,6 @@ li:last-child {
 }
 section {
   padding: 5em 6rem;
-  border-bottom: 1px solid gray;
-  /* min-height: 100vh; */
   width: 100%;
 }
 
