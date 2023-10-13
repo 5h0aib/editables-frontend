@@ -16,7 +16,7 @@ import {
 
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { getAddons } from "@/externalApi"
+import { getAddons, getCookie } from "@/externalApi"
 
 const StepTwo = () => {
   const searchParams = useSearchParams()
@@ -24,7 +24,9 @@ const StepTwo = () => {
   const style = searchParams.get("style")
   console.log(category, style)
   const [addons, setAddons] = useState()
-  const [orderData, setOrderData] = useState()
+  const [selectedAddons, setSelectedAddons] = useState([])
+  // const [orderData, setOrderData] = useState()
+  const [deliveryDate, setDeliveryDate] = useState()
   useEffect(() => {
     getAddons()
       .then((data) => {
@@ -35,8 +37,42 @@ const StepTwo = () => {
         console.error("Error fetching orders:", error)
       })
   }, [])
-  const handleCheckout = ()=>{
-    console.log(orderData)
+
+  useEffect(() => {
+    console.log("addons: ", selectedAddons)
+    console.log("delivery: ", deliveryDate)
+  }, [selectedAddons, deliveryDate])
+
+  const handleCheck = (isChecked, id) => {
+    if (isChecked) {
+      if (!selectedAddons.includes(id)) {
+        setSelectedAddons([...selectedAddons, id])
+      }
+    } else {
+      if (selectedAddons.includes(id)) {
+        setSelectedAddons(selectedAddons.filter((item) => item !== id))
+      }
+    }
+  }
+
+  const handleCheckout = () => {
+    console.log({
+      delivery_date: getDeliveryDate(deliveryDate),
+      number_of_images: 100,
+      user_id: getCookie("uid"),
+      category_id: "1",
+      style_id: "1",
+      addon: selectedAddons
+    })
+  }
+  function getDeliveryDate(daysFromNow) {
+    const currentDate = new Date()
+    const targetDate = new Date(currentDate)
+    targetDate.setDate(currentDate.getDate() + daysFromNow)
+    const year = targetDate.getFullYear()
+    const month = (targetDate.getMonth() + 1).toString().padStart(2, "0")
+    const day = targetDate.getDate().toString().padStart(2, "0")
+    return `${year}-${month}-${day}`
   }
 
   return (
@@ -47,7 +83,7 @@ const StepTwo = () => {
     >
       <SplitLayout form>
         <div style={{ maxWidth: "700px" }}>
-          <Typography variant='h5' gutterBottom>
+          {/* <Typography variant='h5' gutterBottom>
             Add-ons
           </Typography>
           <Stack
@@ -121,9 +157,40 @@ const StepTwo = () => {
           </div>
           <Typography variant='h5' gutterBottom display={"block"}>
             Select delivery turnover
-          </Typography>
-          <Stack direction={"row"}>
-            <Paper padding>
+          </Typography> */}
+          {addons?.map((addon) => (
+            <Stack
+              direction='row'
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <div>
+                <FormControlLabel
+                  sx={{ fontSize: "5em" }}
+                  control={
+                    <Checkbox
+                      size='medium'
+                      onChange={(e) => handleCheck(e.target.checked, addon.id)}
+                    />
+                  }
+                  label={addon.addon_name}
+                />
+              </div>
+              <Typography variant='p' gutterBottom sx={{ marginTop: "6px" }}>
+                {addon.price}/photo
+              </Typography>
+            </Stack>
+          ))}
+          <Stack direction={"row"} spacing={2}>
+            <Paper
+              padding
+              onClick={() => setDeliveryDate(10)}
+              style={
+                deliveryDate == 10
+                  ? { background: "black", color: "white" }
+                  : {}
+              }
+            >
               <Stack
                 spacing={3}
                 direction='row'
@@ -141,7 +208,15 @@ const StepTwo = () => {
                 standard pricing, delivery time: 10 days
               </Typography>
             </Paper>
-            <Paper padding>
+            <Paper
+              padding
+              onClick={() => setDeliveryDate(4)}
+              style={
+                deliveryDate == 4
+                  ? { background: "black", color: "white" }
+                  : {}
+              }
+            >
               <Stack
                 direction='row'
                 alignItems={"center"}
@@ -161,20 +236,25 @@ const StepTwo = () => {
           </Stack>
         </div>
 
-        <div>
-          <Paper padding elevation={4} sx={{ background: "white" }}>
-            <Typography variant='h6' gutterBottom>
-              Category
-            </Typography>
-            <Chip label={category} />
-            <Typography variant='h6' gutterBottom>
-              Style
-            </Typography>
-            <Chip label={style} />
+        <Paper padding elevation={4} sx={{ background: "white" }}>
+          <Stack spacing={2}>
+            <div>
+              <Typography variant='h6' gutterBottom>
+                Category
+              </Typography>
+              <Chip label={category} />
+            </div>
+            <div>
+              <Typography variant='h6' gutterBottom>
+                Style
+              </Typography>
+              <Chip label={style} />
+            </div>
             <TextField
-              label='Images to upload'
+              placeholder='Number of Images to upload'
               variant='outlined'
               size='small'
+              fullWidth
               sx={{ display: "block" }}
             />
             <Stack>
@@ -192,17 +272,17 @@ const StepTwo = () => {
             <Typography variant='h3' gutterBottom>
               $46.5
             </Typography>
-            <Link href={"step_final"}>
-              <Button variant='contained' size='large' fullWidth>
+            {/* <Link href={"step_final"}> */}
+              <Button variant='contained' size='large' fullWidth onClick={handleCheckout}>
                 Checkout
               </Button>
-            </Link>
+            {/* </Link> */}
             <Typography variant='caption' display='block' gutterBottom>
               This payment is secured by an SSL connection courtesy of Stripe
               Payments.
             </Typography>
-          </Paper>
-        </div>
+          </Stack>
+        </Paper>
       </SplitLayout>
     </ServiceLayout>
   )

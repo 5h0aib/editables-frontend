@@ -152,4 +152,4 @@ const login = async (postData) => {
   }
 }
 
-export { getCategories, getStyles, getAddons, getOrders, postOrders, login }
+export { getCategories, getStyles, getAddons, getOrders, postOrders, login, getCookie }
