@@ -1,6 +1,6 @@
 "use client"
 import ServiceLayout from "@/components/ServiceLayout"
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { Button, Stack, TextField, Typography } from "@mui/material"
 import Image from "next/image"
 import Link from "next/link"
@@ -8,6 +8,7 @@ import React, { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { login } from "@/externalApi"
 const Auth = () => {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const [email, setEmail] = useState(searchParams.get("email"))
   const [password, setPassword] = useState("")
@@ -17,6 +18,7 @@ const Auth = () => {
       .then((res) => {
         console.log("log res: ", res)
         // redirect(`user${res?.uid}`, "replace")
+        router.push(`user/${res?.uid}`, { shallow: false })
       })
       .catch((err) => {
         console.log(err)
