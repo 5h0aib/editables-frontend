@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
@@ -17,11 +17,39 @@ import {
   Typography,
 } from "@mui/material"
 import AdminLayout from "../AdminLayout"
+import { getOrders, postOrders } from "@/externalApi"
 const AllOrders = () => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  async function loadOrders() {
+    setLoading(true)
+    const orders = await getOrders()
+    setLoading(false)
+    setData(orders?.data)
+    console.log("orders: ", orders)
+  }
+  useEffect(() => {
+    getOrders()
+      .then((data) => {
+        console.log("Fetched orders:", data)
+        set
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error)
+      })
+  }, [])
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
-  function createData(order, dateOfIssue, statuss, delivery, rating, type, style) {
-    return { order, dateOfIssue, statuss, delivery, rating, type, style}
+  function createData(
+    order,
+    dateOfIssue,
+    statuss,
+    delivery,
+    rating,
+    type,
+    style
+  ) {
+    return { order, dateOfIssue, statuss, delivery, rating, type, style }
   }
   const rows = [
     createData(
@@ -90,6 +118,10 @@ const AllOrders = () => {
     } else {
       return rows.filter((row) => row.type === type)
     }
+  }
+  async function triggerPostOrder() {
+    const response = await postOrders({ title: "mast", body: "pasti" })
+    console.log(response)
   }
   // const distinctStatuses =  [...new Set(rows.map((row) => row.status))]
   // console.log(distinctStatuses)
@@ -186,7 +218,7 @@ const AllOrders = () => {
                   <TableCell component='th' scope='row'>
                     <Button>Download</Button>
                     <br />
-                    <Button>Upload</Button>
+                    <Button onClick={triggerPostOrder}>Upload</Button>
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     {row.style}

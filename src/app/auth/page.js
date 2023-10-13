@@ -1,13 +1,27 @@
-'use client'
+"use client"
 import ServiceLayout from "@/components/ServiceLayout"
+import { redirect } from "next/navigation"
 import { Button, Stack, TextField, Typography } from "@mui/material"
 import Image from "next/image"
 import Link from "next/link"
-import React from "react"
-import { useSearchParams } from 'next/navigation'
+import React, { useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { login } from "@/externalApi"
 const Auth = () => {
   const searchParams = useSearchParams()
-  const email = searchParams.get('email')
+  const [email, setEmail] = useState(searchParams.get("email"))
+  const [password, setPassword] = useState("")
+  const handleLogin = () => {
+    console.log("login creds:", { email, password })
+    login({ email, password })
+      .then((res) => {
+        console.log("log res: ", res)
+        // redirect(`user${res?.uid}`, "replace")
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   return (
     <ServiceLayout>
       <Typography variant='h4' gutterBottom align='center'>
@@ -25,16 +39,29 @@ const Auth = () => {
           <Typography variant='h4' gutterBottom align='center'>
             We cater to preserve your memories no matter what the device
           </Typography>
-          <TextField placeholder='tomyhatfield@gmail.com' defaultValue={email} />
-          <TextField placeholder='Set password' />
-          <Link href='services'>
-            <Button variant='contained' size='large' fullWidth>
-              Sign Up
-            </Button>
-          </Link>
-          <Button variant='outlined' size='large' fullWidth>
-            Signup with Google
+          <TextField
+            placeholder='tomyhatfield@gmail.com'
+            defaultValue={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            placeholder='Set password'
+            type='password'
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {/* <Link href='services'> */}
+          <Button
+            variant='contained'
+            size='large'
+            fullWidth
+            onClick={handleLogin}
+          >
+            Sign Up
           </Button>
+          {/* </Link> */}
+          {/* <Button variant='outlined' size='large' fullWidth>
+            Signup with Google
+          </Button> */}
           {/* <Typography variant="caption" display="block" align="center" gutterBottom>
         step 1 of 4
       </Typography> */}
