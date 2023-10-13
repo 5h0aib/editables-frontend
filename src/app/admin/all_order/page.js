@@ -32,7 +32,6 @@ const AllOrders = () => {
     getOrders()
       .then((data) => {
         console.log("Fetched orders:", data)
-        set
       })
       .catch((error) => {
         console.error("Error fetching orders:", error)

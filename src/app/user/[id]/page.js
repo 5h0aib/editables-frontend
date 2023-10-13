@@ -10,7 +10,7 @@ import {
 } from "@mui/material"
 import Image from "next/image"
 import InboxIcon from "@mui/icons-material/Inbox"
-import React, { useState } from "react"
+import React, {  useState } from "react"
 import MyAccount from "./MyAccount"
 import AllOrders from "./AllOrders"
 import Link from "next/link"
@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation"
 const User = ({ params }) => {
   const [state, setState] = useState("allOrders")
   const router = useRouter()
+
   return (
     <div>
       <Stack direction='row'>

@@ -1,7 +1,7 @@
 "use client"
 import ServiceLayout from "@/components/ServiceLayout"
 import SplitLayout from "@/components/SplitLayout"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   Button,
   Chip,
@@ -16,12 +16,29 @@ import {
 
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { getAddons } from "@/externalApi"
 
 const StepTwo = () => {
   const searchParams = useSearchParams()
   const category = searchParams.get("category")
   const style = searchParams.get("style")
   console.log(category, style)
+  const [addons, setAddons] = useState()
+  const [orderData, setOrderData] = useState()
+  useEffect(() => {
+    getAddons()
+      .then((data) => {
+        console.log("Fetched data:", data)
+        setAddons(data)
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error)
+      })
+  }, [])
+  const handleCheckout = ()=>{
+    console.log(orderData)
+  }
+
   return (
     <ServiceLayout
       formTitle='Select your add-ons, confirm payment & relax!'

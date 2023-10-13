@@ -18,7 +18,10 @@ const Auth = () => {
       .then((res) => {
         console.log("log res: ", res)
         // redirect(`user${res?.uid}`, "replace")
-        router.push(`user/${res?.uid}`, { shallow: false })
+        document.cookie = `uid=${res.uid};`
+        document.cookie = `access_token=${res.access_token};`
+        document.cookie = `refresh_token=${res.refresh_token};`
+        // router.push(`user/${res?.uid}`, { shallow: false })
       })
       .catch((err) => {
         console.log(err)
