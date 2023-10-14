@@ -25,7 +25,7 @@ const StepTwo = () => {
   console.log(category, style)
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
-  // const [orderData, setOrderData] = useState()
+  const [imageCount, setImageCount] = useState(0)
   const [deliveryDate, setDeliveryDate] = useState()
   useEffect(() => {
     getAddons()
@@ -43,27 +43,42 @@ const StepTwo = () => {
     console.log("delivery: ", deliveryDate)
   }, [selectedAddons, deliveryDate])
 
-  const handleCheck = (isChecked, id) => {
+  // const handleCheck = (isChecked, addon) => {
+  //   if (isChecked) {
+  //     if (!selectedAddons.includes(id)) {
+  //       setSelectedAddons([...selectedAddons, id])
+  //     }
+  //   } else {
+  //     if (selectedAddons.includes(id)) {
+  //       setSelectedAddons(selectedAddons.filter((item) => item !== id))
+  //     }
+  //   }
+  // }
+  const handleCheck = (isChecked, addon) => {
     if (isChecked) {
-      if (!selectedAddons.includes(id)) {
-        setSelectedAddons([...selectedAddons, id])
+      // Check if the addon with the given id exists in the selectedAddons array
+      if (!selectedAddons.some((item) => item.id === addon.id)) {
+        setSelectedAddons([...selectedAddons, addon])
       }
     } else {
-      if (selectedAddons.includes(id)) {
-        setSelectedAddons(selectedAddons.filter((item) => item !== id))
-      }
+      // Filter out the addon with the given id from selectedAddons
+      setSelectedAddons(selectedAddons.filter((item) => item.id !== addon.id))
     }
   }
 
   const handleCheckout = () => {
-    console.log({
+    const checkOutDetails = {
       delivery_date: getDeliveryDate(deliveryDate),
-      number_of_images: 100,
+      number_of_images: imageCount,
       user_id: getCookie("uid"),
-      category_id: "1",
-      style_id: "1",
-      addon: selectedAddons
-    })
+      category_id: searchParams.get("category_id"),
+      style_id: searchParams.get("style_id"),
+      addon: selectedAddons,
+      culling_number: 25,
+      success_url: "http://localhost:3000/step_one",
+      cancel_url: "http://localhost:3000/",
+    }
+    console.log(checkOutDetails)
   }
   function getDeliveryDate(daysFromNow) {
     const currentDate = new Date()
@@ -170,7 +185,12 @@ const StepTwo = () => {
                   control={
                     <Checkbox
                       size='medium'
-                      onChange={(e) => handleCheck(e.target.checked, addon.id)}
+                      onChange={(e) =>
+                        handleCheck(e.target.checked, {
+                          id: addon.id,
+                          order_addon_description: "",
+                        })
+                      }
                     />
                   }
                   label={addon.addon_name}
@@ -212,9 +232,7 @@ const StepTwo = () => {
               padding
               onClick={() => setDeliveryDate(4)}
               style={
-                deliveryDate == 4
-                  ? { background: "black", color: "white" }
-                  : {}
+                deliveryDate == 4 ? { background: "black", color: "white" } : {}
               }
             >
               <Stack
@@ -254,8 +272,10 @@ const StepTwo = () => {
               placeholder='Number of Images to upload'
               variant='outlined'
               size='small'
+              type='number'
               fullWidth
               sx={{ display: "block" }}
+              onChange={(e) => setImageCount(e.target.value)}
             />
             <Stack>
               <Typography variant='h6' gutterBottom>
@@ -273,9 +293,14 @@ const StepTwo = () => {
               $46.5
             </Typography>
             {/* <Link href={"step_final"}> */}
-              <Button variant='contained' size='large' fullWidth onClick={handleCheckout}>
-                Checkout
-              </Button>
+            <Button
+              variant='contained'
+              size='large'
+              fullWidth
+              onClick={handleCheckout}
+            >
+              Checkout
+            </Button>
             {/* </Link> */}
             <Typography variant='caption' display='block' gutterBottom>
               This payment is secured by an SSL connection courtesy of Stripe

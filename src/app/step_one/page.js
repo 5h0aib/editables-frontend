@@ -90,7 +90,7 @@ const StepOne = () => {
       <br />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Link
-          href={`step_two?style=${selectedStyle.style_name}&style_id=${selectedStyle.iud}&category=${selectedCategory.category_name}&category_id=${selectedCategory.iud}`}
+          href={`step_two?style=${selectedStyle.style_name}&style_id=${selectedStyle.id}&category=${selectedCategory.category_name}&category_id=${selectedCategory.id}`}
         >
           <Button variant='contained' size='large' style={{ minWidth: "33vw" }}>
             Next
