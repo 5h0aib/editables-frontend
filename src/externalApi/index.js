@@ -26,17 +26,7 @@ const headers = {
 //   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NzU5OTE1MywiaWF0IjoxNjk3MTY3MTUzLCJqdGkiOiJiM2QxNzk4NDliOGU0NGMxOThmYmI1ZDEyOTkyNDYxYiIsInVzZXJfaWQiOjh9.gsFxJlXS5_k5r--IE9FinimJc4P8uXeikzS8_eamtcg"
 // }
 
-var orderData = {
-  order_name: "Your Order Name",
-  order_amount: 100.0,
-  delivery_date: "2023-09-30",
-  number_of_images: 100,
-  order_rating: 4.5,
-  user_id: "1",
-  category_id: "1",
-  style_id: "1",
-  addon: ["1", "2"]
-};
+
 // Step 1
 const getCategories = async () => {
   try {
@@ -88,6 +78,26 @@ const getAddons = async () => {
     return responseData
   } catch (error) {
     console.error("Error fetching data:", error)
+  }
+}
+
+const checkout= async (postData) => {
+  try {
+    const response = await fetch(`${baseUrl}/create-checkout-session/`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(postData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    const responseData = await response.json()
+    console.log("response", responseData)
+    return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
   }
 }
 
@@ -152,4 +162,4 @@ const login = async (postData) => {
   }
 }
 
-export { getCategories, getStyles, getAddons, getOrders, postOrders, login, getCookie }
+export { getCategories, getStyles, checkout, getAddons, getOrders, postOrders, login, getCookie }

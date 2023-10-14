@@ -16,17 +16,17 @@ import {
 
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { getAddons, getCookie } from "@/externalApi"
+import { checkout, getAddons, getCookie } from "@/externalApi"
 
 const StepTwo = () => {
   const searchParams = useSearchParams()
   const category = searchParams.get("category")
   const style = searchParams.get("style")
-  console.log(category, style)
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
   const [imageCount, setImageCount] = useState(0)
   const [deliveryDate, setDeliveryDate] = useState()
+
   useEffect(() => {
     getAddons()
       .then((data) => {
@@ -57,7 +57,7 @@ const StepTwo = () => {
   const handleCheck = (isChecked, addon) => {
     if (isChecked) {
       // Check if the addon with the given id exists in the selectedAddons array
-      if (!selectedAddons.some((item) => item.id === addon.id)) {
+      if (!selectedAddons.some((item) => item.uid === addon.id)) {
         setSelectedAddons([...selectedAddons, addon])
       }
     } else {
@@ -69,16 +69,20 @@ const StepTwo = () => {
   const handleCheckout = () => {
     const checkOutDetails = {
       delivery_date: getDeliveryDate(deliveryDate),
-      number_of_images: imageCount,
+      number_of_images: parseInt(imageCount),
       user_id: getCookie("uid"),
       category_id: searchParams.get("category_id"),
       style_id: searchParams.get("style_id"),
       addon: selectedAddons,
-      culling_number: 25,
-      success_url: "http://localhost:3000/step_one",
-      cancel_url: "http://localhost:3000/",
+      order_name: "Your Order Name",
+      order_amount: 100.0,
+      order_rating: 4.5,
+      // culling_number: String(25),
+      success_url: "https://d86c672d57cf.ngrok.app/step_final",
+      cancel_url: "https://d86c672d57cf.ngrok.app",
     }
     console.log(checkOutDetails)
+    checkout(checkOutDetails)
   }
   function getDeliveryDate(daysFromNow) {
     const currentDate = new Date()
@@ -187,7 +191,7 @@ const StepTwo = () => {
                       size='medium'
                       onChange={(e) =>
                         handleCheck(e.target.checked, {
-                          id: addon.id,
+                          uid: String(addon.id),
                           order_addon_description: "",
                         })
                       }
