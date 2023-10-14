@@ -46,12 +46,12 @@ const StepOne = () => {
           </Typography>
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             {/* {categories.map((category, i) => ( */}
-            {allCatergories.map(({category_name}, i) => (
+            {allCatergories.map((category, i) => (
               <Button
-                variant={category_name == selectedCategory ? "outlined" : "standard"}
-                onClick={() => setCategory(category_name)}
+                variant={category == category ? "outlined" : "standard"}
+                onClick={() => setCategory(category)}
               >
-                {category_name}
+                {category.category_name}
               </Button>
             ))}
           </div>
@@ -75,13 +75,13 @@ const StepOne = () => {
         </Typography>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           {/* {styles.map((style, i) => ( */}
-          {allStyles.map(({style_name}, i) => (
+          {allStyles.map((style, i) => (
             <Button
               large
-              variant={style_name == selectedStyle ? "contained" : "outlined"}
-              onClick={() => setStyle(style_name)}
+              variant={style == selectedStyle ? "contained" : "outlined"}
+              onClick={() => setStyle(style)}
             >
-              {style_name}
+              {style.style_name}
             </Button>
           ))}
         </div>
@@ -90,7 +90,7 @@ const StepOne = () => {
       <br />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Link
-          href={`step_two?style=${selectedStyle}1&category=${selectedCategory}`}
+          href={`step_two?style=${selectedStyle.style_name}&style_id=${selectedStyle.iud}&category=${selectedCategory.category_name}&category_id=${selectedCategory.iud}`}
         >
           <Button variant='contained' size='large' style={{ minWidth: "33vw" }}>
             Next

@@ -4,6 +4,7 @@ import { Stack, Typography } from "@mui/material/"
 import Link from "next/link"
 
 const Nav = () => {
+  console.log("nav changed")
   return (
     <nav className={""}>
       <Stack
