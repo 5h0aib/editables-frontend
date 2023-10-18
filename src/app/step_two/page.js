@@ -78,8 +78,8 @@ const StepTwo = () => {
       order_amount: 100.0,
       order_rating: 4.5,
       // culling_number: String(25),
-      success_url: "https://d86c672d57cf.ngrok.app/step_final",
-      cancel_url: "https://d86c672d57cf.ngrok.app",
+      success_url: "https://www.facebook.com/",
+      cancel_url: "https://www.facebook.com/",
     }
     console.log(checkOutDetails)
     checkout(checkOutDetails)

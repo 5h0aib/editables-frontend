@@ -154,6 +154,43 @@ const getOrders = async () => {
     console.error("Error fetching data:", error)
   }
 }
+const getTransactions = async () => {
+  console.log("cookies: ", document.cookie)
+  console.log("access token: ")
+  try {
+    const response = await fetch(`${baseUrl}/transactions/`, {
+      method: "GET",
+      headers: headers,
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const responseData = await response.json()
+
+    return responseData
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
+
+const getBookings = async () => {
+  console.log("cookies: ", document.cookie)
+  console.log("access token: ")
+  try {
+    const response = await fetch(`${baseUrl}/bookings/`, {
+      method: "GET",
+      headers: headers,
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const responseData = await response.json()
+
+    return responseData
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
 
 const postOrders = async (postData) => {
   try {
@@ -209,6 +246,8 @@ export {
   getAddons,
   getOrdersofThisUser,
   getOrders,
+  getTransactions,
+  getBookings,
   postOrders,
   login,
   logOut,

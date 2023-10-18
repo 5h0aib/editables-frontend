@@ -21,7 +21,13 @@ const Auth = () => {
         document.cookie = `uid=${res.uid};`
         document.cookie = `access_token=${res.access_token};`
         document.cookie = `refresh_token=${res.refresh_token};`
-        // router.push(`user/${res?.uid}`, { shallow: false })
+        if (res.is_staff) {
+          console.log("loging in as staff")
+          router.push(`admin/all_order}`, { shallow: false })
+        } else {
+          console.log("loging in as client")
+          router.push(`user/${res?.uid}`, { shallow: false })
+        }
       })
       .catch((err) => {
         console.log(err)

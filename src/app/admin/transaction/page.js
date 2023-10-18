@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
@@ -17,6 +17,7 @@ import {
   Typography,
 } from "@mui/material"
 import AdminLayout from "../AdminLayout"
+import { getTransactions } from "@/externalApi"
 const AllOrders = () => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
@@ -115,6 +116,15 @@ const AllOrders = () => {
       return rows.filter((row) => row.type === type)
     }
   }
+  useEffect(() => {
+    getTransactions()
+      .then((data) => {
+        console.log("Fetched orders:", data)
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error)
+      })
+  }, [])
   // const distinctStatuses =  [...new Set(rows.map((row) => row.status))]
   // console.log(distinctStatuses)
   return (
