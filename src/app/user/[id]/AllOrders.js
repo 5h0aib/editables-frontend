@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 // import * as React from "react"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
@@ -16,12 +16,14 @@ import {
   Select,
   Typography,
 } from "@mui/material"
+import { getOrdersofThisUser } from "@/externalApi"
 const AllOrders = () => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
   function createData(order, dateOfIssue, statuss, delivery, rating, type) {
     return { order, dateOfIssue, statuss, delivery, rating, type }
   }
+  const [allOrders, setAllOrders] = useState([])
   const rows = [
     createData(
       `Helix’s wedding Order No. 9965`,
@@ -84,6 +86,15 @@ const AllOrders = () => {
       return rows.filter((row) => row.type === type)
     }
   }
+  useEffect(() => {
+    getOrdersofThisUser()
+      .then((orders) => {
+        // setAllOrders(orders)
+        console.log("Orders: ", orders)
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
   // const distinctStatuses =  [...new Set(rows.map((row) => row.status))]
   // console.log(distinctStatuses)
   return (
@@ -136,7 +147,7 @@ const AllOrders = () => {
                     value={selectedStatus}
                     label='Status'
                     onChange={handleChange}
-                    size="small"
+                    size='small'
                   >
                     <MenuItem value={"In review"}>In review</MenuItem>
                     <MenuItem value={"processing"}>processing</MenuItem>

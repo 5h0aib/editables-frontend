@@ -14,6 +14,17 @@ function getCookie(cookieName) {
   }
   return null // Cookie not found
 }
+function deleteAllCookies() {
+  const cookies = document.cookie.split(";")
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i]
+    const eqPos = cookie.indexOf("=")
+    const cookieName = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+    document.cookie =
+      cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+  }
+}
 
 // {
 //   "uid": 8,
@@ -25,7 +36,6 @@ const headers = {
 
 //   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NzU5OTE1MywiaWF0IjoxNjk3MTY3MTUzLCJqdGkiOiJiM2QxNzk4NDliOGU0NGMxOThmYmI1ZDEyOTkyNDYxYiIsInVzZXJfaWQiOjh9.gsFxJlXS5_k5r--IE9FinimJc4P8uXeikzS8_eamtcg"
 // }
-
 
 // Step 1
 const getCategories = async () => {
@@ -81,7 +91,7 @@ const getAddons = async () => {
   }
 }
 
-const checkout= async (postData) => {
+const checkout = async (postData) => {
   try {
     const response = await fetch(`${baseUrl}/create-checkout-session/`, {
       method: "POST",
@@ -95,12 +105,37 @@ const checkout= async (postData) => {
 
     const responseData = await response.json()
     console.log("response", responseData)
+    window.location.replace(responseData.stripe_url)
     return responseData
   } catch (error) {
     console.error("Error posting data:", error)
   }
 }
 
+//user
+const getOrdersofThisUser = async () => {
+  // console.log("access#token: ",getCookie("access_token"))
+  try {
+    const response = await fetch(`${baseUrl}/orders/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    // console.log("response: ", responseData)
+    const responseData = await response.json()
+
+    return responseData
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
+
+//admin
 const getOrders = async () => {
   console.log("cookies: ", document.cookie)
   console.log("access token: ")
@@ -141,6 +176,7 @@ const postOrders = async (postData) => {
 }
 const login = async (postData) => {
   console.log(postData)
+  deleteAllCookies()
   try {
     const response = await fetch(`${baseUrl}/login/`, {
       method: "POST",
@@ -162,4 +198,19 @@ const login = async (postData) => {
   }
 }
 
-export { getCategories, getStyles, checkout, getAddons, getOrders, postOrders, login, getCookie }
+const logOut = () => {
+  deleteAllCookies()
+}
+
+export {
+  getCategories,
+  getStyles,
+  checkout,
+  getAddons,
+  getOrdersofThisUser,
+  getOrders,
+  postOrders,
+  login,
+  logOut,
+  getCookie,
+}

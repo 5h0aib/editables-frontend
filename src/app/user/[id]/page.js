@@ -10,15 +10,26 @@ import {
 } from "@mui/material"
 import Image from "next/image"
 import InboxIcon from "@mui/icons-material/Inbox"
-import React, {  useState } from "react"
+import React, { useEffect, useState } from "react"
 import MyAccount from "./MyAccount"
 import AllOrders from "./AllOrders"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { getOrdersofThisUser, logOut } from "@/externalApi"
 
 const User = ({ params }) => {
   const [state, setState] = useState("allOrders")
   const router = useRouter()
+  // useEffect(() => {
+  //   console.log("id: ",params.id)
+  //   getOrdersofThisUser(params.id)
+  //     .then((data) => {
+  //       console.log("Fetched orders:", data)
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching orders:", error)
+  //     })
+  // }, [])
 
   return (
     <div>
@@ -79,7 +90,7 @@ const User = ({ params }) => {
               </ListItem>
               <Divider /> */}
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton onClick={logOut}>
                   <ListItemIcon>
                     <InboxIcon />
                   </ListItemIcon>
