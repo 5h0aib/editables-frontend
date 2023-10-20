@@ -8,10 +8,11 @@ function getCookie(cookieName) {
   for (let i = 0; i < cookieArray.length; i++) {
     let cookie = cookieArray[i].trim()
     if (cookie.indexOf(name) === 0) {
-      console.log("token: ", cookie.substring(name.length))
+      console.log(cookieName+"token: ", cookie.substring(name.length))
       return cookie.substring(name.length)
     }
   }
+  console.log("cookie not fount")
   return null // Cookie not found
 }
 function deleteAllCookies() {
@@ -184,14 +185,12 @@ const putUserDetails = async (postData, id) => {
 
 //admin
 const getOrders = async () => {
-  console.log("cookies: ", document.cookie)
-  console.log("access token: ")
   try {
     const response = await fetch(`${baseUrl}/orders/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${getCookie("access_token")}`,
+        "Authorization": `JWT ${getCookie("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -213,7 +212,7 @@ const getTransactions = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${getCookie("access_token")}`,
+        "Authorization": `JWT ${getCookie("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -235,7 +234,7 @@ const getBookings = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${getCookie("access_token")}`,
+        "Authorization": `JWT ${getCookie("access_token")}`,
       },
     })
     if (!response.ok) {

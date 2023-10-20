@@ -18,98 +18,41 @@ import {
 } from "@mui/material"
 import AdminLayout from "../AdminLayout"
 import { getOrders, postOrders } from "@/externalApi"
+import { formatDate, formatDateString } from "@/utils"
 const AllOrders = () => {
-  const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  async function loadOrders() {
-    setLoading(true)
-    const orders = await getOrders()
-    setLoading(false)
-    setData(orders?.data)
-    console.log("orders: ", orders)
-  }
-  useEffect(() => {
-    getOrders()
-      .then((data) => {
-        console.log("Fetched orders:", data)
-      })
-      .catch((error) => {
-        console.error("Error fetching orders:", error)
-      })
-  }, [])
+  const [allOrders, setAllOrders] = useState([])
+  const [filteredOrders, setFilteredOrders] = useState([])
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
-  function createData(
-    order,
-    dateOfIssue,
-    statuss,
-    delivery,
-    rating,
-    type,
-    style
-  ) {
-    return { order, dateOfIssue, statuss, delivery, rating, type, style }
-  }
-  const rows = [
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Processing",
-      "3rd September 2023",
-      5,
-      "basic",
-      "Classic film tones"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "In review",
-      "3rd September 2023",
-      0,
-      "express",
-      "Basic color correction"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Completed",
-      "3rd September 2023",
-      0,
-      "basic",
-      "Dark & moody"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "In review",
-      "3rd September 2023",
-      4,
-      "basic",
-      "Classic film tones"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Culling",
-      "3rd September 2023",
-      0,
-      "custom",
-      "Custom"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Payment due",
-      "3rd September 2023",
-      3,
-      "custom",
-      "Custom"
-    ),
-  ]
+  // async function loadOrders() {
+  //   setLoading(true)
+  //   const orders = await getOrders()
+  //   setLoading(false)
+  //   setData(orders?.data)
+  //   console.log("orders: ", orders)
+  // }
+  useEffect(() => {
+    getOrders()
+      .then((orders) => {
+        setAllOrders(orders)
+        setFilteredOrders(orders)
+        console.log("fectched Orders: ", orders)
+      })
+      .catch((err) => console.log(err))
+  }, [])
 
   function handleChange(event) {
-    console.log("status changed")
     setStatus(event.target.value)
+    if (event.target.value === "all") {
+      setFilteredOrders(allOrders)
+    } else {
+      setFilteredOrders(
+        allOrders.filter(
+          (row) => row.order_status.toLowerCase() === event.target.value
+        )
+      )
+    }
   }
   function filteredRows() {
     if (type === "all") {
@@ -183,7 +126,8 @@ const AllOrders = () => {
                       onChange={handleChange}
                       size='small'
                     >
-                      <MenuItem value={"In review"}>In review</MenuItem>
+                      <MenuItem value={"all"}>All</MenuItem>
+                      <MenuItem value={"in review"}>In review</MenuItem>
                       <MenuItem value={"processing"}>processing</MenuItem>
                       <MenuItem value={"payment due"}>payment due</MenuItem>
                       <MenuItem value={"completed"}>completed</MenuItem>
@@ -196,23 +140,23 @@ const AllOrders = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredRows().map((row) => (
+              {filteredOrders?.map((row) => (
                 <TableRow
-                  key={row.name}
+                  key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   {/*  order, dateOfIssue, statuss, delivery, rating */}
                   <TableCell component='th' scope='row'>
-                    {row.order}
+                    {row.order_name}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.dateOfIssue}
+                    {formatDateString(row.created_at)}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.statuss}
+                    {row.order_status}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.delivery}
+                    {formatDate(row.delivery_date)}
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     <Button>Download</Button>
@@ -220,7 +164,7 @@ const AllOrders = () => {
                     <Button onClick={triggerPostOrder}>Upload</Button>
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.style}
+                    {row.style_name}
                   </TableCell>
                 </TableRow>
               ))}
