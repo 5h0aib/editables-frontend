@@ -13,95 +13,56 @@ import {
   InputLabel,
   MenuItem,
   OutlinedInput,
+  Rating,
   Select,
   Typography,
 } from "@mui/material"
 import { getOrdersofThisUser } from "@/externalApi"
+import { formatDate, formatDateString } from "@/utils"
 const AllOrders = () => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
-  function createData(order, dateOfIssue, statuss, delivery, rating, type) {
-    return { order, dateOfIssue, statuss, delivery, rating, type }
-  }
   const [allOrders, setAllOrders] = useState([])
-  const rows = [
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Processing",
-      "3rd September 2023",
-      5,
-      "basic"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "In review",
-      "3rd September 2023",
-      0,
-      "express"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Completed",
-      "3rd September 2023",
-      0,
-      "basic"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "In review",
-      "3rd September 2023",
-      4,
-      "basic"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Culling",
-      "3rd September 2023",
-      0,
-      "custom"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Payment due",
-      "3rd September 2023",
-      3,
-      "custom"
-    ),
-  ]
+  const [filteredOrders, setFilteredOrders] = useState([])
 
   function handleChange(event) {
-    console.log("status changed")
     setStatus(event.target.value)
-  }
-  function filteredRows() {
-    if (type === "all") {
-      return rows
+    if (event.target.value === "all") {
+      setFilteredOrders(allOrders)
     } else {
-      return rows.filter((row) => row.type === type)
+      setFilteredOrders(
+        allOrders.filter(
+          (row) => row.order_status.toLowerCase() === event.target.value
+        )
+      )
+    }
+  }
+  function filterOrders() {
+    if (type === "all") {
+      return allOrders
+    } else {
+      return allOrders.filter(
+        (row) => row.order_status.toLowerCase() === selectedStatus
+      )
     }
   }
   useEffect(() => {
     getOrdersofThisUser()
       .then((orders) => {
-        // setAllOrders(orders)
-        console.log("Orders: ", orders)
+        setAllOrders(orders)
+        setFilteredOrders(orders)
+        console.log("fectched Orders: ", orders)
       })
       .catch((err) => console.log(err))
   }, [])
 
-  // const distinctStatuses =  [...new Set(rows.map((row) => row.status))]
-  // console.log(distinctStatuses)
   return (
     <div>
+      
       <Typography variant='h5' gutterBottom display={"block"}>
         All orders
       </Typography>
+      <p>not getting these info from get request</p>
       <Button
         variant={type == "all" ? "outlined" : "stantdard"}
         sx={{ background: "white", marginRight: "20px" }}
@@ -149,7 +110,8 @@ const AllOrders = () => {
                     onChange={handleChange}
                     size='small'
                   >
-                    <MenuItem value={"In review"}>In review</MenuItem>
+                    <MenuItem value={"all"}>All</MenuItem>
+                    <MenuItem value={"in review"}>In review</MenuItem>
                     <MenuItem value={"processing"}>processing</MenuItem>
                     <MenuItem value={"payment due"}>payment due</MenuItem>
                     <MenuItem value={"completed"}>completed</MenuItem>
@@ -161,26 +123,31 @@ const AllOrders = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRows().map((row) => (
+            {filteredOrders.map((row) => (
               <TableRow
-                key={row.name}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 {/*  order, dateOfIssue, statuss, delivery, rating */}
                 <TableCell component='th' scope='row'>
-                  {row.order}
+                  {row.order_name}
                 </TableCell>
                 <TableCell component='th' scope='row'>
-                  {row.dateOfIssue}
+                  {formatDateString(row.created_at)}
                 </TableCell>
                 <TableCell component='th' scope='row'>
-                  {row.statuss}
+                  {row.order_status}
                 </TableCell>
                 <TableCell component='th' scope='row'>
-                  {row.delivery}
+                  {formatDate(row.delivery_date)}
                 </TableCell>
                 <TableCell component='th' scope='row'>
-                  {row.rating}
+                  <Rating
+                    name='read-only'
+                    value={row.order_rating}
+                    precision={0.5}
+                    readOnly
+                  />
                 </TableCell>
               </TableRow>
             ))}

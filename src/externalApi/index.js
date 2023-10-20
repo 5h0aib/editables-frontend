@@ -95,7 +95,10 @@ const checkout = async (postData) => {
   try {
     const response = await fetch(`${baseUrl}/create-checkout-session/`, {
       method: "POST",
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
       body: JSON.stringify(postData),
     })
 
@@ -134,15 +137,16 @@ const getOrdersofThisUser = async () => {
     console.error("Error fetching data:", error)
   }
 }
-
-//admin
-const getOrders = async () => {
+const getUserDetails = async (id) => {
   console.log("cookies: ", document.cookie)
   console.log("access token: ")
   try {
-    const response = await fetch(`${baseUrl}/orders/`, {
+    const response = await fetch(`${baseUrl}/users/${id}/`, {
       method: "GET",
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
     })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
@@ -154,13 +158,63 @@ const getOrders = async () => {
     console.error("Error fetching data:", error)
   }
 }
+
+const putUserDetails = async (postData, id) => {
+  try {
+    const response = await fetch(`${baseUrl}/users/${id}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
+      body: JSON.stringify(postData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    const responseData = await response.json()
+    console.log("response", responseData)
+    return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
+  }
+}
+
+//admin
+const getOrders = async () => {
+  console.log("cookies: ", document.cookie)
+  console.log("access token: ")
+  try {
+    const response = await fetch(`${baseUrl}/orders/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const responseData = await response.json()
+
+    return responseData
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
+
 const getTransactions = async () => {
   console.log("cookies: ", document.cookie)
   console.log("access token: ")
   try {
     const response = await fetch(`${baseUrl}/transactions/`, {
       method: "GET",
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
     })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
@@ -179,7 +233,10 @@ const getBookings = async () => {
   try {
     const response = await fetch(`${baseUrl}/bookings/`, {
       method: "GET",
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
     })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
@@ -196,7 +253,10 @@ const postOrders = async (postData) => {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${getCookie("access_token")}`,
+      },
       body: JSON.stringify(postData),
     })
 
@@ -245,6 +305,8 @@ export {
   checkout,
   getAddons,
   getOrdersofThisUser,
+  getUserDetails,
+  putUserDetails,
   getOrders,
   getTransactions,
   getBookings,
