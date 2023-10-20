@@ -18,9 +18,13 @@ const Auth = () => {
       .then((res) => {
         console.log("log res: ", res)
         // redirect(`user${res?.uid}`, "replace")
-        document.cookie = `uid=${res.uid};`
-        document.cookie = `access_token=${res.access_token};`
-        document.cookie = `refresh_token=${res.refresh_token};`
+        // document.cookie = `uid=${res.uid};`
+        // document.cookie = `access_token=${res.access_token};`
+        // document.cookie = `refresh_token=${res.refresh_token};`
+        localStorage.setItem("uid", res.uid)
+        localStorage.setItem("access_token", res.access_token)
+        localStorage.setItem("refresh_token", res.refresh_token)
+        localStorage.setItem("isLoggedIn", true)
         if (res.is_staff) {
           console.log("loging in as staff")
           router.push(`admin/all_order}`, { shallow: false })
