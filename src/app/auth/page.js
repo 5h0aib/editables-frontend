@@ -27,7 +27,7 @@ const Auth = () => {
         localStorage.setItem("isLoggedIn", true)
         if (res.is_staff) {
           console.log("loging in as staff")
-          router.push(`admin/all_order}`, { shallow: false })
+          router.push(`admin/all_order`, { shallow: false })
         } else {
           console.log("loging in as client")
           router.push(`user/${res?.uid}`, { shallow: false })

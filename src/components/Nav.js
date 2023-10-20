@@ -1,11 +1,21 @@
-
-import React from "react"
-// import styles from './components.module.css'
-import { Stack, Typography } from "@mui/material/"
+"use client"
+import React, { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Button, Stack, Typography } from "@mui/material/"
 import Link from "next/link"
+import { logOut } from "@/externalApi"
 
 const Nav = () => {
-  console.log("nav changed")
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn")
+  )
+
+  const router = useRouter()
+  const handleClick = () => {
+    isLoggedIn=="true" ? logOut() : router.push(`auth`, { shallow: false })
+  }
+  // localStorage.setItem("isLoggedIn", true)
+  console.log("isLoggedIn:", isLoggedIn)
   return (
     <nav className={""}>
       <Stack
@@ -13,12 +23,12 @@ const Nav = () => {
         direction='row'
         alignItems='center'
         justifyContent='center'
-        style={{marginBottom:"3em"}}
+        style={{ marginBottom: "3em" }}
       >
         <Link href='/'>Home</Link>
         <Link href='#'>About</Link>
         <Link href='#'>Contact</Link>
-        <Link href='/auth'>Login</Link>
+        <Button  onClick={handleClick}>{isLoggedIn=="true" ? "Logout" : "Login"}</Button>
       </Stack>
     </nav>
   )
