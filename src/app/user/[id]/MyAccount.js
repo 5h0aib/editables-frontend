@@ -50,6 +50,7 @@ const MyAccount = () => {
           </Typography>
           <TextField
             fullWidth
+            disabled
             defaultValue={userData?.email}
             onChange={(e) =>
               setUserData({ ...userData, email: e.target.value })

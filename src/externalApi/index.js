@@ -32,7 +32,7 @@ function deleteAllCookies() {
 // const access_token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MTc0MzUzLCJpYXQiOjE2OTcxNjcxNTMsImp0aSI6IjE5OWI4OTc0ZjIzNjRlMThhNjMyYzFkMGY4MjVkNWYwIiwidXNlcl9pZCI6OH0.h6Foo5PrrskORI79M9aWnal7oHRkNcf7S1WPtHNPmo4"
 const headers = {
   "Content-Type": "application/json",
-  "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+  Authorization: `JWT ${localStorage.getItem("access_token")}`,
 }
 
 //   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NzU5OTE1MywiaWF0IjoxNjk3MTY3MTUzLCJqdGkiOiJiM2QxNzk4NDliOGU0NGMxOThmYmI1ZDEyOTkyNDYxYiIsInVzZXJfaWQiOjh9.gsFxJlXS5_k5r--IE9FinimJc4P8uXeikzS8_eamtcg"
@@ -98,7 +98,7 @@ const checkout = async (postData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify(postData),
     })
@@ -124,7 +124,7 @@ const getOrdersofThisUser = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -146,7 +146,7 @@ const getUserDetails = async (id) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -166,7 +166,7 @@ const putUserDetails = async (postData, id) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify(postData),
     })
@@ -183,7 +183,7 @@ const putUserDetails = async (postData, id) => {
   }
 }
 
-const createBooking = async (concact_number) => {
+const createBooking = async (contact_number) => {
   // Get the current date
   const currentDate = new Date()
   const year = currentDate.getFullYear()
@@ -201,10 +201,8 @@ const createBooking = async (concact_number) => {
   let data = {
     user_id: localStorage.getItem("uid"),
     browser_time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    booking_date: bookingDate,
-    start_time: startTime,
     booking_status: "Scheduled",
-    concact_number,
+    contact_number,
   }
   console.log("Bookin Data: ", data)
   try {
@@ -212,7 +210,7 @@ const createBooking = async (concact_number) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify(data),
     })
@@ -236,7 +234,7 @@ const getOrders = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -258,7 +256,7 @@ const getTransactions = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -280,7 +278,7 @@ const getBookings = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
     if (!response.ok) {
@@ -300,7 +298,7 @@ const postOrders = async (postData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `JWT ${localStorage.getItem("access_token")}`,
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
       body: JSON.stringify(postData),
     })

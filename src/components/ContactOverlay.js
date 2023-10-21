@@ -8,16 +8,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
+import { useRouter } from "next/navigation"
 import React, { useState } from "react"
 
-const ContactOverlay = ({ setOpen, open, }) => {
+const ContactOverlay = ({ setOpen, open }) => {
   const [phone, setPhone] = useState("")
+  const router = useRouter()
   const handleClick = () => {
     createBooking(phone)
       .then((res) => {
         console.log("custom booking created: ", res)
-        setOpen(false)
         router.push(`user/${localStorage.getItem("uid")}`, { shallow: false })
+        setOpen(false)
       })
       .catch((err) => {
         console.log(err)

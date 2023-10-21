@@ -59,12 +59,6 @@ const AuthorizationOverlay = ({
           <Typography variant='h6' gutterBottom align='center'>
             Please provid these personal informations to proceed with the order
           </Typography>
-          {isCustom && (
-            <TextField
-              placeholder='Your Contact Number'
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          )}
 
           <TextField
             placeholder='tomyhatfield@gmail.com'
