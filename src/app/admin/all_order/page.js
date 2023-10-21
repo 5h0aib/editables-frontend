@@ -40,7 +40,15 @@ const AllOrders = () => {
         console.log("fectched Orders: ", orders)
       })
       .catch((err) => console.log(err))
+    getBookings()
+      .then((data) => {
+        console.log("Bookings:", data)
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error)
+      })
   }, [])
+  
 
   function handleChange(event) {
     setStatus(event.target.value)

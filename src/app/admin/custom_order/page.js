@@ -16,15 +16,6 @@ import { categories, styles } from "@/hardCode/all_style_catergories"
 import { getBookings } from "@/externalApi"
 
 const CustomOrder = () => {
-  useEffect(() => {
-    getBookings()
-      .then((data) => {
-        console.log("Fetched orders:", data)
-      })
-      .catch((error) => {
-        console.error("Error fetching orders:", error)
-      })
-  }, [])
   return (
     <AdminLayout>
       <Typography variant='h5' gutterBottom display={"block"}>
