@@ -42,7 +42,12 @@ const StepOne = () => {
       console.log("not logged in")
       setOpenLogin(true)
     } else {
-      router.push(nextUrl, { shallow: false })
+      if(selectedStyle=="custom"){
+        setOpenCustom(true)
+      }else{
+        router.push(nextUrl, { shallow: false })
+      }
+      // router.push(nextUrl, { shallow: false })
     }
   }
 
