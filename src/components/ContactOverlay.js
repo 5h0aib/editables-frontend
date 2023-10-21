@@ -15,7 +15,7 @@ const ContactOverlay = ({ setOpen, open, }) => {
   const handleClick = () => {
     createBooking(phone)
       .then((res) => {
-        console.log("response: ", res)
+        console.log("custom booking created: ", res)
         setOpen(false)
         router.push(`user/${localStorage.getItem("uid")}`, { shallow: false })
       })
