@@ -1,6 +1,6 @@
 "use client"
 import ServiceLayout from "@/components/ServiceLayout"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button, Stack, TextField, Typography } from "@mui/material"
 import Image from "next/image"
 import Link from "next/link"
@@ -17,10 +17,6 @@ const Auth = () => {
     login({ email, password })
       .then((res) => {
         console.log("log res: ", res)
-        // redirect(`user${res?.uid}`, "replace")
-        // document.cookie = `uid=${res.uid};`
-        // document.cookie = `access_token=${res.access_token};`
-        // document.cookie = `refresh_token=${res.refresh_token};`
         localStorage.setItem("uid", res.uid)
         localStorage.setItem("access_token", res.access_token)
         localStorage.setItem("refresh_token", res.refresh_token)
@@ -73,13 +69,6 @@ const Auth = () => {
           >
             Sign Up
           </Button>
-          {/* </Link> */}
-          {/* <Button variant='outlined' size='large' fullWidth>
-            Signup with Google
-          </Button> */}
-          {/* <Typography variant="caption" display="block" align="center" gutterBottom>
-        step 1 of 4
-      </Typography> */}
         </Stack>
       </div>
     </ServiceLayout>

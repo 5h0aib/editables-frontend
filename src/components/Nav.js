@@ -12,9 +12,14 @@ const Nav = () => {
 
   const router = useRouter()
   const handleClick = () => {
-    isLoggedIn=="true" ? logOut() : router.push(`auth`, { shallow: false })
+    if(isLoggedIn=="true"){
+      setIsLoggedIn(false)
+      logOut()
+    }else{
+      router.push(`auth`, { shallow: false })
+    }
   }
-  // localStorage.setItem("isLoggedIn", true)
+
   console.log("isLoggedIn:", isLoggedIn)
   return (
     <nav className={""}>

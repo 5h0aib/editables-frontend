@@ -183,6 +183,51 @@ const putUserDetails = async (postData, id) => {
   }
 }
 
+const createBooking = async (concact_number) => {
+  // Get the current date
+  const currentDate = new Date()
+  const year = currentDate.getFullYear()
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0")
+  const day = currentDate.getDate().toString().padStart(2, "0")
+
+  // Format the current date as "YYYY-MM-DD"
+  const bookingDate = `${year}-${month}-${day}`
+
+  // Get the current time
+  const hours = currentDate.getHours().toString().padStart(2, "0")
+  const minutes = currentDate.getMinutes().toString().padStart(2, "0")
+
+  const startTime = `${hours}:${minutes} ${hours < 12 ? "AM" : "PM"}`
+  let data = {
+    user_id: localStorage.getItem("uid"),
+    browser_time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    booking_date: bookingDate,
+    start_time: startTime,
+    concact_number,
+  }
+  console.log("Bookin Data: ", data)
+  try {
+    const response = await fetch(`${baseUrl}/bookings/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    const responseData = await response.json()
+    console.log("response", responseData)
+    return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
+  }
+}
+
 //admin
 const getOrders = async () => {
   try {
@@ -308,6 +353,7 @@ export {
   getOrdersofThisUser,
   getUserDetails,
   putUserDetails,
+  createBooking,
   getOrders,
   getTransactions,
   getBookings,
