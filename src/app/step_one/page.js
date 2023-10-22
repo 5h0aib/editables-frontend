@@ -68,7 +68,7 @@ const StepOne = () => {
               {/* {categories.map((category, i) => ( */}
               {allCatergories.map((category, i) => (
                 <Button
-                  variant={category == category ? "outlined" : "standard"}
+                  variant={category == selectedCategory ? "contained" : "outlined"}
                   onClick={() => setCategory(category)}
                 >
                   {category.category_name}
