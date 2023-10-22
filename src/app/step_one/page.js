@@ -40,14 +40,13 @@ const StepOne = () => {
   const handleClick = () => {
     if (localStorage.getItem("isLoggedIn") != "true") {
       console.log("not logged in")
-      setOpenLogin(true)
+      setOpenLogin(true)//open login overlay when not logged in
     } else {
-      if(selectedStyle=="custom"){
+      if (selectedStyle == "custom") {
         setOpenCustom(true)
-      }else{
-        router.push(nextUrl, { shallow: false })
+      } else {
+        router.push(nextUrl, { shallow: false })// redirect to next page if user is logged in and the style is not custom
       }
-      // router.push(nextUrl, { shallow: false })
     }
   }
 
@@ -68,7 +67,9 @@ const StepOne = () => {
               {/* {categories.map((category, i) => ( */}
               {allCatergories.map((category, i) => (
                 <Button
-                  variant={category == selectedCategory ? "contained" : "outlined"}
+                  variant={
+                    category == selectedCategory ? "contained" : "outlined"
+                  }
                   onClick={() => setCategory(category)}
                 >
                   {category.category_name}
@@ -126,8 +127,14 @@ const StepOne = () => {
           </Button>
         </div>
       </ServiceLayout>
-      <AuthorizationOverlay open={openLogin} setOpen={setOpenLogin} isCustom={()=>selectedStyle=="custom"} hRef={nextUrl} setOpenCustom={setOpenCustom}/>
-      <ContactOverlay open={openCustom} setOpen={setOpenCustom}/>
+      <AuthorizationOverlay
+        open={openLogin}
+        setOpen={setOpenLogin}
+        isCustom={() => selectedStyle == "custom"}
+        hRef={nextUrl}
+        setOpenCustom={setOpenCustom}
+      />
+      <ContactOverlay open={openCustom} setOpen={setOpenCustom} />
     </>
   )
 }
