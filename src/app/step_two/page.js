@@ -74,12 +74,12 @@ const StepTwo = () => {
       category_id: searchParams.get("category_id"),
       style_id: searchParams.get("style_id"),
       addon: selectedAddons,
-      order_name: "Your Order Name",
+      // order_name: "Your Order Name",
       order_amount: 100.0,
-      order_rating: 4.5,
+      // order_rating: 4.5,
       // culling_number: String(25),
       success_url: "https://www.facebook.com/",
-      cancel_url: "https://www.facebook.com/",
+      cancel_url: "https://www.google.com/",
     }
     console.log(checkOutDetails)
     checkout(checkOutDetails)
