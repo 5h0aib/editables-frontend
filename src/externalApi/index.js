@@ -93,6 +93,28 @@ const getAddons = async () => {
 }
 
 const checkout = async (postData) => {
+  console.log(postData)
+  // const dummyPostData = {
+  //   order_amount: 100.0,
+  //   delivery_date: "2023-09-30",
+  //   number_of_images: 100,
+  //   user_id: "8",
+  //   category_id: "1",
+  //   style_id: "1",
+  //   addon: [
+  //     {
+  //       uid: "1",
+  //       order_addon_description: "",
+  //     },
+  //     {
+  //       uid: "2",
+  //       order_addon_description: "culling-number:25",
+  //     },
+  //   ],
+  //   success_url: "https://www.google.com",
+  //   cancel_url: "https://www.facebook.com",
+  // }
+  // console.log(dummyPostData)
   try {
     const response = await fetch(`${baseUrl}/create-checkout-session/`, {
       method: "POST",
@@ -161,6 +183,9 @@ const getUserDetails = async (id) => {
 }
 
 const putUserDetails = async (postData, id) => {
+  // postData.newsletter_opt_in=postData.newsletter_opt_in?"true":"false"
+  delete postData.email
+  console.log("put data: ", postData)
   try {
     const response = await fetch(`${baseUrl}/users/${id}/`, {
       method: "PUT",
@@ -292,6 +317,30 @@ const getBookings = async () => {
   }
 }
 
+const changeOrderStatus = async (order_status, id) => {
+  console.log("status: ", order_status)
+  try {
+    const response = await fetch(`${baseUrl}/update_order/${id}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify({ order_status }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    const responseData = await response.json()
+    console.log("response", responseData)
+    return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
+  }
+}
+
 const postOrders = async (postData) => {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
@@ -356,6 +405,7 @@ export {
   getOrders,
   getTransactions,
   getBookings,
+  changeOrderStatus,
   postOrders,
   login,
   logOut,
