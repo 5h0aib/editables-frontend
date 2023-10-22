@@ -22,8 +22,13 @@ const MyAccount = () => {
   }, [])
   const handleSave = () => {
     console.log(userData)
-    putUserDetails(userData,"7")
+    putUserDetails(userData,"7")//make this dynamic
   }
+  useEffect(() => {
+    console.log(userData)
+  
+  }, [userData])
+  
   return (
     <div>
       <Typography variant='h5' gutterBottom display={"block"}>
@@ -52,9 +57,6 @@ const MyAccount = () => {
             fullWidth
             disabled
             defaultValue={userData?.email}
-            onChange={(e) =>
-              setUserData({ ...userData, email: e.target.value })
-            }
           ></TextField>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
