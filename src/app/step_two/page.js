@@ -26,9 +26,11 @@ const StepTwo = () => {
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
   const [imageCount, setImageCount] = useState(0)
-  const [deliveryDate, setDeliveryDate] = useState()
+  const [isCullingChecked, setCullingChecked]=useState(false)
+  const [deliveryDate, setDeliveryDate] = useState(10)
   const [culling_number, setCullingNumber] = useState(0)
   const [pricePerImage, setPricePerImage] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0)
 
   useEffect(() => {
     getAddons()
@@ -44,7 +46,6 @@ const StepTwo = () => {
   useEffect(() => {
     console.log("number of images: ", imageCount)
     const cullingUnitPrice = 0.02
-    const cullingPrice = cullingUnitPrice * imageCount
     let addOnPrice = 0
     const addOnQuantity = culling_number || imageCount
     selectedAddons.forEach(
@@ -69,7 +70,7 @@ const StepTwo = () => {
       }
     )
     // addOnPrice= addOnPrice * quantity
-    const deliveryCharge= deliveryDate == 4 ? 1 : 3
+    const deliveryCharge = deliveryDate == 10 ? 1 : 3
     console.log("culling: ", culling_number)
     console.log("addons: ", selectedAddons)
     console.log(
@@ -81,9 +82,14 @@ const StepTwo = () => {
     console.log(
       "--------------------------------------------------------------"
     )
-    setPricePerImage(cullingUnitPrice+addOnPrice+deliveryCharge)
+    const cullingPrice = isCullingChecked?cullingUnitPrice * imageCount:0
+    setPricePerImage(cullingUnitPrice + addOnPrice + deliveryCharge)
     // setFinalPrice()
-  }, [selectedAddons, deliveryDate, imageCount])
+    const finalAddonPrice = addOnPrice * addOnQuantity
+    const finalDeliverPrice = deliveryCharge * addOnQuantity
+    const finalPrice = cullingPrice + finalAddonPrice + finalDeliverPrice 
+    setTotalPrice(finalPrice)
+  }, [selectedAddons, deliveryDate, imageCount, culling_number,isCullingChecked])
 
   const handleCheck = (isChecked, addon) => {
     if (isChecked) {
@@ -152,6 +158,7 @@ const StepTwo = () => {
                     size='medium'
                     // disabled
                     // checked={culling_number > 0}
+                    onChange={(e)=>setCullingChecked(e.target.checked)}
                   />
                 }
                 label='Culling'
@@ -297,7 +304,7 @@ const StepTwo = () => {
               Total Payment
             </Typography>
             <Typography variant='h3' gutterBottom>
-              ${pricePerImage * imageCount}
+              ${totalPrice}
             </Typography>
             {/* <Link href={"step_final"}> */}
             <Button
