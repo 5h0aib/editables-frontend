@@ -16,6 +16,22 @@ import { categories, styles } from "@/hardCode/all_style_catergories"
 import { getBookings } from "@/externalApi"
 
 const CustomOrder = () => {
+  const demoData = {
+    addon: [
+      { uid: "1", order_addon_description: "" },
+      { uid: "2", order_addon_description: "" },
+    ],
+    cancel_url: "https://www.facebook.com/",
+    category_id: "1",
+    delivery_date: "2023-11-01",
+    number_of_images: 234,
+    order_amount: 100,
+    order_name: "Your Order Name",
+    order_rating: 4.5,
+    style_id: "1",
+    success_url: "https://www.facebook.com/",
+    user_id: "7",
+  }
   return (
     <AdminLayout>
       <Typography variant='h5' gutterBottom display={"block"}>
@@ -26,7 +42,7 @@ const CustomOrder = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
-                User Name
+                Number of Images
               </Typography>
               <TextField size='small' fullWidth />
             </Grid>

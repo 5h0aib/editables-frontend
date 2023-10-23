@@ -17,6 +17,7 @@ import {
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { checkout, getAddons, getCookie } from "@/externalApi"
+import { getDateDaysFromNow } from "@/utils"
 
 const StepTwo = () => {
   const searchParams = useSearchParams()
@@ -26,6 +27,8 @@ const StepTwo = () => {
   const [selectedAddons, setSelectedAddons] = useState([])
   const [imageCount, setImageCount] = useState(0)
   const [deliveryDate, setDeliveryDate] = useState()
+  const [culling_number, setCullingNumber] = useState(0)
+  const [pricePerImage, setPricePerImage] = useState(0)
 
   useEffect(() => {
     getAddons()
@@ -39,21 +42,49 @@ const StepTwo = () => {
   }, [])
 
   useEffect(() => {
+    console.log("number of images: ", imageCount)
+    const cullingUnitPrice = 0.02
+    const cullingPrice = cullingUnitPrice * imageCount
+    let addOnPrice = 0
+    const addOnQuantity = culling_number || imageCount
+    selectedAddons.forEach(
+      ({
+        addon_starting_price,
+        threshold_percentage,
+        min_threshold_quantity,
+      }) => {
+        console.log(
+          parseFloat(addon_starting_price),
+          parseFloat(threshold_percentage),
+          parseFloat(min_threshold_quantity),
+          addOnQuantity
+        )
+        const thisAddonPrice = getDynamicPrice(
+          parseFloat(addon_starting_price),
+          parseFloat(threshold_percentage),
+          parseFloat(min_threshold_quantity),
+          addOnQuantity
+        )
+        addOnPrice += thisAddonPrice
+      }
+    )
+    // addOnPrice= addOnPrice * quantity
+    const deliveryCharge= deliveryDate == 4 ? 1 : 3
+    console.log("culling: ", culling_number)
     console.log("addons: ", selectedAddons)
-    console.log("delivery: ", deliveryDate)
-  }, [selectedAddons, deliveryDate])
+    console.log(
+      "--------------------------------------------------------------"
+    )
+    console.log("culling Price: ", cullingUnitPrice)
+    console.log("Other Addon price per culled image: ", addOnPrice)
+    console.log("delivery Charge per culled image", deliveryCharge)
+    console.log(
+      "--------------------------------------------------------------"
+    )
+    setPricePerImage(cullingUnitPrice+addOnPrice+deliveryCharge)
+    // setFinalPrice()
+  }, [selectedAddons, deliveryDate, imageCount])
 
-  // const handleCheck = (isChecked, addon) => {
-  //   if (isChecked) {
-  //     if (!selectedAddons.includes(id)) {
-  //       setSelectedAddons([...selectedAddons, id])
-  //     }
-  //   } else {
-  //     if (selectedAddons.includes(id)) {
-  //       setSelectedAddons(selectedAddons.filter((item) => item !== id))
-  //     }
-  //   }
-  // }
   const handleCheck = (isChecked, addon) => {
     if (isChecked) {
       // Check if the addon with the given id exists in the selectedAddons array
@@ -66,32 +97,35 @@ const StepTwo = () => {
     }
   }
 
-  const handleCheckout = () => {
-    const checkOutDetails = {
-      delivery_date: getDeliveryDate(deliveryDate),
-      number_of_images: parseInt(imageCount),
-      user_id: getCookie("uid"),
-      category_id: searchParams.get("category_id"),
-      style_id: searchParams.get("style_id"),
-      addon: selectedAddons,
-      // order_name: "Your Order Name",
-      order_amount: 100.0,
-      // order_rating: 4.5,
-      // culling_number: String(25),
-      success_url: "https://www.facebook.com/",
-      cancel_url: "https://www.google.com/",
+  function getDynamicPrice(maxPrice, minPriceThresh, quantityThresh, quantity) {
+    const minPrice = (maxPrice * minPriceThresh) / 100
+    console.log(maxPrice, minPriceThresh, quantityThresh, quantity)
+    console.log(minPrice)
+    if (quantity > quantityThresh) {
+      return minPrice
     }
-    console.log(checkOutDetails)
-    checkout(checkOutDetails)
+    const m = (minPrice - maxPrice) / quantityThresh
+    // y=mx+c
+    const priceY = m * quantity + maxPrice
+    return priceY
   }
-  function getDeliveryDate(daysFromNow) {
-    const currentDate = new Date()
-    const targetDate = new Date(currentDate)
-    targetDate.setDate(currentDate.getDate() + daysFromNow)
-    const year = targetDate.getFullYear()
-    const month = (targetDate.getMonth() + 1).toString().padStart(2, "0")
-    const day = targetDate.getDate().toString().padStart(2, "0")
-    return `${year}-${month}-${day}`
+  const handleCheckout = () => {
+    // const checkOutDetails = {
+    //   delivery_date: getDateDaysFromNow(deliveryDate),
+    //   number_of_images: parseFloat(imageCount),
+    //   user_id: getCookie("uid"),
+    //   category_id: searchParams.get("category_id"),
+    //   style_id: searchParams.get("style_id"),
+    //   addon: selectedAddons,
+    //   // order_name: "Your Order Name",
+    //   order_amount: 100.0,
+    //   // order_rating: 4.5,
+    //   // culling_number: String(25),
+    //   success_url: "https://www.facebook.com/",
+    //   cancel_url: "https://www.google.com/",
+    // }
+    // console.log(checkOutDetails)
+    // checkout(checkOutDetails)
   }
 
   return (
@@ -102,109 +136,78 @@ const StepTwo = () => {
     >
       <SplitLayout form>
         <div style={{ maxWidth: "700px" }}>
-          {/* <Typography variant='h5' gutterBottom>
+          <Typography variant='h5' gutterBottom>
             Add-ons
           </Typography>
           <Stack
             direction='row'
-            alignItems={"center"}
+            alignItems={"top"}
             justifyContent={"space-between"}
           >
             <div>
               <FormControlLabel
                 sx={{ fontSize: "5em" }}
-                control={<Checkbox size='medium' />}
+                control={
+                  <Checkbox
+                    size='medium'
+                    // disabled
+                    // checked={culling_number > 0}
+                  />
+                }
                 label='Culling'
               />
-            </div>
-            <Typography variant='p' gutterBottom sx={{ marginTop: "6px" }}>
-              $0.02/photo
-            </Typography>
-          </Stack>
-          <div style={{ marginLeft: "32px" }}>
-            <Typography variant='p' gutterBottom display={"block"}>
-              Narrow down the number of images you want
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              Narrow down the number of images you want
-            </Typography>
-            <TextField
-              variant='outlined'
-              size='small'
-              sx={{ display: "block" }}
-            />
-          </div>
-          <Stack
-            direction='row'
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <div>
-              <FormControlLabel
-                sx={{ fontSize: "5em" }}
-                control={<Checkbox size='medium' />}
-                label='Quick look'
-              />
-            </div>
-            <Typography variant='p' gutterBottom sx={{ marginTop: "6px" }}>
-              $0.02/photo
-            </Typography>
-          </Stack>
-          <div style={{ marginLeft: "32px" }}>
-            <Typography variant='p' gutterBottom display={"block"}>
-              Get a preview of the 10% of your total edited pictures in 36-48
-              hours
-            </Typography>
-          </div>
-          <FormControlLabel
-            sx={{ fontSize: "5em" }}
-            control={<Checkbox size='medium' />}
-            label='Creative cropping'
-          />
-          <div>
-            <FormControlLabel
-              sx={{ fontSize: "5em" }}
-              control={<Checkbox size='medium' />}
-              label='Monochrome Melodies'
-            />
-          </div>
-          <div style={{ marginLeft: "32px" }}>
-            <Typography variant='p' gutterBottom display={"block"}>
-              Beautiful images in B&W, edited to highlight the best ambience.
-              We’ll keep 10% of them
-            </Typography>
-          </div>
-          <Typography variant='h5' gutterBottom display={"block"}>
-            Select delivery turnover
-          </Typography> */}
-          {addons?.map((addon) => (
-            <Stack
-              direction='row'
-              alignItems={"center"}
-              justifyContent={"space-between"}
-            >
-              <div>
-                <FormControlLabel
-                  sx={{ fontSize: "5em" }}
-                  control={
-                    <Checkbox
-                      size='medium'
-                      onChange={(e) =>
-                        handleCheck(e.target.checked, {
-                          uid: String(addon.id),
-                          order_addon_description: "",
-                        })
-                      }
-                    />
-                  }
-                  label={addon.addon_name}
+              <div style={{ marginLeft: "32px" }}>
+                <Typography variant='p' gutterBottom display={"block"}>
+                  Narrow down the number of images you want
+                </Typography>
+                <Typography variant='caption' gutterBottom>
+                  Narrow down the number of images you want
+                </Typography>
+                <br />
+                <TextField
+                  variant='outlined'
+                  size='small'
+                  fullWidth
+                  type='number'
+                  onChange={(e) => setCullingNumber(e.target.value)}
                 />
               </div>
-              <Typography variant='p' gutterBottom sx={{ marginTop: "6px" }}>
-                {addon.price}/photo
-              </Typography>
-            </Stack>
-          ))}
+            </div>
+            <Typography variant='p' gutterBottom sx={{ marginTop: "8px" }}>
+              $0.02/photo
+            </Typography>
+          </Stack>
+
+          {addons?.map(
+            (addon) =>
+              addon.addon_name !== "Culling" && (
+                <Stack
+                  direction='row'
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
+                >
+                  <div>
+                    <FormControlLabel
+                      sx={{ fontSize: "5em" }}
+                      control={
+                        <Checkbox
+                          size='medium'
+                          onChange={(e) => handleCheck(e.target.checked, addon)}
+                        />
+                      }
+                      label={addon.addon_name}
+                    />
+                  </div>
+                  <Typography
+                    variant='p'
+                    gutterBottom
+                    sx={{ marginTop: "6px" }}
+                  >
+                    {addon.addon_starting_price}/photo
+                  </Typography>
+                </Stack>
+              )
+          )}
           <Stack direction={"row"} spacing={2}>
             <Paper
               padding
@@ -283,7 +286,7 @@ const StepTwo = () => {
             />
             <Stack>
               <Typography variant='h6' gutterBottom>
-                Price/image $3.0
+                Price/image ${pricePerImage}
               </Typography>
               <Typography variant='h6' gutterBottom>
                 VAT $7.5
@@ -294,7 +297,7 @@ const StepTwo = () => {
               Total Payment
             </Typography>
             <Typography variant='h3' gutterBottom>
-              $46.5
+              ${pricePerImage * imageCount}
             </Typography>
             {/* <Link href={"step_final"}> */}
             <Button

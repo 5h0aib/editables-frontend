@@ -13,7 +13,7 @@ function formatDateString(inputDate) {
 // "2023-10-28" to "28th October 2023"
 function formatDate(inputDate) {
   const [year, month, day] = inputDate.split("-")
-  const formattedDay = day+getDaySuffix(day)
+  const formattedDay = day + getDaySuffix(day)
   const formattedMonth = getMonthName(parseInt(month) - 1)
 
   return `${formattedDay} ${formattedMonth} ${year}`
@@ -53,4 +53,14 @@ function getDaySuffix(day) {
   }
 }
 
-export { formatDateString, formatDate }
+function getDateDaysFromNow(daysFromNow) {
+  const currentDate = new Date()
+  const targetDate = new Date(currentDate)
+  targetDate.setDate(currentDate.getDate() + daysFromNow)
+  const year = targetDate.getFullYear()
+  const month = (targetDate.getMonth() + 1).toString().padStart(2, "0")
+  const day = targetDate.getDate().toString().padStart(2, "0")
+  return `${year}-${month}-${day}`
+}
+
+export { formatDateString, formatDate, getDateDaysFromNow }

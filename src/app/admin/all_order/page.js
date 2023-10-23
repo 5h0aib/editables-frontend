@@ -17,7 +17,12 @@ import {
   Typography,
 } from "@mui/material"
 import AdminLayout from "../AdminLayout"
-import { getOrders, postOrders } from "@/externalApi"
+import {
+  changeOrderStatus,
+  getBookings,
+  getOrders,
+  postOrders,
+} from "@/externalApi"
 import { formatDate, formatDateString } from "@/utils"
 const AllOrders = () => {
   const [loading, setLoading] = useState(true)
@@ -48,7 +53,6 @@ const AllOrders = () => {
         console.error("Error fetching orders:", error)
       })
   }, [])
-  
 
   function handleChange(event) {
     setStatus(event.target.value)
@@ -72,6 +76,11 @@ const AllOrders = () => {
   async function triggerPostOrder() {
     const response = await postOrders({ title: "mast", body: "pasti" })
     console.log(response)
+  }
+  function handleStatusChange(e, id) {
+    changeOrderStatus(e.target.value, id).then((res) =>
+      console.log(res).catch((err) => console.log(err))
+    )
   }
   // const distinctStatuses =  [...new Set(rows.map((row) => row.status))]
   // console.log(distinctStatuses)
@@ -161,7 +170,19 @@ const AllOrders = () => {
                     {formatDateString(row.created_at)}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.order_status}
+                    <Select
+                      labelId='demo-multiple-name-label'
+                      id='demo-multiple-name'
+                      value={row.order_status}
+                      onChange={(e) => handleStatusChange(e, row.id)}
+                      size='small'
+                    >
+                      <MenuItem value={"In-review"}>In review</MenuItem>
+                      <MenuItem value={"Processing"}>processing</MenuItem>
+                      <MenuItem value={"Culling"}>culling</MenuItem>
+                      <MenuItem value={"Cropping"}>cropping</MenuItem>
+                      <MenuItem value={"Completed"}>completed</MenuItem>
+                    </Select>
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     {formatDate(row.delivery_date)}
