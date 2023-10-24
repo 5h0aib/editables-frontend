@@ -26,7 +26,7 @@ const StepTwo = () => {
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
   const [imageCount, setImageCount] = useState(0)
-  const [isCullingChecked, setCullingChecked]=useState(false)
+  const [isCullingChecked, setCullingChecked] = useState(false)
   const [deliveryDate, setDeliveryDate] = useState(10)
   const [culling_number, setCullingNumber] = useState(0)
   const [pricePerImage, setPricePerImage] = useState(0)
@@ -82,14 +82,20 @@ const StepTwo = () => {
     console.log(
       "--------------------------------------------------------------"
     )
-    const cullingPrice = isCullingChecked?cullingUnitPrice * imageCount:0
+    const cullingPrice = isCullingChecked ? cullingUnitPrice * imageCount : 0
     setPricePerImage(cullingUnitPrice + addOnPrice + deliveryCharge)
     // setFinalPrice()
     const finalAddonPrice = addOnPrice * addOnQuantity
     const finalDeliverPrice = deliveryCharge * addOnQuantity
-    const finalPrice = cullingPrice + finalAddonPrice + finalDeliverPrice 
+    const finalPrice = cullingPrice + finalAddonPrice + finalDeliverPrice
     setTotalPrice(finalPrice)
-  }, [selectedAddons, deliveryDate, imageCount, culling_number,isCullingChecked])
+  }, [
+    selectedAddons,
+    deliveryDate,
+    imageCount,
+    culling_number,
+    isCullingChecked,
+  ])
 
   const handleCheck = (isChecked, addon) => {
     if (isChecked) {
@@ -158,7 +164,7 @@ const StepTwo = () => {
                     size='medium'
                     // disabled
                     // checked={culling_number > 0}
-                    onChange={(e)=>setCullingChecked(e.target.checked)}
+                    onChange={(e) => setCullingChecked(e.target.checked)}
                   />
                 }
                 label='Culling'
