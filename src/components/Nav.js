@@ -23,12 +23,13 @@ const Nav = () => {
   console.log("isLoggedIn:", isLoggedIn)
   return (
     <nav className={""}>
+      <h1 style={{ textAlign: 'center' }}>Editable Studios</h1>
       <Stack
         spacing={2}
         direction='row'
         alignItems='center'
         justifyContent='center'
-        style={{ marginBottom: "3em" }}
+        style={{ marginBottom: "2em" }}
       >
         <Link href='/'>Home</Link>
         <Link href='#'>About</Link>

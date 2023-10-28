@@ -2,6 +2,8 @@ import SplitLayout from "@/components/SplitLayout"
 import { Button, Paper, Typography } from "@mui/material"
 import Link from "next/link"
 import React from "react"
+import categoryImage from '../../public/category.png'
+import Image from "next/image"
 
 const CategorySelection = () => {
   return (
@@ -19,10 +21,10 @@ const CategorySelection = () => {
         <SplitLayout>
           <div>
             <Typography variant='h6' gutterBottom >
-              Choose from more than 7 different image categories{" "}
+              Choose from 3 different image categories{" "}
             </Typography>
             <Typography variant='p' gutterBottom >
-            Category description loren ipsum loren ipsum category description loren ipsum loren ipsum category description loren ipsum loren ipsum category description loren ipsum loren
+            Discover versatile image options for every project. From the beauty of nature to urban elegance and timeless vintage charm, our collection has something for everyone.
             </Typography><br/><br/>
             <Link href='step_one'>
               <Button variant='contained' size='large'>
@@ -30,8 +32,8 @@ const CategorySelection = () => {
               </Button>
             </Link>
           </div>
-          <Paper color='gray' padding sx={{minHeight:"60vh"}}>
-            
+          <Paper color='gray' padding sx={{minHeight:"auto"}}>
+          <Image src={categoryImage} alt="Category" layout={'responsive'} />
           </Paper>
         </SplitLayout>
       </div>

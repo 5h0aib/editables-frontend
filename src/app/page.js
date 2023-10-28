@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import FacebookIcon from '@mui/icons-material/Facebook';
+
 import styles from "./page.module.css"
 import { Grid, Paper, Stack, Typography } from "@mui/material/"
 // import FullServiceCard from "./FullServiceCard"
@@ -12,20 +12,13 @@ import Testimonials from "@/app/Testimonials"
 import Faq from "@/app/Faq"
 import SplitLayout from "@/components/SplitLayout"
 import CategorySelection from "./CategorySelection"
-import Demo from "./Demo"
+
+import gif from "../../public/home.gif"
+
 export default function Home() {
   return (
     <main className={styles.main}>
-      <section className={""}>
-        {/* <Image
-          className={styles.heroBackground}
-          src='/editable-header.svg'
-          alt='editable studio background image'
-          layout='fill'
-          objectFit='cover'
-          objectPosition='left top'
-        /> */}
-
+      <section className={""} style={{ padding: "2rem" }}>
         <div className={""}>
           <Nav />
           <div>
@@ -33,7 +26,7 @@ export default function Home() {
               variant='h4'
               gutterBottom
               align='center'
-              style={{ marginTop: "4hw" }}
+              style={{ marginTop: "1rem" }}
             >
               Beautiful pictures, amazing outcomes
             </Typography>
@@ -41,7 +34,11 @@ export default function Home() {
               Get your images edited by professionals, anytime
             </Typography>
           </div>
-          <Demo />
+          {/* <Demo /> */}
+          <Image src={gif} 
+           layout={'responsive'}
+            alt="Home Gif" />
+
           <div style={{ width: "100%" }}>
             <EmailToSignup />
           </div>
@@ -63,26 +60,22 @@ export default function Home() {
           </>
         </SplitLayout>
       </section>
-      <section>
-        <Grid
-          container
-          spacing={2}
-          alignItems={"center"}
-          direction={{ xs: "column-reverse", sm: "row" }}
-        >
-          <Grid item xs={12} md={6}>
-            <Testimonials />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant='h4' gutterBottom>
-              What people have to say about us
-            </Typography>
-            <Typography variant='h5' gutterBottom>
-              That too from around the world
-            </Typography>
-          </Grid>
-        </Grid>
+
+
+      <section style={{ textAlign: 'center' }}>
+      <Typography variant='h4' gutterBottom>
+          What people have to say about us
+        </Typography>
+        <Typography variant='h6' gutterBottom style={{ marginTop: '20px',marginBottom:'20px' }}>
+          That too from around the world
+        </Typography>
+
+
+        <Testimonials />
       </section>
+
+
+
       <section>
         <Stack spacing={4}>
           <Typography variant='h4' gutterBottom align='center'>

@@ -1,97 +1,96 @@
 "use client"
-import { Typography } from "@mui/material"
-import Image from "next/image"
-import React from "react"
+import React from "react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+// import 'swiper/swiper-bundle.css';
+
+import { Paper, Typography } from "@mui/material";
+import Image from "next/image";
+
+import image1 from "../../public/bg1.webp";
+import image2 from "../../public/bg3.jpg";
+
+const testimonials = [
+  {
+    name: "Tahzeeb",
+    profession: "UI/UX Designer, Creative Co.",
+    testimonial:
+      "This app is amazing! It made my photo editing tasks much easier.",
+    imageSrc: "/bg1.webp",
+  },
+  {
+    name: "Akib",
+    profession: "Lead Product Designer, Wise",
+    testimonial:
+      "Excellent tool for editing pictures on the go. Helped me edit a bunch of pictures like I want",
+    imageSrc: "/testimonials/woman.png",
+  },
+  {
+    name: "Sadee",
+    profession: "UI/UX Designer, Creative Co.",
+    testimonial:
+      "This app is amazing! It made my photo editing tasks much easier.",
+    imageSrc: "/testimonials/man.png",
+  },
+  {
+    name: "Tahzeeb",
+    profession: "UI/UX Designer, Creative Co.",
+    testimonial:
+      "This app is amazing! It made my photo editing tasks much easier.",
+    imageSrc: "/bg1.webp",
+  },
+  {
+    name: "Akib",
+    profession: "Lead Product Designer, Wise",
+    testimonial:
+      "Excellent tool for editing pictures on the go. Helped me edit a bunch of pictures like I want",
+    imageSrc: "/testimonials/woman.png",
+  },
+  {
+    name: "Sadee",
+    profession: "UI/UX Designer, Creative Co.",
+    testimonial:
+    "Excellent tool for editing pictures on the go. Helped me edit a bunch of pictures like I want",
+    imageSrc: "/testimonials/man.png",
+  },
+];
+
+
 
 const Testimonials = () => {
-  //create nested array for carousel
-  const testimonials = [
-    {
-      name: "Juliana Lara",
-      profession: "Lead Product Designer, Wise",
-      testimonial:
-        "Excellent tool for editing pictures on the go.  Helped me edit bunch of pictures like I want",
-      imageSrc: "/testimonials/woman.png",
-    },
-    {
-      name: "Juliana Lara",
-      profession: "Lead Product Designer, Wise",
-      testimonial:
-        "Excellent tool for editing pictures on the go.  Helped me edit bunch of pictures like I want",
-      imageSrc: "/testimonials/man.png",
-    },
-  ]
-
-  const style1 = {
-    marginLeft: "80px",
-    borderRadius: "30px 30px 30px 0",
-    padding: "30px",
-    background: "#D9D9D9",
-    position: "relative",
-    svg: {
-      position: "absolute",
-      bottom: -28,
-      left: "0",
-    },
-  }
-  const style2 = {
-    marginRight: "80px",
-    borderRadius: "30px 30px 0px 30px",
-    padding: "30px",
-    background: "#D9D9D9",
-    marginTop: "120px",
-    position: "relative",
-    svg: {
-      position: "absolute",
-      bottom: -28,
-      right: "0",
-      transform: "rotateY(180deg)",
-    },
-  }
-
+  
   return (
-        <div>
-          {testimonials.map((testimonial, i) => (
-            <>
-              <div style={i % 2 == 0 ? style1 : style2}>
-                <Typography variant='body1'>
-                  {testimonial.testimonial}
-                </Typography>
-                <Typography variant='subtitle2' sx={{ fontWeight: "bolder" }}>
-                  {testimonial.name}
-                </Typography>
-                <Typography variant='subtitle2'>
-                  {testimonial.profession}
-                </Typography>
-                <div style={i % 2 == 0 ? style1.svg : style2.svg}>
-                  <svg
-                    width='42'
-                    height='23'
-                    viewBox='0 0 42 23'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M0.00634766 22.9819V0.640137H40.8681L0.00634766 22.9819Z'
-                      fill='#D9D9D9'
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div>
-                <br />
-                <Image
-                  width={100}
-                  height={100}
-                  src={testimonial.imageSrc}
-                  style={{ float: i % 2 == 0 ? "left" : "right" }}
-                />
-              </div>
-            </>
-          ))}
-        </div>
+    <Swiper
+      spaceBetween={40}
+      slidesPerView={2}
+      centeredSlides={true}
+      loop={true} 
+    >
+      {testimonials.map((testimonial, index) => (
+        <SwiperSlide key={index}>
+        <Paper elevation={3} style={{ padding: "10px 20px", minHeight: "305px", display: "flex", alignItems: "center", minWidth: "200px" }}>
+          <div className="testimonial-image" style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+            <Image src={testimonial.imageSrc} alt="Testimonial Image" width={100} height={100} style={{ borderRadius: '50%' }} />
+          </div>
+          <div style={{ flex: 3, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", paddingLeft: "10px" }}>
+            <Typography variant="body1" style={{ textAlign: "left" }}>
+              {testimonial.testimonial}
+            </Typography>
+            <Typography variant="h5" style={{ fontSize: "16px", fontWeight: "bold", textAlign: "left", marginTop: "10px" }}>
+              {testimonial.name}
+            </Typography>
+            <Typography variant="h6" style={{ fontSize: "12px", fontWeight: "bold", textAlign: "left" }}>
+              {testimonial.profession}
+            </Typography>
+          </div>
+        </Paper>
+      </SwiperSlide>
+      
+      ))}
+    </Swiper>
+  );
+};
 
-  )
-}
+export default Testimonials;
 
-export default Testimonials
