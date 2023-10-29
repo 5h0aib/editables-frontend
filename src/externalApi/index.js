@@ -27,13 +27,25 @@ function deleteAllCookies() {
   }
 }
 
-// {
-//   "uid": 8,
-// const access_token =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk3MTc0MzUzLCJpYXQiOjE2OTcxNjcxNTMsImp0aSI6IjE5OWI4OTc0ZjIzNjRlMThhNjMyYzFkMGY4MjVkNWYwIiwidXNlcl9pZCI6OH0.h6Foo5PrrskORI79M9aWnal7oHRkNcf7S1WPtHNPmo4"
-const headers = {
-  "Content-Type": "application/json",
-  Authorization: `JWT ${localStorage.getItem("access_token")}`,
+
+const access_token = localStorage.getItem("access_token");
+
+if (access_token) {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `JWT ${access_token}`,
+  };
+  // You can now use the 'headers' object for your HTTP requests.
+} else {
+  // Handle the case where the access token is not available.
+  console.error("Access token is missing or invalid.");
 }
+
+
+// const headers = {
+//   "Content-Type": "application/json",
+//   Authorization: `JWT ${localStorage.getItem("access_token")}`,
+// }
 
 //   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NzU5OTE1MywiaWF0IjoxNjk3MTY3MTUzLCJqdGkiOiJiM2QxNzk4NDliOGU0NGMxOThmYmI1ZDEyOTkyNDYxYiIsInVzZXJfaWQiOjh9.gsFxJlXS5_k5r--IE9FinimJc4P8uXeikzS8_eamtcg"
 // }

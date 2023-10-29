@@ -1,9 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-
 import styles from "./page.module.css"
-import { Grid, Paper, Stack, Typography } from "@mui/material/"
-// import FullServiceCard from "./FullServiceCard"
+import { Paper, Stack, Typography } from "@mui/material/"
 import Nav from "@/components/Nav"
 import EmailToSignup from "@/app/EmailToSignup"
 import MorphImage from "./MorphImage"
@@ -12,8 +10,8 @@ import Testimonials from "@/app/Testimonials"
 import Faq from "@/app/Faq"
 import SplitLayout from "@/components/SplitLayout"
 import CategorySelection from "./CategorySelection"
-
 import gif from "../../public/home.gif"
+import Footer from "@/components/footer"
 
 export default function Home() {
   return (
@@ -85,19 +83,9 @@ export default function Home() {
           <EmailToSignup />
         </Stack>
       </section>
-      <footer>
-        {/* <div style={{ display: "flex", justifyContent: "right" }}>
-          <Grid container spacing={3} sx={{width:"min(100%,600px)"}}>
-            <Grid item xs={12} sm={6} >
-              <FacebookIcon/>
-              <Typography variant='body1' gutterBottom sx={{display:"inline"}}>
-                Frequently Asked Questions
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}></Grid>
-          </Grid>
-        </div> */}
-      </footer>
+  
+      <Footer />
+
     </main>
   )
 }
