@@ -46,8 +46,6 @@ export default async function Home() {
             <EmailToSignup />
           </div>
         </div>
-        {/* <h2>{data[0].category_name}</h2>
-        <h2>{data[1].category_name}</h2> */}
       </section>
 
       <CategorySelection categories = {data}/>

@@ -17,11 +17,13 @@ const AuthorizationOverlay = ({
   setOpenCustom,
   hRef,
 }) => {
+
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [phone, setPhone] = useState("")
   const handleClick = () => {
-    console.log("login creds:", { email, password })
+    // console.log("login creds:", { email, password })
     login({ email, password })
       .then((res) => {
         console.log("log res: ", res)
