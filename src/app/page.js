@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 import styles from "./page.module.css"
 import { Paper, Stack, Typography } from "@mui/material/"
 import Nav from "@/components/Nav"
@@ -13,7 +12,13 @@ import CategorySelection from "./CategorySelection"
 import gif from "../../public/home.gif"
 import Footer from "@/components/footer"
 
-export default function Home() {
+import { getCategories } from "@/externalApi"
+
+export default async function Home() {
+
+  const data = await getCategories()
+
+
   return (
     <main className={styles.main}>
       <section className={""} style={{ padding: "2rem" }}>
@@ -41,9 +46,11 @@ export default function Home() {
             <EmailToSignup />
           </div>
         </div>
+        {/* <h2>{data[0].category_name}</h2>
+        <h2>{data[1].category_name}</h2> */}
       </section>
 
-      <CategorySelection />
+      <CategorySelection categories = {data}/>
 
       <section>
         <SplitLayout>
@@ -67,8 +74,6 @@ export default function Home() {
         <Typography variant='h6' gutterBottom style={{ marginTop: '20px',marginBottom:'20px' }}>
           That too from around the world
         </Typography>
-
-
         <Testimonials />
       </section>
 

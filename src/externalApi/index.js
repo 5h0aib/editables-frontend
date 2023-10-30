@@ -1,4 +1,4 @@
-// https://shababe.pythonanywhere.com/swagger/
+
 const baseUrl = "https://shababe.pythonanywhere.com/api/v1"
 
 function getCookie(cookieName) {
@@ -28,27 +28,32 @@ function deleteAllCookies() {
 }
 
 
-const access_token = localStorage.getItem("access_token");
 
-if (access_token) {
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `JWT ${access_token}`,
-  };
-  // You can now use the 'headers' object for your HTTP requests.
-} else {
-  // Handle the case where the access token is not available.
-  console.error("Access token is missing or invalid.");
+
+// const access_token = localStorage.getItem("access_token");
+
+// if (access_token) {
+//   const headers = {
+//     "Content-Type": "application/json",
+//     Authorization: `JWT ${access_token}`,
+//   };
+//   // You can now use the 'headers' object for your HTTP requests.
+// } else {
+//   // Handle the case where the access token is not available.
+//   console.error("Access token is missing or invalid.");
+// }
+
+  var item = ''
+  if (typeof window !== 'undefined') {
+    item = localStorage.getItem('access_token')
+  }
+
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `JWT ${item}`,
 }
 
 
-// const headers = {
-//   "Content-Type": "application/json",
-//   Authorization: `JWT ${localStorage.getItem("access_token")}`,
-// }
-
-//   "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NzU5OTE1MywiaWF0IjoxNjk3MTY3MTUzLCJqdGkiOiJiM2QxNzk4NDliOGU0NGMxOThmYmI1ZDEyOTkyNDYxYiIsInVzZXJfaWQiOjh9.gsFxJlXS5_k5r--IE9FinimJc4P8uXeikzS8_eamtcg"
-// }
 
 // Step 1
 const getCategories = async () => {
@@ -64,6 +69,7 @@ const getCategories = async () => {
     }
     const responseData = await response.json()
     return responseData
+    
   } catch (error) {
     console.error("Error fetching data:", error)
   }

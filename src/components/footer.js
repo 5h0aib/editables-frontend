@@ -11,9 +11,8 @@ import { Typography, Button, Link } from '@mui/material';
 
 const Footer = () => {
     const footerStyle = {
-        backgroundColor: '#fff',
         color: '#000',
-        textAlign: 'left', // Change 'center' to 'left'
+        textAlign: 'left',
         padding: '10px',
         width: '100%',
         display: 'flex',
@@ -23,9 +22,9 @@ const Footer = () => {
     const columnStyle = {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'left',
+        alignItems: 'flex-start',
         justifyContent: 'center',
-        marginLeft:'20px'
+        marginLeft:'10px'
     };
 
     const IconStyle = {
@@ -67,7 +66,7 @@ const Footer = () => {
 
             </div>
             <div style={{ ...columnStyle, flex: 1 }}>
-                <Link href="#" style={ContainerStyle}>
+                <Link href="#" style={ContainerStyle}  underline="hover">
                     <div style={IconStyle}>
                         <FacebookIcon style={{ color: 'white' }} fontSize='small' />
                     </div>
@@ -79,7 +78,7 @@ const Footer = () => {
                     </div>
                     <Typography variant="body1">Terms of service</Typography>
                 </div>
-                <Link href="#" style={ContainerStyle}>
+                <Link href="#" style={ContainerStyle} underline="hover">
                     <div style={IconStyle}>
                         <LanguageIcon style={{ color: 'white' }} fontSize='small' />
                     </div>
