@@ -77,7 +77,7 @@ const AuthorizationOverlay = ({
           <Button
             variant='contained'
             size='large'
-            fullWidth
+            // fullWidth
             onClick={handleClick}
           >
             Next

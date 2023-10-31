@@ -42,7 +42,7 @@ const ContactOverlay = ({ setOpen, open }) => {
           <Button
             variant='contained'
             size='large'
-            fullWidth
+            // fullWidth
             onClick={handleClick}
           >
             Next

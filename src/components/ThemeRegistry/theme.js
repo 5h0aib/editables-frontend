@@ -43,7 +43,7 @@ const button = {
       },
     },
     {
-      props: { large: true },
+      props: { large: "true" },
       style: { padding: "18px" },
     },
   ],
@@ -78,7 +78,7 @@ const paper = {
       style: { background: "#f4f4f8" },
     },
     {
-      props: { padding: true },
+      props: { padding: "true" },
       style: { padding: "20px" },
     },
   ],

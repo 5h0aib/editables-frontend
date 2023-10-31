@@ -64,7 +64,7 @@ const StepOne = () => {
     // const nextUrl = `step_two`
   const handleClick = () => {
     if (localStorage.getItem("isLoggedIn") != "true") {
-      console.log("not logged in")
+      // console.log("not logged in")
       setOpenLogin(true)//open login overlay when not logged in
     } else {
       if (selectedStyle == "custom") {

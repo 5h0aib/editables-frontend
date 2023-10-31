@@ -12,7 +12,7 @@ function getCookie(cookieName) {
       return cookie.substring(name.length)
     }
   }
-  console.log("cookie not fount")
+  console.log("cookie not found")
   return null // Cookie not found
 }
 function deleteAllCookies() {
@@ -92,9 +92,9 @@ const getStyles = async () => {
   }
 }
 //step two
-const getAddons = async () => {
+const getAddons = async (style_id) => {
   try {
-    const response = await fetch(`${baseUrl}/addons/`, {
+    const response = await fetch(`${baseUrl}/get_addons/${style_id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -111,28 +111,6 @@ const getAddons = async () => {
 }
 
 const checkout = async (postData) => {
-  console.log(postData)
-  // const dummyPostData = {
-  //   order_amount: 100.0,
-  //   delivery_date: "2023-09-30",
-  //   number_of_images: 100,
-  //   user_id: "8",
-  //   category_id: "1",
-  //   style_id: "1",
-  //   addon: [
-  //     {
-  //       uid: "1",
-  //       order_addon_description: "",
-  //     },
-  //     {
-  //       uid: "2",
-  //       order_addon_description: "culling-number:25",
-  //     },
-  //   ],
-  //   success_url: "https://www.google.com",
-  //   cancel_url: "https://www.facebook.com",
-  // }
-  // console.log(dummyPostData)
   try {
     const response = await fetch(`${baseUrl}/create-checkout-session/`, {
       method: "POST",
@@ -148,7 +126,7 @@ const checkout = async (postData) => {
     }
 
     const responseData = await response.json()
-    console.log("response", responseData)
+    // console.log("response", responseData)
     window.location.replace(responseData.stripe_url)
     return responseData
   } catch (error) {

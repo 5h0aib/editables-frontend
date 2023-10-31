@@ -22,6 +22,7 @@ import { getDateDaysFromNow } from "@/utils"
 const StepTwo = () => {
   const searchParams = useSearchParams()
   const category = searchParams.get("category")
+  const category_id = searchParams.get("category_id")
   const style = searchParams.get("style")
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
@@ -33,9 +34,9 @@ const StepTwo = () => {
   const [totalPrice, setTotalPrice] = useState(0)
 
   useEffect(() => {
-    getAddons()
+    getAddons(category_id)
       .then((data) => {
-        console.log("Fetched data:", data)
+        // console.log("Addons:", data)
         setAddons(data)
       })
       .catch((error) => {
@@ -44,51 +45,33 @@ const StepTwo = () => {
   }, [])
 
   useEffect(() => {
-    console.log("number of images: ", imageCount)
-    const cullingUnitPrice = 0.02
+
+    const baseDeliveryPrice = 0.4
+    const deliveryVariable = deliveryDate == 10 ? 1 : 1.25
+    const styleVariable = style == "Basic color correction" ? 0.5 : 1
+
     let addOnPrice = 0
-    const addOnQuantity = culling_number || imageCount
+
     selectedAddons.forEach(
       ({
-        addon_starting_price,
-        threshold_percentage,
-        min_threshold_quantity,
+        addon_starting_price
       }) => {
-        console.log(
-          parseFloat(addon_starting_price),
-          parseFloat(threshold_percentage),
-          parseFloat(min_threshold_quantity),
-          addOnQuantity
-        )
-        const thisAddonPrice = getDynamicPrice(
-          parseFloat(addon_starting_price),
-          parseFloat(threshold_percentage),
-          parseFloat(min_threshold_quantity),
-          addOnQuantity
-        )
-        addOnPrice += thisAddonPrice
+        addOnPrice += parseFloat(addon_starting_price) * deliveryVariable *styleVariable
       }
     )
-    // addOnPrice= addOnPrice * quantity
-    const deliveryCharge = deliveryDate == 10 ? 1 : 3
-    console.log("culling: ", culling_number)
-    console.log("addons: ", selectedAddons)
-    console.log(
-      "--------------------------------------------------------------"
-    )
-    console.log("culling Price: ", cullingUnitPrice)
-    console.log("Other Addon price per culled image: ", addOnPrice)
-    console.log("delivery Charge per culled image", deliveryCharge)
-    console.log(
-      "--------------------------------------------------------------"
-    )
-    const cullingPrice = isCullingChecked ? cullingUnitPrice * imageCount : 0
-    setPricePerImage(cullingUnitPrice + addOnPrice + deliveryCharge)
-    // setFinalPrice()
-    const finalAddonPrice = addOnPrice * addOnQuantity
-    const finalDeliverPrice = deliveryCharge * addOnQuantity
-    const finalPrice = cullingPrice + finalAddonPrice + finalDeliverPrice
-    setTotalPrice(finalPrice)
+    setPricePerImage(((addOnPrice + (baseDeliveryPrice * deliveryVariable * styleVariable))).toFixed(2))
+
+    const finalAddonPrice = parseInt(addOnPrice * imageCount)
+    const finalDeliverPrice = parseInt((baseDeliveryPrice * deliveryVariable * styleVariable) * imageCount)
+
+    const finalPrice = finalAddonPrice + finalDeliverPrice
+
+
+    if (imageCount === 0 || !imageCount) {
+      setTotalPrice(0);
+    } else {
+      setTotalPrice(finalPrice);
+    }
   }, [
     selectedAddons,
     deliveryDate,
@@ -109,35 +92,42 @@ const StepTwo = () => {
     }
   }
 
-  function getDynamicPrice(maxPrice, minPriceThresh, quantityThresh, quantity) {
-    const minPrice = (maxPrice * minPriceThresh) / 100
-    console.log(maxPrice, minPriceThresh, quantityThresh, quantity)
-    console.log(minPrice)
-    if (quantity > quantityThresh) {
-      return minPrice
-    }
-    const m = (minPrice - maxPrice) / quantityThresh
-    // y=mx+c
-    const priceY = m * quantity + maxPrice
-    return priceY
-  }
+
   const handleCheckout = () => {
-    // const checkOutDetails = {
-    //   delivery_date: getDateDaysFromNow(deliveryDate),
-    //   number_of_images: parseFloat(imageCount),
-    //   user_id: getCookie("uid"),
-    //   category_id: searchParams.get("category_id"),
-    //   style_id: searchParams.get("style_id"),
-    //   addon: selectedAddons,
-    //   // order_name: "Your Order Name",
-    //   order_amount: 100.0,
-    //   // order_rating: 4.5,
-    //   // culling_number: String(25),
-    //   success_url: "https://www.facebook.com/",
-    //   cancel_url: "https://www.google.com/",
-    // }
-    // console.log(checkOutDetails)
-    // checkout(checkOutDetails)
+
+      const transformedArray = selectedAddons.map(item => {
+        if(item.addon_name == "Culling")
+            return {
+                uid: item.id,
+                order_addon_description:culling_number
+            };
+        else{
+          return {
+            uid: item.id,
+            order_addon_description:""
+        };
+        }
+
+    });
+      
+
+    const checkOutDetails = {
+      delivery_date: getDateDaysFromNow(deliveryDate),
+      number_of_images: parseInt(imageCount),
+      user_id: localStorage.getItem('uid'),
+      category_id: searchParams.get("category_id"),
+      style_id: searchParams.get("style_id"),
+      addon: transformedArray,
+      delivery_method: deliveryDate == 10 ? 'Standard' : 'Express',
+      // order_name: "Your Order Name",
+      order_amount: totalPrice,
+      // order_rating: 4.5,
+      // culling_number: String(25),
+      success_url: "https://www.facebook.com/",
+      cancel_url: "https://www.google.com/",
+    }
+
+    checkout(checkOutDetails)
   }
 
   return (
@@ -151,85 +141,88 @@ const StepTwo = () => {
           <Typography variant='h5' gutterBottom>
             Add-ons
           </Typography>
-          <Stack
-            direction='row'
-            alignItems={"top"}
-            justifyContent={"space-between"}
-          >
-            <div>
-              <FormControlLabel
-                sx={{ fontSize: "5em" }}
-                control={
-                  <Checkbox
-                    size='medium'
-                    // disabled
-                    // checked={culling_number > 0}
-                    onChange={(e) => setCullingChecked(e.target.checked)}
-                  />
-                }
-                label='Culling'
-              />
-              <div style={{ marginLeft: "32px" }}>
-                <Typography variant='p' gutterBottom display={"block"}>
-                  Narrow down the number of images you want
-                </Typography>
-                <Typography variant='caption' gutterBottom>
-                  Narrow down the number of images you want
-                </Typography>
-                <br />
-                <TextField
-                  variant='outlined'
-                  size='small'
-                  fullWidth
-                  type='number'
-                  onChange={(e) => setCullingNumber(e.target.value)}
-                />
-              </div>
-            </div>
-            <Typography variant='p' gutterBottom sx={{ marginTop: "8px" }}>
-              $0.02/photo
-            </Typography>
-          </Stack>
-
-          {addons?.map(
-            (addon) =>
-              addon.addon_name !== "Culling" && (
-                <Stack
-                  direction='row'
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <div>
-                    <FormControlLabel
-                      sx={{ fontSize: "5em" }}
-                      control={
-                        <Checkbox
-                          size='medium'
-                          onChange={(e) => handleCheck(e.target.checked, addon)}
+          {addons
+                ?.sort((a, b) => {
+                  if (a.addon_name === "Culling") return -1;
+                  if (b.addon_name === "Culling") return 1;
+                  return 0;
+                })
+                .map((addon) => (
+                  addon.addon_name === "Culling" ? (
+                    <Stack direction='row' alignItems={"top"} justifyContent={"space-between"}>
+                      <div>
+                        <FormControlLabel
+                          sx={{ fontSize: "5em" }}
+                          control={
+                            <Checkbox
+                              size='medium'
+                              // disabled
+                              // checked={culling_number > 0}
+                              onChange={(e) => {
+                                handleCheck(e.target.checked, addon);
+                                setCullingChecked(e.target.checked);
+                              }}
+                            />
+                          }
+                          label={addon.addon_name}
                         />
-                      }
-                      label={addon.addon_name}
-                    />
-                  </div>
-                  <Typography
-                    variant='p'
-                    gutterBottom
-                    sx={{ marginTop: "6px" }}
-                  >
-                    {addon.addon_starting_price}/photo
-                  </Typography>
-                </Stack>
-              )
-          )}
+                        <div style={{ marginLeft: "32px" }}>
+                          <Typography variant='p' gutterBottom display={"block"}>
+                            Narrow down the number of images you want
+                          </Typography>
+                          <Typography variant='caption' gutterBottom>
+                            Narrow down the number of images you want
+                          </Typography>
+                          <br />
+                          <TextField
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            type='number'
+                            onChange={(e) => setCullingNumber(e.target.value)}
+                            disabled={!isCullingChecked}
+                          />
+                        </div>
+                      </div>
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "8px" }}>
+                        {addon.addon_starting_price}/photo
+                      </Typography>
+                    </Stack>
+                  ) : (
+                    <Stack direction='row' alignItems={"center"} justifyContent={"space-between"}>
+                      <div>
+                        <FormControlLabel
+                          sx={{ fontSize: "5em" }}
+                          control={
+                            <Checkbox
+                              size='medium'
+                              onChange={(e) => handleCheck(e.target.checked, addon)}
+                            />
+                          }
+                          label={addon.addon_name}
+                        />
+                      </div>
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "6px" }}>
+                        {addon.addon_starting_price}/photo
+                      </Typography>
+                    </Stack>
+                  )
+                ))}
+
+
+
+
+
           <Stack direction={"row"} spacing={2}>
             <Paper
               padding
               onClick={() => setDeliveryDate(10)}
               style={
                 deliveryDate == 10
-                  ? { background: "black", color: "white" }
-                  : {}
+                  ? { background: "black", color: "white"}
+                  : { }   
               }
+              sx={{ padding: "10px" }}
             >
               <Stack
                 spacing={3}
@@ -241,7 +234,7 @@ const StepTwo = () => {
                   Standard
                 </Typography>
                 <Typography variant='p' gutterBottom>
-                  $1/photo
+                  $0.4/photo
                 </Typography>
               </Stack>
               <Typography variant='p' gutterBottom>
@@ -252,8 +245,9 @@ const StepTwo = () => {
               padding
               onClick={() => setDeliveryDate(4)}
               style={
-                deliveryDate == 4 ? { background: "black", color: "white" } : {}
+                deliveryDate == 4 ? { background: "black", color: "white", p: 2 } : { p: 2}
               }
+              sx={{ padding: "10px" }}
             >
               <Stack
                 direction='row'
@@ -264,7 +258,7 @@ const StepTwo = () => {
                   Express
                 </Typography>
                 <Typography variant='p' gutterBottom>
-                  $3/photo
+                  $0.5/photo
                 </Typography>
               </Stack>
               <Typography variant='p' gutterBottom>
@@ -274,60 +268,69 @@ const StepTwo = () => {
           </Stack>
         </div>
 
-        <Paper padding elevation={4} sx={{ background: "white" }}>
-          <Stack spacing={2}>
-            <div>
-              <Typography variant='h6' gutterBottom>
-                Category
-              </Typography>
-              <Chip label={category} />
-            </div>
-            <div>
-              <Typography variant='h6' gutterBottom>
-                Style
-              </Typography>
-              <Chip label={style} />
-            </div>
-            <TextField
-              placeholder='Number of Images to upload'
-              variant='outlined'
-              size='small'
-              type='number'
-              fullWidth
-              sx={{ display: "block" }}
-              onChange={(e) => setImageCount(e.target.value)}
-            />
-            <Stack>
-              <Typography variant='h6' gutterBottom>
-                Price/image ${pricePerImage}
-              </Typography>
-              <Typography variant='h6' gutterBottom>
-                VAT $7.5
-              </Typography>
-            </Stack>
-            <Divider />
-            <Typography variant='h4' gutterBottom>
-              Total Payment
-            </Typography>
-            <Typography variant='h3' gutterBottom>
-              ${totalPrice}
-            </Typography>
-            {/* <Link href={"step_final"}> */}
-            <Button
-              variant='contained'
-              size='large'
-              fullWidth
-              onClick={handleCheckout}
-            >
-              Checkout
-            </Button>
-            {/* </Link> */}
-            <Typography variant='caption' display='block' gutterBottom>
-              This payment is secured by an SSL connection courtesy of Stripe
-              Payments.
-            </Typography>
-          </Stack>
-        </Paper>
+
+
+
+
+
+
+
+  <Paper padding elevation={4} sx={{ background: "white", p: 2, }}> {/* Add padding to the left */}
+  <Stack spacing={2}>
+    <div>
+      <Typography variant='h6' gutterBottom>
+        Category
+      </Typography>
+      <Chip label={category} />
+    </div>
+    <div>
+      <Typography variant='h6' gutterBottom>
+        Style
+      </Typography>
+      <Chip label={style} />
+    </div>
+    <TextField
+      placeholder='Number of Images to upload'
+      variant='outlined'
+      size='small'
+      type='number'
+      fullWidth
+      sx={{ display: "block" }}
+      onChange={(e) => setImageCount(e.target.value)}
+    />
+    <Stack>
+      <Typography variant='h6' gutterBottom>
+        Price per image : ${pricePerImage}
+      </Typography>
+      {/* <Typography variant='h6' gutterBottom>
+        VAT $7.5
+      </Typography> */}
+    </Stack>
+    <Divider />
+    <Typography variant='h4' gutterBottom>
+      Total Payment
+    </Typography>
+    <Typography variant='h3' gutterBottom>
+      ${totalPrice}
+    </Typography>
+    {/* <Link href={"step_final"}> */}
+    <Button
+      variant='contained'
+      size='large'
+      fullWidth
+      onClick={handleCheckout}
+      disabled={imageCount == 0 || !imageCount}
+    >
+      Checkout
+    </Button>
+    {/* </Link> */}
+    <Typography variant='caption' display='block' gutterBottom>
+      This payment is secured by an SSL connection courtesy of Stripe
+      Payments.
+    </Typography>
+  </Stack>
+</Paper>
+
       </SplitLayout>
     </ServiceLayout>
   )
