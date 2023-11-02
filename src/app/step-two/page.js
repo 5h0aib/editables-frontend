@@ -109,7 +109,8 @@ const StepTwo = () => {
         }
 
     });
-      
+
+    const current_domain = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
 
     const checkOutDetails = {
       delivery_date: getDateDaysFromNow(deliveryDate),
@@ -123,8 +124,8 @@ const StepTwo = () => {
       order_amount: totalPrice,
       // order_rating: 4.5,
       // culling_number: String(25),
-      success_url: "https://www.facebook.com/",
-      cancel_url: "https://www.google.com/",
+      success_url: current_domain + "/payment-success",
+      cancel_url: current_domain + "/payment-failed"
     }
 
     checkout(checkOutDetails)
