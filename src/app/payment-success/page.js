@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { Button} from "@mui/material"
+import Link from "next/link"
 
 const PaymentSuccess = () => {
   const centerStyle = {
@@ -41,9 +42,11 @@ const PaymentSuccess = () => {
         height={150} // Set the height you desire
         style = {{ marginTop:"50px" }}
       />
+      <Link href="step_final">
       <Button variant='contained' size='small'  style={buttonStyle}>
                 Proceed to Upload Images
       </Button>
+      </Link>
     </div>
   );
 };

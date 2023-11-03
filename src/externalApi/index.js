@@ -360,7 +360,6 @@ const postOrders = async (postData) => {
   }
 }
 const login = async (postData) => {
-  console.log(postData)
   try {
     const response = await fetch(`${baseUrl}/login/`, {
       method: "POST",

@@ -326,7 +326,10 @@ const StepTwo = () => {
     </Button>
     {/* </Link> */}
     <Typography variant='caption' display='block' gutterBottom>
-      This payment is secured by an SSL connection courtesy of Stripe
+      Please note that the total amount is rounded up.
+    </Typography>
+    <Typography variant='caption' display='block' gutterBottom>
+      This payment is secured by an SSL connection courtesy of Stripe.
       Payments.
     </Typography>
   </Stack>

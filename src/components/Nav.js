@@ -1,18 +1,28 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Button, Stack, Typography } from "@mui/material/"
+import { Button, Stack} from "@mui/material/"
 import Link from "next/link"
 import { logOut } from "@/externalApi"
 
 const Nav = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn")
-  )
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const router = useRouter()
+  useEffect(() => {
+    // Check if "localStorage" is available (client-side) before using it
+    if (typeof window !== 'undefined') {
+      const storedIsLoggedIn = window.localStorage.getItem("isLoggedIn");
+      if (storedIsLoggedIn) {
+        setIsLoggedIn(JSON.parse(storedIsLoggedIn));
+      }
+    }
+  }, []);
+
+
+  const router = useRouter();
+
   const handleClick = () => {
-    if(isLoggedIn=="true"){
+    if(isLoggedIn==true){
       setIsLoggedIn(false)
       logOut()
     }else{
@@ -20,7 +30,6 @@ const Nav = () => {
     }
   }
 
-  console.log("isLoggedIn:", isLoggedIn)
   return (
     <nav className={""}>
       <h1 style={{ textAlign: 'center' }}>Editable Studios</h1>
@@ -34,7 +43,7 @@ const Nav = () => {
         <Link href='/'>Home</Link>
         <Link href='#'>About</Link>
         <Link href='#'>Contact</Link>
-        <Button  onClick={handleClick}>{isLoggedIn=="true" ? "Logout" : "Login"}</Button>
+        <Button  onClick={handleClick}>{isLoggedIn==true ? "Logout" : "Login/Signup"}</Button>
       </Stack>
     </nav>
   )

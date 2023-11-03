@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 import SplitLayout from "@/components/SplitLayout"
 import React, { useEffect, useState } from "react"
 import { Button, Paper, Typography } from "@mui/material"
-import { categories, styles } from "@/hardCode/all_style_catergories"
 import Image from "next/image"
 import { getCategories, getStyles } from "@/externalApi"
 import AuthorizationOverlay from "@/components/AuthorizationOverlay"
@@ -123,16 +122,9 @@ const StepOne = () => {
               ))}
             </div>
           </div>
-          <Paper padding>
-            <div>
-              <Image
-                src='/morphTo.jpg'
-                // fill={true}
-                height={300}
-                width={400}
-                style={{ objectFit: "cover", borderRadius: "20px" }}
-              ></Image>
-            </div>
+          <Paper color='gray' padding sx={{minHeight:"auto"}}>
+            <Image src='/morphTo.jpg' height={400}
+                  width={400} alt="Style" layout={'responsive'} />
           </Paper>
         </SplitLayout>
         <div>
@@ -141,7 +133,7 @@ const StepOne = () => {
             Choose a Style
           </Typography>
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-            {/* {styles.map((style, i) => ( */}
+
             <Button
               medium
               variant={selectedStyle === "custom" ? "outlined" : "contained"}

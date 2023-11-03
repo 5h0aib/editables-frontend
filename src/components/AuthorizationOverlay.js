@@ -22,6 +22,7 @@ const AuthorizationOverlay = ({
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [phone, setPhone] = useState("")
+  
   const handleClick = () => {
     // console.log("login creds:", { email, password })
     login({ email, password })
@@ -35,14 +36,15 @@ const AuthorizationOverlay = ({
           console.log("loging in as staff")
           router.push(`admin/all_order`, { shallow: false })
         } else {
-          if (isCustom) {
-            setTimeout(function () {
-              setOpenCustom(true)
-            }, 1000)
-            setOpen(false)
-          }
-          setOpen(false)
-          router.push(hRef, { shallow: false })
+          window.location.reload();
+          // if (isCustom) {
+          //   setTimeout(function () {
+          //     setOpenCustom(true)
+          //   }, 1000)
+          //   setOpen(false)
+          // }
+          // setOpen(false)
+          // router.push(hRef, { shallow: false })
         }
       })
       .catch((err) => {
@@ -54,12 +56,23 @@ const AuthorizationOverlay = ({
       console.log("open the phone number modal")
     }
   }, [])
+
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      // If Enter key is pressed, trigger the "Next" button click
+      handleClick();
+    }
+  };
   return (
     <Dialog onClose={() => setOpen(false)} open={open}>
       <DialogContent>
         <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "350px" }}>
-          <Typography variant='h6' gutterBottom align='center'>
-            Please provid these personal informations to proceed with the order
+          <Typography variant='h4' gutterBottom align='center'>
+              Finish setting up your account 
+          </Typography>
+          <Typography variant='h6' gutterBottom align='center' style={{fontSize: "1.5vw"}}>
+              Sign in with your email and password
           </Typography>
 
           <TextField
@@ -71,6 +84,7 @@ const AuthorizationOverlay = ({
             placeholder='Set password'
             type='password'
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
 
           {/* <Link href='services'> */}

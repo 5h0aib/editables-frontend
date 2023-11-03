@@ -30,8 +30,11 @@ const ContactOverlay = ({ setOpen, open }) => {
     <Dialog onClose={() => setOpen(false)} open={open}>
       <DialogContent>
         <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "350px" }}>
-          <Typography variant='h6' gutterBottom align='center'>
-            Please provid these personal informations to proceed with the order
+          <Typography variant='h4' gutterBottom align='center'>
+            Scheduling Call 
+          </Typography>
+          <Typography variant='h6' gutterBottom align='center' fontSize={"2vw"}>
+            We'll reach out to you on whatsapp
           </Typography>
           <TextField
             placeholder='Your Contact Number'
