@@ -374,8 +374,41 @@ const login = async (postData) => {
     }
 
     const responseData = await response.json()
-    console.log("response", responseData)
     return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
+  }
+}
+
+const register = async (postData) => {
+  try {
+    const response = await fetch(`${baseUrl}/register-new-user/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    })
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        const errorResponse = await response.json();
+        if (errorResponse.email) {
+          const errorMessage = errorResponse.email[0];
+          return errorMessage; // Return the error message
+        } else {
+          console.error("Unexpected error response:", errorResponse);
+        }
+      } else {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    } else {
+      const responseData = await response.json();
+      if (responseData.message === "User registered successfully") {
+        return "Please check your mail and verify your email address to Sign In.";
+      }
+      return responseData.message;
+    }
   } catch (error) {
     console.error("Error posting data:", error)
   }
@@ -402,6 +435,7 @@ export {
   getBookings,
   changeOrderStatus,
   postOrders,
+  register,
   login,
   logOut,
   getCookie,

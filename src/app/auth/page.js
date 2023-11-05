@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { login } from "@/externalApi";
+import { login,register } from "@/externalApi";
 import ServiceLayout from "@/components/ServiceLayout";
+import CircularProgress from '@mui/material/CircularProgress';
+import { resolve } from "styled-jsx/css";
 
 const Auth = () => {
   const router = useRouter();
@@ -14,9 +16,12 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [isSignIn, setIsSignIn] = useState(true); // A state to track whether the user is signing in or signing up
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [registrationResponse, setRegistrationResponse] = useState("");
 
   const handleLogin = () => {
+    setIsLoading(true)
     login({ email, password })
       .then((res) => {
         window.localStorage.setItem("uid", res.uid);
@@ -37,6 +42,7 @@ const Auth = () => {
   };
 
   const handleSignUp = () => {
+  
     // Email validation
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (!email.match(emailRegex)) {
@@ -53,17 +59,22 @@ const Auth = () => {
     } else {
       setPasswordError(""); // Clear the error message
     }
+
+    if(emailError == "" & passwordError==""){
+      setIsLoading(true)
+    }
+
     // Calling the registration API
-    // register({ email, password })
-    //   .then((res) => {
-    //     // Handle the registration success
-    //     // You can also consider automatically logging in the user here
-    //     console.log("Registration successful");
-    //   })
-    //   .catch((err) => {
-    //     // Handle registration errors
-    //     console.log(err);
-    //   });
+    register({ email, password })
+      .then((res) => {
+        setRegistrationResponse(res);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setRegistrationResponse("Registration failed. Please try again.");
+        setIsLoading(false);
+        console.log(err);
+      });
   };
 
   const handlePasswordKeyPress = (event) => {
@@ -73,6 +84,7 @@ const Auth = () => {
   };
 
   const toggleSignInUp = () => {
+    setIsLoading(false)
     setIsSignIn(!isSignIn); // Toggle between signing in and signing up
   };
 
@@ -107,33 +119,25 @@ const Auth = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={passwordError !== ""}
             helperText={passwordError}
-            onKeyPress={handlePasswordKeyPress} // Call handleLogin on Enter key press
+            onKeyPress={handlePasswordKeyPress}
           />
           {isSignIn ? (
-            <Button
-              variant="contained"
-              size="large"
-              fullWidth
-              onClick={handleLogin}
-            >
-              Sign In
+            <Button variant="contained" size="large" fullWidth onClick={handleLogin} disabled={isLoading}>
+              {isLoading ? <CircularProgress size={24} /> : "Sign In"}
             </Button>
           ) : (
-            <Button
-              variant="contained"
-              size="large"
-              fullWidth
-              onClick={handleSignUp} // Call handleSignUp when signing up
-            >
-              Sign Up
+            <Button variant="contained" size="large" fullWidth onClick={handleSignUp} disabled={isLoading}>
+              {isLoading ? <CircularProgress size={24} /> : "Sign Up"}
             </Button>
+          )}
+          {registrationResponse && (
+            <Typography variant="body2" align="center" style={{ color: "green" }}>
+              {registrationResponse}
+            </Typography>
           )}
           <Typography variant="body1" align="center">
             {isSignIn ? "Don't have an account yet? " : "Already have an account? "}
-            <span
-              style={{ cursor: "pointer", textDecoration: "underline" }}
-              onClick={toggleSignInUp}
-            >
+            <span style={{ cursor: "pointer", textDecoration: "underline" }} onClick={toggleSignInUp}>
               {isSignIn ? "Sign Up" : "Sign In"}
             </span>
           </Typography>

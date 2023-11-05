@@ -15,7 +15,7 @@ const MorphImage = () => {
           width: "100%",
         }}
       >
-        {/* <Image src={'/heroBackground'} layout="fill" className={'image'} style/> */}
+
         <Image
           src='/morphFrom.jpg'
           alt='editable studio background image'
