@@ -2,7 +2,8 @@
 import ServiceLayout from "@/components/ServiceLayout"
 import SplitLayout from "@/components/SplitLayout"
 import BackupOutlinedIcon from "@mui/icons-material/BackupOutlined"
-import React , {useState} from "react"
+import React , {useState ,useEffect} from "react"
+import Image from 'next/image';
 import {
   Button,
   FormControlLabel,
@@ -13,11 +14,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { categories, styles } from "@/hardCode/all_style_catergories"
 import Link from "next/link"
-import { Height } from "@mui/icons-material"
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { FileUploader } from "react-drag-drop-files"; 
+import JSZip from "jszip";
 
 
 // import { initializeApp } from "firebase/app";
@@ -34,20 +35,72 @@ import { FileUploader } from "react-drag-drop-files";
 
 // const app = initializeApp(firebaseConfig);
 
-const fileTypes = ["JPG","ZIP"]; 
+const fileTypes = ["ZIP"]; 
+const imgTypes = ["jpg", "jpeg","png"]; 
 const StepFinal = () => {
+
   const [file, setFile] = useState(null); 
   const [fileName, setFileName] = useState("");
-  const handleChange = file => { 
-    setFile(file); 
-    console.log(file)
-    setFileName(file.name);
+  const [hasUnsupportedFiles, sethasUnsupportedFiles] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  }; 
+  useEffect(() => {
+    if (hasUnsupportedFiles) {
+      alert("One or more files in the ZIP are not supported image formats.");
+    }
+  }, [hasUnsupportedFiles]);
+
+  const handleChange = (uploadedFile) => {
+
+
+    setFile(uploadedFile);
+    setFileName(uploadedFile.name);
+    setIsLoading(true);
+    sethasUnsupportedFiles(false)
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const content = event.target.result;
+      console.log("File Content:", content);
+
+      if (uploadedFile.name.endsWith(".zip")) {
+        const zip = new JSZip();
+        await zip.loadAsync(content);
+        const zipFileNamesArray = Object.keys(zip.files).filter((fileName) => {
+          return !fileName.startsWith("__MACOSX/");
+        });
+        console.log(zipFileNamesArray)
+        console.log(zipFileNamesArray.length)
+
+        for (const zipFileName of zipFileNamesArray) {
+          const fileExtension = zipFileName.split(".").pop();
+          if (!imgTypes.includes(fileExtension)) {
+            sethasUnsupportedFiles(true)
+            setFile(null);
+            setFileName("");
+            break
+          }
+        }
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+
+        // setZipFileNames(zipFileNamesArray);
+        // setNumZipFiles(zipFileNamesArray.length);
+      }
+    };
+    reader.readAsArrayBuffer(uploadedFile); 
+  };
+
+
+
   const removeFile = () => {
     setFile(null);
     setFileName("");
   };
+
+
+
 
   return (
     <ServiceLayout
@@ -111,7 +164,7 @@ const StepFinal = () => {
         handleChange={handleChange}  
         name="file" 
         types={fileTypes}> 
-          <Paper sx={{ height: "100%" }}>
+          <Paper sx={{ height: "350px" }}>
             <div
               style={{
                 border: "1px dashed 5px",
@@ -125,39 +178,46 @@ const StepFinal = () => {
 
               {/* <BackupOutlinedIcon style={{ fontSize: "130px" }} /> */}
 
-              {fileName ? (
-               
-                   
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "center" }}>
-                       <Paper sx={{ paddingLeft:"10px" }}>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <Typography variant="body1" gutterBottom>
-                          {fileName}
-                        </Typography>
-                        <Button variant="text" onClick={removeFile}>
-                          &#10005; {/* Display a cross (delete) icon */}
-                        </Button>
-                      </div>
-                      </Paper>
-                    </div>
-                    
-      
-                  ) : (
-                    // Display BackupOutlinedIcon if no file is selected
-                    <>
-                      <BackupOutlinedIcon style={{ fontSize: "130px" }} />
-                      <Typography
-                        variant="body1"
-                        gutterBottom
-                        style={{ marginTop: "-10px", marginBottom: "18px" }}
-                      >
-                        or
-                      </Typography>
-                      <Button variant='outlined' size='medium' style={{ marginTop:"10px" }}>
-                        Upload files
-                      </Button>
-                    </>
-                  )}
+              {isLoading ? ( // Show loading indicator when isLoading is true
+               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "250px" }}>
+            <CircularProgress size={80} thickness={2}/>
+            </div>
+          ) : fileName ? (
+            // Display uploaded file information
+            <div style={{ display: "flex",flexDirection: "column", alignItems: "center", height: "250px" }}>
+              <Image
+                src="/tick.gif"
+                alt="Tick"
+                width={120} // Set the width you desire
+                height={120} // Set the height you desire
+                style = {{ marginTop:"50px" }}
+              />
+              <Paper sx={{ paddingLeft: "10px" ,marginTop:"20px"}}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="body1" gutterBottom>
+                    {fileName}
+                  </Typography>
+                  <Button variant="text" onClick={removeFile}>
+                    &#10005;
+                  </Button>
+                </div>
+              </Paper>
+            </div>
+          ) : (
+            // Display BackupOutlinedIcon if no file is selected
+            <>
+              <BackupOutlinedIcon style={{ fontSize: "130px" }} />
+              <Typography variant="body1" gutterBottom style={{ marginTop: "-10px", marginBottom: "18px" }}>
+                or
+              </Typography>
+              <Button variant="outlined" size="medium" style={{ marginTop: "10px" }}>
+                Upload files
+              </Button>
+            </>
+          )}
+
+
+
             </div>
           </Paper>
         </FileUploader>
@@ -171,11 +231,11 @@ const StepFinal = () => {
             Save & go to dashboard
           </Button>
         </Link>
-        <Link href='step_one'>
+        {/* <Link href='step_one'>
           <Button variant='contained' size='medium'>
             Create new order
           </Button>
-        </Link>
+        </Link> */}
       </div>
     </ServiceLayout>
   )
