@@ -359,6 +359,30 @@ const postOrders = async (postData) => {
     console.error("Error posting data:", error)
   }
 }
+
+const createUpload = async (postData) => {
+
+  try {
+    const response = await fetch(`${baseUrl}/uploads/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify(postData),
+    })
+
+    const responseData = await response.json()
+    console.log(responseData)
+    window.location.replace(`/user/${localStorage.getItem("uid")}`)
+    return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
+  }
+}
+
+
+
 const login = async (postData) => {
   try {
     const response = await fetch(`${baseUrl}/login/`, {
@@ -439,4 +463,5 @@ export {
   login,
   logOut,
   getCookie,
+  createUpload
 }

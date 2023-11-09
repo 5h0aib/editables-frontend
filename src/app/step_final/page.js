@@ -20,21 +20,24 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { FileUploader } from "react-drag-drop-files"; 
 import JSZip from "jszip";
 import { useSearchParams } from "next/navigation"
+import { createUpload } from "@/externalApi"
 
 
-// import { initializeApp } from "firebase/app";
+import { initializeApp} from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL  } from "firebase/storage";
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD7EuPzWXUjBm0-VN8fiOXp07yADLhF9Bo",
-//   authDomain: "editables-firebase.firebaseapp.com",
-//   projectId: "editables-firebase",
-//   storageBucket: "editables-firebase.appspot.com",
-//   messagingSenderId: "925746479162",
-//   appId: "1:925746479162:web:8a965d894da0e12035f503",
-//   measurementId: "G-HZMTEYFMZS"
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyD7EuPzWXUjBm0-VN8fiOXp07yADLhF9Bo",
+  authDomain: "editables-firebase.firebaseapp.com",
+  projectId: "editables-firebase",
+  storageBucket: "editables-firebase.appspot.com",
+  messagingSenderId: "925746479162",
+  appId: "1:925746479162:web:8a965d894da0e12035f503",
+  measurementId: "G-HZMTEYFMZS"
+};
 
-// const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 const fileTypes = ["ZIP"]; 
 const imgTypes = ["jpg", "jpeg","png"]; 
@@ -42,32 +45,39 @@ const StepFinal = () => {
 
 
   const searchParams = useSearchParams()
+  
   const order_id = searchParams.get("order_id")
-  const num_of_images = searchParams.get("number_of_images")
+  const num_of_images = parseInt(searchParams.get("number_of_images"), 10);
 
   const [file, setFile] = useState(null); 
   const [fileName, setFileName] = useState("");
   const [hasUnsupportedFiles, sethasUnsupportedFiles] = useState(false);
+  const [hasExtraImages, sethasExtraImages] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
+  const [isUploading, setIsUploading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(false);
 
   useEffect(() => {
-    // Check if "localStorage" is available (client-side) before using it
     if (typeof window !== 'undefined') {
       const storedIsLoggedIn = window.localStorage.getItem("isLoggedIn");
       if (storedIsLoggedIn) {
         setIsLoggedIn(JSON.parse(storedIsLoggedIn));
+        setUser(window.localStorage.getItem("uid"))
       }
     }
   }, []);
 
   useEffect(() => {
-    if (hasUnsupportedFiles) {
+    if (hasUnsupportedFiles && hasExtraImages) {
+      alert("One or more files in the ZIP are not supported image formats, and you have extra images.");
+    } else if (hasUnsupportedFiles) {
       alert("One or more files in the ZIP are not supported image formats.");
-    }
-  }, [hasUnsupportedFiles]);
+    } else if (hasExtraImages) {
+      alert("You have extra images.");
+  }
+  }, [hasUnsupportedFiles, hasExtraImages]);
 
   const handleChange = (uploadedFile) => {
 
@@ -76,11 +86,11 @@ const StepFinal = () => {
     setFileName(uploadedFile.name);
     setIsLoading(true);
     sethasUnsupportedFiles(false)
+    sethasExtraImages(false)
 
     const reader = new FileReader();
     reader.onload = async (event) => {
       const content = event.target.result;
-      console.log("File Content:", content);
 
       if (uploadedFile.name.endsWith(".zip")) {
         const zip = new JSZip();
@@ -88,9 +98,14 @@ const StepFinal = () => {
         const zipFileNamesArray = Object.keys(zip.files).filter((fileName) => {
           return !fileName.startsWith("__MACOSX/");
         });
-        console.log(zipFileNamesArray)
-        console.log(zipFileNamesArray.length)
+        // console.log(zipFileNamesArray)
+        // console.log(zipFileNamesArray.length -1)
 
+        // console.log(num_of_images)
+
+        if(zipFileNamesArray.length - 1 > num_of_images){
+            sethasExtraImages(true)
+        }
         for (const zipFileName of zipFileNamesArray) {
           const fileExtension = zipFileName.split(".").pop();
           if (!imgTypes.includes(fileExtension)) {
@@ -100,6 +115,7 @@ const StepFinal = () => {
             break
           }
         }
+
         setTimeout(() => {
           setIsLoading(false);
         }, 2000);
@@ -120,10 +136,54 @@ const StepFinal = () => {
 
 
 
+  const handleUpload = () => {
+    setIsUploading(true)
+    if(file){
+      const storageRef = ref(storage, `customer/user_${user}/order_${order_id}/${fileName}`);
+
+      uploadBytes(storageRef, file)
+          .then((snapshot) => {
+              console.log("Upload Successfull");
+              return getDownloadURL(snapshot.ref);
+          })
+          .then((downloadURL) => {
+                const uploadDetails = {
+                catalogue_url: downloadURL,
+                upload_service:"firebase",
+                order_id: order_id,
+                catalogue_name: "Order",
+                storage_path: `customer/user_${user}/order_${order_id}/${fileName}`,
+                file_type: "ZIP",
+                zip_size: `${file.size}`,
+              }
+              createUpload(uploadDetails)
+              // console.log("Download URL:", downloadURL);
+          })
+          .catch((error) => {
+              setIsUploading(true)
+              console.error("Error uploading image:", error);
+          });
+    }
+  };
+
+
+
+
 
   return (
     <>
-     {/* {isLoggedIn ? ( */}
+    
+    {isUploading ? (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+          <Typography variant='h5' gutterBottom>
+            Your Image is being uploaded. Please wait...
+          </Typography>
+          <CircularProgress size={80} thickness={2} style={{ marginTop: '20px' }} />
+          <Typography gutterBottom style={{ marginTop: '20px' ,fontSize:"10px"}}>
+            You will be redirected shortly
+          </Typography>
+        </div>
+      ) : isLoggedIn ? (
       <ServiceLayout
         formTitle='Choose the category & style that fits your images'
         subLines=''
@@ -245,14 +305,14 @@ const StepFinal = () => {
                       
         </SplitLayout>
             <div style={{ display: "flex", gap: "20px", justifyContent: "center",marginTop: "20px"}}>
-              <Link href='user/123'>
-                <Button variant='contained' size='medium'>
+              
+                <Button variant='contained' size='medium' onClick={handleUpload}>
                   Save & go to dashboard
                 </Button>
-              </Link>
+
             </div>
       </ServiceLayout>
-      {/* )
+    )
       :(
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
 
@@ -266,7 +326,7 @@ const StepFinal = () => {
               </Link>
       </div>
 
-      )} */}
+      )} 
     </>
   )
 }
