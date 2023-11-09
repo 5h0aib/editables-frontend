@@ -17,8 +17,9 @@ import {
   Select,
   Typography,
 } from "@mui/material"
-import { getOrdersofThisUser } from "@/externalApi"
+import { getOrders,getOrdersofThisUser } from "@/externalApi"
 import { formatDate, formatDateString } from "@/utils"
+
 const AllOrders = () => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
@@ -37,21 +38,26 @@ const AllOrders = () => {
       )
     }
   }
-  function filterOrders() {
-    if (type === "all") {
-      return allOrders
+
+  function filterOrder(name) {
+    setType(name)
+    if (name === "all") {
+      setFilteredOrders(allOrders)
     } else {
-      return allOrders.filter(
-        (row) => row.order_status.toLowerCase() === selectedStatus
+      setFilteredOrders(
+        allOrders.filter(
+        (row) => row.delivery_method.toLowerCase() === name
       )
+      )
+      
     }
   }
   useEffect(() => {
-    getOrdersofThisUser()
+    getOrders()
       .then((orders) => {
-        setAllOrders(orders)
-        setFilteredOrders(orders)
-        console.log("fectched Orders: ", orders)
+        setAllOrders(orders.results)
+        setFilteredOrders(orders.results)
+        console.log("fectched Orders: ", orders.results)
       })
       .catch((err) => console.log(err))
   }, [])
@@ -60,34 +66,33 @@ const AllOrders = () => {
     <div>
       
       <Typography variant='h5' gutterBottom display={"block"}>
-        All orders
+        {type.charAt(0).toUpperCase() + type.slice(1)} orders
       </Typography>
-      <p>not getting these info from get request</p>
       <Button
-        variant={type == "all" ? "outlined" : "stantdard"}
+        variant={type == "all" ? "outlined" : "standard"}
         sx={{ background: "white", marginRight: "20px" }}
-        onClick={() => setType("all")}
+        onClick={() => filterOrder("all")}
       >
         All orders
       </Button>
       <Button
-        variant={type == "basic" ? "outlined" : "stantdard"}
+        variant={type == "standard" ? "outlined" : "standard"}
         sx={{ background: "white", marginRight: "20px" }}
-        onClick={() => setType("basic")}
+        onClick={() => filterOrder("standard")}
       >
-        Basic
+        Standard
       </Button>
       <Button
-        variant={type == "express" ? "outlined" : "stantdard"}
+        variant={type == "express" ? "outlined" : "standard"}
         sx={{ background: "white", marginRight: "20px" }}
-        onClick={() => setType("express")}
+        onClick={() => filterOrder("express")}
       >
         Express
       </Button>
       <Button
         variant={type == "custom" ? "outlined" : "stantdard"}
         sx={{ background: "white" }}
-        onClick={() => setType("custom")}
+        onClick={() => filterOrder("custom")}
       >
         Custom
       </Button>
@@ -124,13 +129,14 @@ const AllOrders = () => {
           </TableHead>
           <TableBody>
             {filteredOrders?.map((row) => (
+      
               <TableRow
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 {/*  order, dateOfIssue, statuss, delivery, rating */}
                 <TableCell component='th' scope='row'>
-                  {row.order_name}
+                  {row.id}
                 </TableCell>
                 <TableCell component='th' scope='row'>
                   {formatDateString(row.created_at)}

@@ -134,28 +134,9 @@ const checkout = async (postData) => {
   }
 }
 
-//user
-const getOrdersofThisUser = async () => {
-  // console.log("access#token: ",getCookie("access_token"))
-  try {
-    const response = await fetch(`${baseUrl}/orders/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("access_token")}`,
-      },
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-    // console.log("response: ", responseData)
-    const responseData = await response.json()
 
-    return responseData
-  } catch (error) {
-    console.error("Error fetching data:", error)
-  }
-}
+
+
 const getUserDetails = async (id) => {
   console.log("cookies: ", document.cookie)
   console.log("access token: ")
@@ -261,6 +242,29 @@ const getOrders = async () => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
+    const responseData = await response.json()
+
+    return responseData
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
+
+//user
+const getOrdersofThisUser = async () => {
+  // console.log("access#token: ",getCookie("access_token"))
+  try {
+    const response = await fetch(`${baseUrl}/orders/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    // console.log("response: ", responseData)
     const responseData = await response.json()
 
     return responseData
@@ -443,6 +447,7 @@ const logOut = () => {
   localStorage.removeItem("access_token")
   localStorage.removeItem("refresh_token")
   localStorage.setItem("isLoggedIn", false)
+  window.location.replace(`/auth`)
 }
 
 export {

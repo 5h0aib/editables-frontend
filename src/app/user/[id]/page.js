@@ -20,6 +20,8 @@ import { getOrdersofThisUser, logOut } from "@/externalApi"
 const User = ({ params }) => {
   const [state, setState] = useState("allOrders")
   const router = useRouter()
+
+  
   // useEffect(() => {
   //   console.log("id: ",params.id)
   //   getOrdersofThisUser(params.id)
@@ -80,15 +82,6 @@ const User = ({ params }) => {
                 </ListItemButton>
               </ListItem>
               <Divider />
-              {/* <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
-                  <ListItemText primary='Help Center' />
-                </ListItemButton>
-              </ListItem>
-              <Divider /> */}
               <ListItem disablePadding>
                 <ListItemButton onClick={logOut}>
                   <ListItemIcon>
