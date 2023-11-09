@@ -19,6 +19,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { FileUploader } from "react-drag-drop-files"; 
 import JSZip from "jszip";
+import { useSearchParams } from "next/navigation"
 
 
 // import { initializeApp } from "firebase/app";
@@ -39,10 +40,28 @@ const fileTypes = ["ZIP"];
 const imgTypes = ["jpg", "jpeg","png"]; 
 const StepFinal = () => {
 
+
+  const searchParams = useSearchParams()
+  const order_id = searchParams.get("order_id")
+  const num_of_images = searchParams.get("number_of_images")
+
   const [file, setFile] = useState(null); 
   const [fileName, setFileName] = useState("");
   const [hasUnsupportedFiles, sethasUnsupportedFiles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if "localStorage" is available (client-side) before using it
+    if (typeof window !== 'undefined') {
+      const storedIsLoggedIn = window.localStorage.getItem("isLoggedIn");
+      if (storedIsLoggedIn) {
+        setIsLoggedIn(JSON.parse(storedIsLoggedIn));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (hasUnsupportedFiles) {
@@ -103,141 +122,152 @@ const StepFinal = () => {
 
 
   return (
-    <ServiceLayout
-      formTitle='Choose the category & style that fits your images'
-      subLines=''
-      step=''
-    >
-      <SplitLayout>
-        <div>
-          <Stack
-            direction='row'
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <Typography variant='h6' gutterBottom>
-              Album Title
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              0/100 characters
-            </Typography>
-          </Stack>
-          <TextField variant='outlined' fullWidth />
-          <Stack
-            direction='row'
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <Typography variant='h6' gutterBottom>
-              Description
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              0/300 characters
-            </Typography>
-          </Stack>
-          <TextField variant='outlined' fullWidth />
-          <Typography variant='h6' gutterBottom>
-            File type you would like to receive
-          </Typography>
-          <RadioGroup
-            aria-labelledby='demo-radio-buttons-group-label'
-            defaultValue='female'
-            name='radio-buttons-group'
-          >
-            <FormControlLabel value='jpeg' control={<Radio />} label='JPEG' />
-            <FormControlLabel
-              value='lightroom'
-              control={<Radio />}
-              label='Lightroom catalogue'
-            />
-            <FormControlLabel
-              value='captured'
-              control={<Radio />}
-              label='Captured catalogue'
-            />
-          </RadioGroup>
-        </div>
-
-
-
-        <FileUploader  
-        handleChange={handleChange}  
-        name="file" 
-        types={fileTypes}> 
-          <Paper sx={{ height: "350px" }}>
-            <div
-              style={{
-                border: "1px dashed 5px",
-                textAlign: "center",
-                padding: "20px",
-              }}
+    <>
+     {/* {isLoggedIn ? ( */}
+      <ServiceLayout
+        formTitle='Choose the category & style that fits your images'
+        subLines=''
+        step=''
+      >
+          <SplitLayout>
+            
+          <div>
+            <Stack
+              direction='row'
+              alignItems={"center"}
+              justifyContent={"space-between"}
             >
-              <Typography variant='h5' gutterBottom>
-                <b>Drag & drop your zip file here</b>
+              <Typography variant='h6' gutterBottom>
+                Album Title
               </Typography>
-
-              {/* <BackupOutlinedIcon style={{ fontSize: "130px" }} /> */}
-
-              {isLoading ? ( // Show loading indicator when isLoading is true
-               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "250px" }}>
-            <CircularProgress size={80} thickness={2}/>
-            </div>
-          ) : fileName ? (
-            // Display uploaded file information
-            <div style={{ display: "flex",flexDirection: "column", alignItems: "center", height: "250px" }}>
-              <Image
-                src="/tick.gif"
-                alt="Tick"
-                width={120} // Set the width you desire
-                height={120} // Set the height you desire
-                style = {{ marginTop:"50px" }}
+              <Typography variant='caption' gutterBottom>
+                0/100 characters
+              </Typography>
+            </Stack>
+            <TextField variant='outlined' fullWidth />
+            <Stack
+              direction='row'
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <Typography variant='h6' gutterBottom>
+                Description
+              </Typography>
+              <Typography variant='caption' gutterBottom>
+                0/300 characters
+              </Typography>
+            </Stack>
+            <TextField variant='outlined' fullWidth />
+            <Typography variant='h6' gutterBottom>
+              File type you would like to receive
+            </Typography>
+            <RadioGroup
+              aria-labelledby='demo-radio-buttons-group-label'
+              defaultValue='female'
+              name='radio-buttons-group'
+            >
+              <FormControlLabel value='jpeg' control={<Radio />} label='JPEG' />
+              <FormControlLabel
+                value='lightroom'
+                control={<Radio />}
+                label='Lightroom catalogue'
               />
-              <Paper sx={{ paddingLeft: "10px" ,marginTop:"20px"}}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <Typography variant="body1" gutterBottom>
-                    {fileName}
-                  </Typography>
-                  <Button variant="text" onClick={removeFile}>
-                    &#10005;
-                  </Button>
-                </div>
-              </Paper>
+              <FormControlLabel
+                value='captured'
+                control={<Radio />}
+                label='Captured catalogue'
+              />
+            </RadioGroup>
+          </div>
+
+
+
+          <FileUploader  
+          handleChange={handleChange}  
+          name="file" 
+          types={fileTypes}> 
+            <Paper sx={{ height: "350px" }}>
+              <div
+                style={{
+                  border: "1px dashed 5px",
+                  textAlign: "center",
+                  padding: "20px",
+                }}
+              >
+                <Typography variant='h5' gutterBottom>
+                  <b>Drag & drop your zip file here</b>
+                </Typography>
+
+                {isLoading ? ( // Show loading indicator when isLoading is true
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "250px" }}>
+                    <CircularProgress size={80} thickness={2}/>
+                  </div>
+                  ) : fileName ? (
+                    // Display uploaded file information
+                    <div style={{ display: "flex",flexDirection: "column", alignItems: "center", height: "250px" }}>
+                      <Image
+                        src="/tick.gif"
+                        alt="Tick"
+                        width={120} // Set the width you desire
+                        height={120} // Set the height you desire
+                        style = {{ marginTop:"20px" }}
+                      />
+                      <Paper sx={{ paddingLeft: "10px" ,marginTop:"20px"}}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Typography variant="body1" gutterBottom>
+                            {fileName}
+                          </Typography>
+                          <Button variant="text" onClick={removeFile}>
+                            &#10005;
+                          </Button>
+                        </div>
+                      </Paper>
+                    </div>
+                  ) : (
+                    // Display BackupOutlinedIcon if no file is selected
+                    <>
+                      <BackupOutlinedIcon style={{ fontSize: "130px" }} />
+                      <Typography variant="body1" gutterBottom style={{ marginTop: "-10px", marginBottom: "18px" }}>
+                        or
+                      </Typography>
+                      <Button variant="outlined" size="medium" style={{ marginTop: "10px" }}>
+                        Upload files
+                      </Button>
+                    </>
+                  )}
+
+
+              </div>
+            </Paper>
+          </FileUploader>
+
+
+                      
+        </SplitLayout>
+            <div style={{ display: "flex", gap: "20px", justifyContent: "center",marginTop: "20px"}}>
+              <Link href='user/123'>
+                <Button variant='contained' size='medium'>
+                  Save & go to dashboard
+                </Button>
+              </Link>
             </div>
-          ) : (
-            // Display BackupOutlinedIcon if no file is selected
-            <>
-              <BackupOutlinedIcon style={{ fontSize: "130px" }} />
-              <Typography variant="body1" gutterBottom style={{ marginTop: "-10px", marginBottom: "18px" }}>
-                or
-              </Typography>
-              <Button variant="outlined" size="medium" style={{ marginTop: "10px" }}>
-                Upload files
-              </Button>
-            </>
-          )}
+      </ServiceLayout>
+      {/* )
+      :(
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
 
-
-
-            </div>
-          </Paper>
-        </FileUploader>
-
-
-
-      </SplitLayout>
-      <div style={{ display: "flex", gap: "20px", justifyContent: "center",marginTop: "20px"}}>
-        <Link href='user/123'>
-          <Button variant='contained' size='medium'>
-            Save & go to dashboard
-          </Button>
-        </Link>
-        {/* <Link href='step_one'>
-          <Button variant='contained' size='medium'>
-            Create new order
-          </Button>
-        </Link> */}
+        <h1 style={{ marginTop: '20px' }}>Editable Studios.</h1>
+        <h2 style={{ marginTop: '20px' }}>You must be logged in to access this page.</h2>
+        <p style={{  marginTop: '20px' }}>Please log in to continue.</p>
+        <Link href='auth' style={{  marginTop: '20px' }}>
+                <Button variant='contained' size='small'>
+                  login
+                </Button>
+              </Link>
       </div>
-    </ServiceLayout>
+
+      )} */}
+    </>
   )
 }
 

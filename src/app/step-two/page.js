@@ -16,7 +16,7 @@ import {
 
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { checkout, getAddons, getCookie } from "@/externalApi"
+import { checkout, getAddons } from "@/externalApi"
 import { getDateDaysFromNow } from "@/utils"
 
 const StepTwo = () => {
