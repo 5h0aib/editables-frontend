@@ -137,11 +137,13 @@ const checkout = async (postData) => {
 
 
 
-const getUserDetails = async (id) => {
-  console.log("cookies: ", document.cookie)
-  console.log("access token: ")
+const getUserDetails = async () => {
+  // console.log("cookies: ", document.cookie)
+  // console.log("access token: ")
+  
   try {
-    const response = await fetch(`${baseUrl}/users/${id}/`, {
+
+    const response = await fetch(`${baseUrl}/users/${localStorage.getItem('uid')}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +161,7 @@ const getUserDetails = async (id) => {
   }
 }
 
-const putUserDetails = async (postData, id) => {
+const putUserDetails = async (postData) => {
   // postData.newsletter_opt_in=postData.newsletter_opt_in?"true":"false"
   delete postData.email
   console.log("put data: ", postData)
@@ -239,6 +241,12 @@ const getOrders = async () => {
         Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
+
+    if (response.status === 401) {
+      // Redirect to '/auth' when a 401 status code is received
+     window.location.replace(`/auth`)
+      return; // Exit the function to prevent further processing
+    }
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
@@ -250,28 +258,28 @@ const getOrders = async () => {
   }
 }
 
-//user
-const getOrdersofThisUser = async () => {
-  // console.log("access#token: ",getCookie("access_token"))
-  try {
-    const response = await fetch(`${baseUrl}/orders/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${localStorage.getItem("access_token")}`,
-      },
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-    // console.log("response: ", responseData)
-    const responseData = await response.json()
+// //user
+// const getOrdersofThisUser = async () => {
+//   // console.log("access#token: ",getCookie("access_token"))
+//   try {
+//     const response = await fetch(`${baseUrl}/orders/`, {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `JWT ${localStorage.getItem("access_token")}`,
+//       },
+//     })
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`)
+//     }
+//     // console.log("response: ", responseData)
+//     const responseData = await response.json()
 
-    return responseData
-  } catch (error) {
-    console.error("Error fetching data:", error)
-  }
-}
+//     return responseData
+//   } catch (error) {
+//     console.error("Error fetching data:", error)
+//   }
+// }
 
 const getTransactions = async () => {
   console.log("cookies: ", document.cookie)
@@ -455,7 +463,7 @@ export {
   getStyles,
   checkout,
   getAddons,
-  getOrdersofThisUser,
+  // getOrdersofThisUser,
   getUserDetails,
   putUserDetails,
   createBooking,

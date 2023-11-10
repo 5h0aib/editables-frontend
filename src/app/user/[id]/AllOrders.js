@@ -57,7 +57,6 @@ const AllOrders = () => {
       .then((orders) => {
         setAllOrders(orders.results)
         setFilteredOrders(orders.results)
-        console.log("fectched Orders: ", orders.results)
       })
       .catch((err) => console.log(err))
   }, [])

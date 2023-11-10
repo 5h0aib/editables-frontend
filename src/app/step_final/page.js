@@ -47,7 +47,7 @@ const StepFinal = () => {
   const searchParams = useSearchParams()
   
   const order_id = searchParams.get("order_id")
-  const num_of_images = parseInt(searchParams.get("number_of_images"), 10);
+  const num_of_images = parseInt(searchParams.get("number_of_images"), 10) || 100;
 
   const [file, setFile] = useState(null); 
   const [fileName, setFileName] = useState("");

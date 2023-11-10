@@ -21,17 +21,6 @@ const User = ({ params }) => {
   const [state, setState] = useState("allOrders")
   const router = useRouter()
 
-  
-  // useEffect(() => {
-  //   console.log("id: ",params.id)
-  //   getOrdersofThisUser(params.id)
-  //     .then((data) => {
-  //       console.log("Fetched orders:", data)
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching orders:", error)
-  //     })
-  // }, [])
 
   return (
     <div>

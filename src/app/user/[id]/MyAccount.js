@@ -11,24 +11,28 @@ import {
 import React, { useEffect, useState } from "react"
 
 const MyAccount = () => {
+
+  
   const [userData, setUserData] = useState({})
+  const [showPasswordFields, setShowPasswordFields] = useState(false)
+
   useEffect(() => {
-    getUserDetails("7")
-      .then((orders) => {
-        setUserData(orders)
-        console.log("fectched Orders: ", orders)
+    getUserDetails()
+      .then((user) => {
+        setUserData(user)
       })
       .catch((err) => console.log(err))
   }, [])
+
+
   const handleSave = () => {
     console.log(userData)
-    putUserDetails(userData,"7")//make this dynamic
+    putUserDetails(userData)//make this dynamic
   }
-  useEffect(() => {
-    console.log(userData)
-  
-  }, [userData])
-  
+
+
+
+
   return (
     <div>
       <Typography variant='h5' gutterBottom display={"block"}>
@@ -73,6 +77,20 @@ const MyAccount = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Typography variant='p' gutterBottom display={"block"}>
+            Bio
+          </Typography>
+          <TextField
+            fullWidth
+            defaultValue={userData?.bio}
+            onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+          ></TextField>
+        </Grid>
+
+
+        {showPasswordFields && (
+          <>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography variant='p' gutterBottom display={"block"}>
             Password
           </Typography>
           <TextField fullWidth></TextField>
@@ -83,21 +101,24 @@ const MyAccount = () => {
           </Typography>
           <TextField fullWidth></TextField>
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant='p' gutterBottom display={"block"}>
-            Bio
-          </Typography>
-          <TextField
-            fullWidth
-            defaultValue={userData?.bio}
-            onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
-          ></TextField>
-        </Grid>
+        </>
+        )}
       </Grid>
       <br />
-      <Typography variant='caption' gutterBottom display={"block"}>
-        *Select to change
+
+
+      <Typography
+        variant='caption'
+        gutterBottom
+        display={"block"}
+        onClick={() => {setShowPasswordFields(!showPasswordFields)}}
+        style={{ cursor: 'pointer', color: '#5F9EA0' }}
+      >
+        *Change Password
       </Typography>
+
+
+
       <FormControlLabel
         control={
           <Checkbox
