@@ -31,6 +31,18 @@ import LogoutIcon from '@mui/icons-material/Logout';
 const User = ({ params }) => {
   const router = useRouter()
   const [value, setValue] = React.useState(2);
+  const [fullPageHeight, setFullPageHeight] = useState(document.documentElement.scrollHeight);
+
+  useEffect(() => {
+    const updateFullPageHeight = () => {
+      const newHeight = document.documentElement.scrollHeight;
+      setFullPageHeight(newHeight);
+    };
+    window.addEventListener('resize', updateFullPageHeight);
+    return () => {
+      window.removeEventListener('resize', updateFullPageHeight);
+    };
+  }, []);
 
 
   return (
@@ -40,9 +52,11 @@ const User = ({ params }) => {
         <div
           style={{
             background: "#A9A9A9",
+            display: "flex",
+            flexDirection: "column",
             width: "300px",
             color: "white",
-            height: "100vh",
+            height: fullPageHeight + 'px',
           }}
         >
           <Stack spacing={2} style={{ padding: "20px" }}>
@@ -96,6 +110,8 @@ const User = ({ params }) => {
           </Stack>
         </div>
         </Hidden>
+
+
         <div style={{ padding: "30px", width: "100%" }}>
             {value === 1 && <MyAccount />}
             {value === 2 && <AllOrders />}
