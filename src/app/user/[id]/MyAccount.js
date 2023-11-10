@@ -31,17 +31,21 @@ const MyAccount = () => {
   const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(null);
 
 
+  const [newsletterOptIn, setNewsletterOptIn] = useState(false);
+
+
   useEffect(() => {
     getUserDetails()
       .then((user) => {
         setUserData(user)
+        setNewsletterOptIn(user.newsletter_opt_in)
       })
       .catch((err) => console.log(err))
   }, [])
 
 
   const handleSave = () => {
-    // console.log(updateUserData)
+    console.log(updateUserData)
     if (Object.keys(updateUserData).length > 0) {
       putUserDetails(updateUserData)
         .then((data) => {
@@ -78,14 +82,6 @@ const MyAccount = () => {
           }, 2000);
         });
     }, 2000);
-    // console.log(updateUserPassword)
-    // putUserDetails(updateUserPassword)
-    // .then((data) => {
-      
-    // })
-    // .catch((error) => {
-    //   console.error("Error uploading data:", error);
-    // });
   }
 
   const handlePasswordChange = (e) => {
@@ -184,10 +180,11 @@ const MyAccount = () => {
       <FormControlLabel
         control={
           <Checkbox
-            onChange={(e) =>
-              setUpdateUserData({ ...updateUserData, newsletter_opt_in: e.target.checked })
-            }
-            defaultValue={userData?.newsletter_opt_in}
+            onChange={(e) => {
+              setNewsletterOptIn(e.target.checked);
+              setUpdateUserData({ ...updateUserData, newsletter_opt_in: e.target.checked });
+            }}
+            checked={newsletterOptIn}
           />
         }
         label='Receive email notifications about referrals & coupon codes from Editable Studios?'
@@ -276,14 +273,6 @@ const MyAccount = () => {
           )}
         </Box>
       </Dialog>
-
-
-
-
-
-
-
-
     </div>
   )
 }
