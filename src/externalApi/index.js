@@ -150,6 +150,12 @@ const getUserDetails = async () => {
         Authorization: `JWT ${localStorage.getItem("access_token")}`,
       },
     })
+
+    if (response.status === 401) {
+      // Redirect to '/auth' when a 401 status code is received
+     window.location.replace(`/auth`)
+      return; // Exit the function to prevent further processing
+    }
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
@@ -162,11 +168,8 @@ const getUserDetails = async () => {
 }
 
 const putUserDetails = async (postData) => {
-  // postData.newsletter_opt_in=postData.newsletter_opt_in?"true":"false"
-  delete postData.email
-  console.log("put data: ", postData)
   try {
-    const response = await fetch(`${baseUrl}/users/${id}/`, {
+    const response = await fetch(`${baseUrl}/users/${localStorage.getItem('uid')}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -180,7 +183,7 @@ const putUserDetails = async (postData) => {
     }
 
     const responseData = await response.json()
-    console.log("response", responseData)
+    // console.log("response", responseData)
     return responseData
   } catch (error) {
     console.error("Error posting data:", error)
@@ -258,28 +261,7 @@ const getOrders = async () => {
   }
 }
 
-// //user
-// const getOrdersofThisUser = async () => {
-//   // console.log("access#token: ",getCookie("access_token"))
-//   try {
-//     const response = await fetch(`${baseUrl}/orders/`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `JWT ${localStorage.getItem("access_token")}`,
-//       },
-//     })
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`)
-//     }
-//     // console.log("response: ", responseData)
-//     const responseData = await response.json()
 
-//     return responseData
-//   } catch (error) {
-//     console.error("Error fetching data:", error)
-//   }
-// }
 
 const getTransactions = async () => {
   console.log("cookies: ", document.cookie)
@@ -463,7 +445,6 @@ export {
   getStyles,
   checkout,
   getAddons,
-  // getOrdersofThisUser,
   getUserDetails,
   putUserDetails,
   createBooking,

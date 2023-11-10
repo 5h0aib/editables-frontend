@@ -4,17 +4,32 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  Dialog,
   Grid,
   TextField,
+  Box,
   Typography,
 } from "@mui/material"
 import React, { useEffect, useState } from "react"
+import CircularProgress from '@mui/material/CircularProgress';
 
 const MyAccount = () => {
 
   
   const [userData, setUserData] = useState({})
-  const [showPasswordFields, setShowPasswordFields] = useState(false)
+  const [updateUserData, setUpdateUserData] = useState({})
+  const [updateUserPassword, setUpdateUserPassword] = useState({})
+  const [isPasswordDialogOpen, setPasswordDialogOpen] = useState(false);
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
+
+
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(null);
+
 
   useEffect(() => {
     getUserDetails()
@@ -26,11 +41,77 @@ const MyAccount = () => {
 
 
   const handleSave = () => {
-    console.log(userData)
-    putUserDetails(userData)//make this dynamic
+    // console.log(updateUserData)
+    if (Object.keys(updateUserData).length > 0) {
+      putUserDetails(updateUserData)
+        .then((data) => {
+          setIsSaved(true);
+        })
+        .catch((error) => {
+          console.error("Error uploading data:", error);
+        });
+    }
   }
 
+  const savePassword = () => {
+    if (password !== confirmPassword && password.length < 8) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
+    setIsChangingPassword(true); // Show the CircularProgress
 
+    setTimeout(() => {
+      // Simulate a delay of 2 seconds
+      // Replace this with your actual API call
+      putUserDetails(updateUserPassword)
+        .then(() => {
+          setPasswordChangeSuccess("Password changed successfully");
+        })
+        .catch((error) => {
+          setPasswordChangeSuccess("Something went wrong");
+          console.error("Error uploading data:", error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setIsChangingPassword(false); // Hide the CircularProgress after 2 seconds
+            setPasswordDialogOpen(false); // Close the dialog
+          }, 2000);
+        });
+    }, 2000);
+    // console.log(updateUserPassword)
+    // putUserDetails(updateUserPassword)
+    // .then((data) => {
+      
+    // })
+    // .catch((error) => {
+    //   console.error("Error uploading data:", error);
+    // });
+  }
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // Add password validation logic here
+    if (newPassword.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const newConfirmPassword = e.target.value;
+    setConfirmPassword(newConfirmPassword);
+
+    // Check if passwords match and clear any previous error
+    if (newConfirmPassword !== password) {
+      setPasswordError("Passwords do not match");
+    } else {
+      setUpdateUserPassword({ password: password })
+      setPasswordError("");
+    }
+  };
 
 
   return (
@@ -49,7 +130,7 @@ const MyAccount = () => {
             fullWidth
             defaultValue={userData?.full_name}
             onChange={(e) =>
-              setUserData({ ...userData, full_name: e.target.value })
+              setUpdateUserData({ ...updateUserData, full_name: e.target.value })
             }
           ></TextField>
         </Grid>
@@ -71,7 +152,7 @@ const MyAccount = () => {
             fullWidth
             defaultValue={userData?.phone_number}
             onChange={(e) =>
-              setUserData({ ...userData, phone_number: e.target.value })
+              setUpdateUserData({ ...updateUserData, phone_number: e.target.value })
             }
           ></TextField>
         </Grid>
@@ -82,36 +163,17 @@ const MyAccount = () => {
           <TextField
             fullWidth
             defaultValue={userData?.bio}
-            onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+            onChange={(e) => setUpdateUserData({ ...updateUserData, bio: e.target.value })}
           ></TextField>
         </Grid>
 
-
-        {showPasswordFields && (
-          <>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant='p' gutterBottom display={"block"}>
-            Password
-          </Typography>
-          <TextField fullWidth></TextField>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <Typography variant='p' gutterBottom display={"block"}>
-            Confirm new password
-          </Typography>
-          <TextField fullWidth></TextField>
-        </Grid>
-        </>
-        )}
       </Grid>
       <br />
-
-
       <Typography
         variant='caption'
         gutterBottom
         display={"block"}
-        onClick={() => {setShowPasswordFields(!showPasswordFields)}}
+        onClick={() => {setPasswordDialogOpen(true)}}
         style={{ cursor: 'pointer', color: '#5F9EA0' }}
       >
         *Change Password
@@ -123,7 +185,7 @@ const MyAccount = () => {
         control={
           <Checkbox
             onChange={(e) =>
-              setUserData({ ...userData, newsletter_opt_in: e.target.checked })
+              setUpdateUserData({ ...updateUserData, newsletter_opt_in: e.target.checked })
             }
             defaultValue={userData?.newsletter_opt_in}
           />
@@ -138,10 +200,90 @@ const MyAccount = () => {
           size='large'
           style={{ minWidth: "33vw" }}
           onClick={handleSave}
+          disabled={Object.keys(updateUserData).length === 0}
         >
           Save Changes
         </Button>
       </div>
+
+      {isSaved && (
+        <Typography variant="body1" style={{ color: "green", marginTop: "10px" }}>
+          Your changes have been updated
+        </Typography>
+      )}
+
+
+
+<Dialog
+        open={isPasswordDialogOpen}
+        onClose={() => {
+          setPasswordDialogOpen(false);
+        }}
+        maxWidth="sm"
+      >
+        <Box p={2} style={{ overflow: "hidden", width: "400px" }}>
+          <Typography variant="h6" gutterBottom>
+            Change Password
+          </Typography>
+          <Typography
+            variant="p"
+            gutterBottom
+            display={"block"}
+            style={{ marginTop: "10px" }}
+          >
+            Password
+          </Typography>
+          <TextField
+            fullWidth
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          {passwordError && (
+            <Typography variant="caption" style={{ color: "red" }}>
+              {passwordError}
+            </Typography>
+          )}
+          <Typography
+            variant="p"
+            gutterBottom
+            display={"block"}
+            style={{ marginTop: "20px" }}
+          >
+            Confirm Password
+          </Typography>
+          <TextField
+            fullWidth
+            type="password"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+          />
+          <Box mt={2} display="flex" justifyContent="space-between">
+            <Button onClick={() => setPasswordDialogOpen(false)}>Cancel</Button>
+            {isChangingPassword ? (
+              <CircularProgress size={24}  style={{ marginTop:"10px" ,marginRight:"20px"}}/>
+            ) : (
+              <Button onClick={savePassword}>Save</Button>
+            )}
+          </Box>
+          {passwordChangeSuccess && (
+            <Typography
+              variant="body1"
+              style={{ color: passwordChangeSuccess === "Password changed successfully" ? "green" : "red", marginTop: "10px" }}
+            >
+              {passwordChangeSuccess}
+            </Typography>
+          )}
+        </Box>
+      </Dialog>
+
+
+
+
+
+
+
+
     </div>
   )
 }

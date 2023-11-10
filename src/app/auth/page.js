@@ -4,10 +4,9 @@ import { useRouter } from "next/navigation";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { login,register } from "@/externalApi";
+import { login, register } from "@/externalApi";
 import ServiceLayout from "@/components/ServiceLayout";
-import CircularProgress from '@mui/material/CircularProgress';
-import { resolve } from "styled-jsx/css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Auth = () => {
   const router = useRouter();
@@ -21,7 +20,7 @@ const Auth = () => {
   const [registrationResponse, setRegistrationResponse] = useState("");
 
   const handleLogin = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     login({ email, password })
       .then((res) => {
         window.localStorage.setItem("uid", res.uid);
@@ -38,11 +37,13 @@ const Auth = () => {
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
+        // Display error message
+        setEmailError("Incorrect email or password");
       });
   };
 
   const handleSignUp = () => {
-  
     // Email validation
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (!email.match(emailRegex)) {
@@ -60,8 +61,8 @@ const Auth = () => {
       setPasswordError(""); // Clear the error message
     }
 
-    if(emailError == "" & passwordError==""){
-      setIsLoading(true)
+    if (emailError == "" && passwordError == "") {
+      setIsLoading(true);
     }
 
     // Calling the registration API
@@ -84,7 +85,7 @@ const Auth = () => {
   };
 
   const toggleSignInUp = () => {
-    setIsLoading(false)
+    setIsLoading(false);
     setIsSignIn(!isSignIn); // Toggle between signing in and signing up
   };
 
@@ -122,11 +123,23 @@ const Auth = () => {
             onKeyPress={handlePasswordKeyPress}
           />
           {isSignIn ? (
-            <Button variant="contained" size="large" fullWidth onClick={handleLogin} disabled={isLoading}>
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              onClick={handleLogin}
+              disabled={isLoading}
+            >
               {isLoading ? <CircularProgress size={24} /> : "Sign In"}
             </Button>
           ) : (
-            <Button variant="contained" size="large" fullWidth onClick={handleSignUp} disabled={isLoading}>
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              onClick={handleSignUp}
+              disabled={isLoading}
+            >
               {isLoading ? <CircularProgress size={24} /> : "Sign Up"}
             </Button>
           )}
@@ -137,7 +150,10 @@ const Auth = () => {
           )}
           <Typography variant="body1" align="center">
             {isSignIn ? "Don't have an account yet? " : "Already have an account? "}
-            <span style={{ cursor: "pointer", textDecoration: "underline" }} onClick={toggleSignInUp}>
+            <span
+              style={{ cursor: "pointer", textDecoration: "underline" }}
+              onClick={toggleSignInUp}
+            >
               {isSignIn ? "Sign Up" : "Sign In"}
             </span>
           </Typography>
@@ -148,5 +164,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
-
