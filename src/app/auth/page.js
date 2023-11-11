@@ -27,6 +27,7 @@ const Auth = () => {
         window.localStorage.setItem("access_token", res.access_token);
         window.localStorage.setItem("refresh_token", res.refresh_token);
         window.localStorage.setItem("isLoggedIn", true);
+        window.localStorage.setItem("isStaff", res.is_staff);
         if (res.is_staff) {
           console.log("logging in as staff");
           router.push(`admin/all_order`, { shallow: false });

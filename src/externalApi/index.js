@@ -254,7 +254,6 @@ const getOrders = async () => {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
     const responseData = await response.json()
-
     return responseData
   } catch (error) {
     console.error("Error fetching data:", error)
@@ -264,8 +263,8 @@ const getOrders = async () => {
 
 
 const getTransactions = async () => {
-  console.log("cookies: ", document.cookie)
-  console.log("access token: ")
+  // console.log("cookies: ", document.cookie)
+  // console.log("access token: ")
   try {
     const response = await fetch(`${baseUrl}/transactions/`, {
       method: "GET",
@@ -286,8 +285,8 @@ const getTransactions = async () => {
 }
 
 const getBookings = async () => {
-  console.log("cookies: ", document.cookie)
-  console.log("access token: ")
+  // console.log("cookies: ", document.cookie)
+  // console.log("access token: ")
   try {
     const response = await fetch(`${baseUrl}/bookings/`, {
       method: "GET",
@@ -367,8 +366,11 @@ const createUpload = async (postData) => {
     })
 
     const responseData = await response.json()
-    console.log(responseData)
-    window.location.replace(`/user/${localStorage.getItem("uid")}`)
+    // console.log(responseData)
+    if (localStorage.getItem("isStaff")){
+      window.location.replace( `/admin/all_order`)
+    }
+    else{window.location.replace(`/user/${localStorage.getItem("uid")}`)}
     return responseData
   } catch (error) {
     console.error("Error posting data:", error)
@@ -436,6 +438,7 @@ const logOut = () => {
   localStorage.removeItem("uid")
   localStorage.removeItem("access_token")
   localStorage.removeItem("refresh_token")
+  localStorage.removeItem("isStaff")
   localStorage.setItem("isLoggedIn", false)
   window.location.replace(`/auth`)
 }

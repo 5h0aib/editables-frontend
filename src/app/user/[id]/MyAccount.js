@@ -211,7 +211,7 @@ const MyAccount = () => {
 
 
 
-<Dialog
+      <Dialog
         open={isPasswordDialogOpen}
         onClose={() => {
           setPasswordDialogOpen(false);

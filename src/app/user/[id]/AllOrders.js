@@ -17,7 +17,7 @@ import {
   Select,
   Typography,
 } from "@mui/material"
-import { getOrders,getOrdersofThisUser } from "@/externalApi"
+import { getOrders} from "@/externalApi"
 import { formatDate, formatDateString } from "@/utils"
 
 const AllOrders = () => {
@@ -52,6 +52,8 @@ const AllOrders = () => {
       
     }
   }
+
+
   useEffect(() => {
     getOrders()
       .then((orders) => {
@@ -115,10 +117,13 @@ const AllOrders = () => {
                     size='small'
                   >
                     <MenuItem value={"all"}>All</MenuItem>
-                    <MenuItem value={"in review"}>In review</MenuItem>
-                    <MenuItem value={"processing"}>processing</MenuItem>
-                    <MenuItem value={"payment due"}>payment due</MenuItem>
-                    <MenuItem value={"completed"}>completed</MenuItem>
+                    <MenuItem value={"In-review"}>In review</MenuItem>
+                    <MenuItem value={"Processing"}>Processing</MenuItem>
+                    <MenuItem value={"Culling"}>Culling</MenuItem>
+                    <MenuItem value={"Cropping"}>Cropping</MenuItem>
+                    <MenuItem value={"Payment-due"}>Payment due</MenuItem>
+                    <MenuItem value={"Completed"}>Completed</MenuItem>
+                    
                   </Select>
                 </FormControl>
               </TableCell>

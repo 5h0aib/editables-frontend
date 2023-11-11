@@ -41,6 +41,11 @@ const storage = getStorage(app);
 
 const fileTypes = ["ZIP"]; 
 const imgTypes = ["jpg", "jpeg","png"]; 
+
+
+
+
+
 const StepFinal = () => {
 
 

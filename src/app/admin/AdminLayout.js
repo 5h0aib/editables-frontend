@@ -1,6 +1,5 @@
 "use client"
 import * as React from "react"
-import PropTypes from "prop-types"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -17,8 +16,12 @@ import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import { useRouter } from "next/navigation"
 
+import {
+logOut
+} from "@/externalApi"
+
 const drawerWidth = 240
-const navItems = ["all order", "transaction", "custom order"]
+const navItems = ["all order", "transaction", "custom order", "bookings"]
 
 function AdminLayout(props) {
   const { window } = props
@@ -45,6 +48,18 @@ function AdminLayout(props) {
             </ListItemButton>
           </ListItem>
         ))}
+
+
+
+        <ListItem key={"logOut"} disablePadding>
+            <ListItemButton
+              sx={{ textAlign: "center" }}
+              onClick={logOut}
+            >
+              <ListItemText primary={"logOut"} />
+            </ListItemButton>
+          </ListItem>
+
       </List>
     </Box>
   )
@@ -79,6 +94,10 @@ function AdminLayout(props) {
                 {item}
               </Button>
             ))}
+
+                    <Button key={"logOut"} variant="contained" onClick={logOut}>
+                      logOut
+                    </Button>
           </Box>
         </Toolbar>
       </AppBar>
