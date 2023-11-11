@@ -20,6 +20,7 @@ import { logOut } from "@/externalApi"
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import Badge from '@mui/material/Badge';
 
 
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -31,16 +32,26 @@ import LogoutIcon from '@mui/icons-material/Logout';
 const User = ({ params }) => {
   const router = useRouter()
   const [value, setValue] = React.useState(2);
-  const [fullPageHeight, setFullPageHeight] = useState(document.documentElement.scrollHeight);
+  const [fullPageHeight, setFullPageHeight] = useState(0);
 
   useEffect(() => {
+    // Function to update fullPageHeight
     const updateFullPageHeight = () => {
       const newHeight = document.documentElement.scrollHeight;
       setFullPageHeight(newHeight);
     };
-    window.addEventListener('resize', updateFullPageHeight);
+
+    // Check if the document object is available (client-side) before adding the event listener
+    if (typeof document !== 'undefined') {
+      updateFullPageHeight();
+      window.addEventListener('resize', updateFullPageHeight);
+    }
+
+    // Remove the event listener when the component is unmounted
     return () => {
-      window.removeEventListener('resize', updateFullPageHeight);
+      if (typeof document !== 'undefined') {
+        window.removeEventListener('resize', updateFullPageHeight);
+      }
     };
   }, []);
 
@@ -73,7 +84,7 @@ const User = ({ params }) => {
                   onClick={() => router.push("/step_one", { shallow: false })}
                 >
                   <ListItemIcon>
-                    <EditNoteIcon color='white' />
+                      <EditNoteIcon color='white' />
                   </ListItemIcon>
                   <ListItemText primary='Place new order' />
                 </ListItemButton>
@@ -91,7 +102,9 @@ const User = ({ params }) => {
               <ListItem disablePadding>
                 <ListItemButton onClick={() => setValue(2)}>
                   <ListItemIcon>
+                  <Badge badgeContent={4} color="primary">
                     <FormatListNumberedIcon />
+                    </Badge>
                   </ListItemIcon>
                   <ListItemText primary='All orders' />
                 </ListItemButton>
@@ -141,7 +154,13 @@ const User = ({ params }) => {
               >
                 <BottomNavigationAction label="New Order" icon={<EditNoteIcon />}  onClick={() => router.push("/step_one", { shallow: false })}/>
                 <BottomNavigationAction label="Account" icon={<AccountBoxIcon />} />
-                <BottomNavigationAction label="All Orders" icon={<FormatListNumberedIcon />} />
+
+                <BottomNavigationAction label="All Orders" icon={ 
+                <Badge badgeContent={4} color="primary">
+                  <FormatListNumberedIcon />
+                  </Badge>
+                } />
+
                 <BottomNavigationAction label="Log Out" icon={<LogoutIcon />} onClick={logOut}/>
               </BottomNavigation>
             </Box>
