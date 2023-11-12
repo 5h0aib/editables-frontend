@@ -43,8 +43,6 @@ import Badge from '@mui/material/Badge';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
 
-import { useRouter } from "next/navigation"
-
 const fileTypes = ["ZIP"]; 
 
 const firebaseConfig = {
@@ -61,8 +59,6 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
 const AllOrders = () => {
-
-  const router = useRouter()
 
   const [allOrders, setAllOrders] = useState([])
   const [filteredOrders, setFilteredOrders] = useState([])
@@ -265,7 +261,7 @@ const AllOrders = () => {
                     },
                   }}
                   size = "small" 
-                  onClick={() => router.push(`/admin/bookings`, { shallow: true })}
+                  // onClick={() => }
                 >
                    Custom orders
                 </Button>
@@ -293,7 +289,7 @@ const AllOrders = () => {
                   
                 }}
                 size = "small" 
-                onClick={() => router.push(`/admin/bookings`, { shallow: true })}
+                // onClick={() => }
               >
                Custom orders
                <AddCircleRoundedIcon  

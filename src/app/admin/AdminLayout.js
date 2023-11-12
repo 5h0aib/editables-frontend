@@ -21,7 +21,7 @@ logOut
 } from "@/externalApi"
 
 const drawerWidth = 240
-const navItems = ["all order", "transaction", "custom order", "bookings"]
+const navItems = ["all order", "transaction", "custom order"]
 
 function AdminLayout(props) {
   const { window } = props
