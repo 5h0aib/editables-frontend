@@ -39,6 +39,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 
 
+import Badge from '@mui/material/Badge';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+
+
 const fileTypes = ["ZIP"]; 
 
 const firebaseConfig = {
@@ -158,9 +162,9 @@ const AllOrders = () => {
       changeOrderStatus(e.target.value, id)
       .then((res) =>{
         if (rowIndex !== -1) {
-          // Update the order_status for the specific row
+          
           updatedOrders[rowIndex].order_status = newStatus;
-          setFilteredOrders(updatedOrders); // Update the state
+          setFilteredOrders(updatedOrders); 
         }
         console.log(res)
       }
@@ -175,34 +179,133 @@ const AllOrders = () => {
         <Typography variant='h5' gutterBottom display={"block"}>
         {type.charAt(0).toUpperCase() + type.slice(1)} orders
         </Typography>
-        <Button
-          variant={type == "all" ? "outlined" : "standard"}
-          sx={{ background: "white", marginRight: "20px" }}
-          onClick={() => filterOrder("all")}
-        >
-          All orders
-        </Button>
-        <Button
-          variant={type == "basic" ? "outlined" : "standard"}
-          sx={{ background: "white", marginRight: "20px" }}
-          onClick={() => filterOrder("standard")}
-        >
-          standard
-        </Button>
-        <Button
-          variant={type == "express" ? "outlined" : "standard"}
-          sx={{ background: "white", marginRight: "20px" }}
-          onClick={() => filterOrder("express")}
-        >
-          Express
-        </Button>
-        <Button
-          variant={type == "custom" ? "outlined" : "stantdard"}
-          sx={{ background: "white" }}
-          onClick={() => filterOrder("custom")}
-        >
-          Custom
-        </Button>
+
+
+
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <Button
+              variant={type == "all" ? "outlined" : "standard"}
+              sx={{
+                background: "white",
+                marginRight: "20px",
+                '@media (max-width: 600px)': {
+                  marginTop: '10px', 
+                },
+              }}
+              onClick={() => filterOrder("all")}
+            >
+              All orders
+            </Button>
+            <Button
+              variant={type == "basic" ? "outlined" : "standard"}
+              sx={{
+                background: "white",
+                marginRight: "20px",
+                '@media (max-width: 600px)': {
+                  marginTop: '10px', 
+                },
+              }}
+              onClick={() => filterOrder("standard")}
+            >
+              Standard
+            </Button>
+            <Button
+              variant={type == "express" ? "outlined" : "standard"}
+              sx={{
+                background: "white",
+                marginRight: "20px",
+               
+                '@media (max-width: 600px)': {
+                  marginTop: '10px',
+                },
+              }}
+              onClick={() => filterOrder("express")}
+            >
+              Express
+            </Button>
+
+            <Button
+              variant={type == "custom" ? "outlined" : "standard"}
+              sx={{
+                background: "white",
+                marginRight: "20px",
+                
+                '@media (max-width: 600px)': {
+                  marginTop: '10px', 
+                },
+              }}
+              onClick={() => filterOrder("custom")}
+            >
+              Custom
+            </Button>
+
+
+      
+            <Badge badgeContent={4} color="warning" sx={{
+                  display: 'none' ,
+                  '@media (max-width: 750px)': {
+                    marginTop: '10px', 
+                    // display: "inline-block"
+                    display: "grid"
+                    },
+                }}>
+                  <Button
+                  variant="contained"
+                  sx={{
+                    background: "black",
+                    display: 'none' ,
+                    '@media (max-width: 750px)': {
+                      display: 'block',
+                    },
+                  }}
+                  size = "small" 
+                  // onClick={() => }
+                >
+                   Custom orders
+                </Button>
+            </Badge>
+     
+
+
+
+     
+          </div>
+          <Badge badgeContent={4} color="warning" 
+                  sx={{
+                  '@media (max-width: 750px)': {
+                    display: 'none' 
+                  },
+                  
+                }}>
+              <Button
+                variant="contained"
+                sx={{
+                  background: "black",
+                  '@media (max-width: 750px)': {
+                    display: 'none' 
+                  },
+                  
+                }}
+                size = "small" 
+                // onClick={() => }
+              >
+               Custom orders
+               <AddCircleRoundedIcon  
+               sx={{
+                  marginLeft: '40px',
+                }}/>
+              </Button>
+          </Badge>
+        </div>
+
+
+
+
+
+
+
         <br />
         <br />
         <TableContainer

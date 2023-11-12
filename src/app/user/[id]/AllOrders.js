@@ -12,7 +12,6 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Rating,
   Select,
   Typography,
