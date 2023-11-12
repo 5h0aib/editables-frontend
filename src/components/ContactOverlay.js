@@ -1,5 +1,5 @@
 "use client"
-import { createBooking } from "@/externalApi"
+import { createBooking } from "@/externalApi";
 import {
   Button,
   Dialog,
@@ -7,53 +7,55 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material"
-import { useRouter } from "next/navigation"
-import React, { useState } from "react"
+} from "@mui/material";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const ContactOverlay = ({ setOpen, open }) => {
-  const [phone, setPhone] = useState("")
-  const router = useRouter()
+  const [phone, setPhone] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const router = useRouter();
+
   const handleClick = () => {
     createBooking(phone)
       .then((res) => {
-        console.log("custom booking created: ", res)
-        router.push(`user/${localStorage.getItem("uid")}`, { shallow: false })
-        setOpen(false)
+        setSuccessMessage("Custom booking created");
+        setTimeout(() => {
+          router.push(`user/${localStorage.getItem("uid")}`, { shallow: false });
+        }, 2000);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
 
   return (
     <Dialog onClose={() => setOpen(false)} open={open}>
       <DialogContent>
-        <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "350px" }}>
+        <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "300px" }}>
           <Typography variant='h4' gutterBottom align='center'>
-            Scheduling Call 
+            Scheduling Call
           </Typography>
           <Typography variant='h6' gutterBottom align='center' fontSize={"2vw"}>
-            We'll reach out to you on whatsapp
+            We'll reach out to you on WhatsApp
           </Typography>
           <TextField
             placeholder='Your Contact Number'
             onChange={(e) => setPhone(e.target.value)}
           />
-
-          {/* <Link href='services'> */}
-          <Button
-            variant='contained'
-            size='large'
-            // fullWidth
-            onClick={handleClick}
-          >
+          {successMessage && (
+            <Typography variant='body1' color='success' align='center'>
+              {successMessage}
+            </Typography>
+          )}
+          <Button variant='contained' size='large' onClick={handleClick}>
             Next
           </Button>
         </Stack>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default ContactOverlay
+export default ContactOverlay;
+

@@ -71,6 +71,8 @@ const AllOrders = () => {
 
   const [isUploading, setIsUploading] = useState(false);
 
+  const [numBookings, setNumBookings] = useState(0);
+
 
   useEffect(() => {
 
@@ -78,13 +80,16 @@ const AllOrders = () => {
       .then((orders) => {
         setAllOrders(orders.results)
         setFilteredOrders(orders.results)
-        console.log("fectched Orders: ", orders)
+        // console.log("fectched Orders: ", orders)
       })
       .catch((err) => console.log(err))
 
     getBookings()
       .then((data) => {
-        console.log("Bookings:", data)
+
+        setNumBookings(data.length)
+        console.log(numBookings)
+        // console.log("Bookings:", data)
       })
       .catch((error) => {
         console.error("Error fetching orders:", error)
@@ -247,7 +252,7 @@ const AllOrders = () => {
 
 
       
-            <Badge badgeContent={4} color="warning" sx={{
+            <Badge badgeContent={numBookings} color="warning" sx={{
                   display: 'none' ,
                   '@media (max-width: 750px)': {
                     marginTop: '10px', 
@@ -267,7 +272,7 @@ const AllOrders = () => {
                   size = "small" 
                   onClick={() => router.push(`/admin/bookings`, { shallow: true })}
                 >
-                   Custom orders
+                   Custom order requests
                 </Button>
             </Badge>
      
@@ -276,7 +281,7 @@ const AllOrders = () => {
 
     
           </div>
-          <Badge badgeContent={4} color="warning" 
+          <Badge badgeContent={numBookings} color="warning" 
                   sx={{
                   '@media (max-width: 750px)': {
                     display: 'none' 
@@ -295,7 +300,7 @@ const AllOrders = () => {
                 size = "small" 
                 onClick={() => router.push(`/admin/bookings`, { shallow: true })}
               >
-               Custom orders
+               Custom order requests
                <AddCircleRoundedIcon  
                sx={{
                   marginLeft: '40px',
@@ -407,15 +412,15 @@ const AllOrders = () => {
         </TableContainer>
 
         <Dialog open={isUploading} maxWidth="xs" fullWidth>
-        <Box p={2}>
-          <DialogContent>
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <DialogTitle>Your Upload is being processed</DialogTitle>
-              <CircularProgress size={80}/>
-              <DialogTitle>please wait</DialogTitle>
+            <Box p={2}>
+              <DialogContent>
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <DialogTitle>Your Upload is being processed</DialogTitle>
+                  <CircularProgress size={80}/>
+                  <DialogTitle>please wait</DialogTitle>
+                </Box>
+              </DialogContent>
             </Box>
-          </DialogContent>
-        </Box>
         </Dialog>
       </div>
     </AdminLayout>

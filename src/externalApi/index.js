@@ -191,27 +191,12 @@ const putUserDetails = async (postData) => {
 }
 
 const createBooking = async (contact_number) => {
-  // Get the current date
-  const currentDate = new Date()
-  const year = currentDate.getFullYear()
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0")
-  const day = currentDate.getDate().toString().padStart(2, "0")
-
-  // Format the current date as "YYYY-MM-DD"
-  const bookingDate = `${year}-${month}-${day}`
-
-  // Get the current time
-  const hours = currentDate.getHours().toString().padStart(2, "0")
-  const minutes = currentDate.getMinutes().toString().padStart(2, "0")
-
-  const startTime = `${hours}:${minutes} ${hours < 12 ? "AM" : "PM"}`
+  
   let data = {
     user_id: localStorage.getItem("uid"),
     browser_time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    booking_status: "Scheduled",
     contact_number,
   }
-  console.log("Bookin Data: ", data)
   try {
     const response = await fetch(`${baseUrl}/bookings/`, {
       method: "POST",
