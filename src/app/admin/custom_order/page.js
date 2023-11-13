@@ -29,19 +29,23 @@ const CustomOrder = () => {
 
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
-  const [allStyles, setAllStyles] = useState([])
   const [allCategories, setAllCategories] = useState([])
-  const [selectedCategory , setselectedCategory] = useState("")
+  const [selectedCategory , setSelectedCategory] = useState({id:"",name:""})
+  const [allStyles, setAllStyles] = useState([])
+  const [filteredStyles, setFilteredStyles] = useState([])
+  const [selectedStyle , setSelectedStyle] = useState({id:"",name:""})
   const [dateValue, setDateValue] = useState(dayjs().add(4, 'day')  );
 
 
-  useEffect(() => {
 
+  useEffect(() => {
+    let initialCategory = { id: "", name: "" };
+    let filtered = []
     getCategories()
       .then((data) => {
         setAllCategories(data)
-        setselectedCategory(data[0].category_name)
-        console.log("categories: ", data)
+        initialCategory = { id: data[0].id, name: data[0].category_name };
+        setSelectedCategory(initialCategory)
       })
       .catch((err) => console.log(err))
 
@@ -49,8 +53,10 @@ const CustomOrder = () => {
     getStyles()
       .then((data) => {
         setAllStyles(data)
-        console.log("styles:", data)
-      })
+        filtered = data.filter((style) => style.category_id === initialCategory.id)
+        setFilteredStyles(filtered)
+        setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+        })
       .catch((error) => {
         console.log(error)
       })
@@ -76,9 +82,17 @@ const CustomOrder = () => {
 
 const handleCategoryChange = (id,name)=>{
 
-  setselectedCategory(name)
-}
+  setSelectedCategory({id:id,name:name})
 
+  const filtered = allStyles.filter((style) => style.category_id === id);
+  setFilteredStyles(filtered)
+  setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+
+}
+const handleOrder = () =>{
+  console.log(selectedCategory)
+  console.log(selectedStyle)
+}
 
   return (
     <AdminLayout>
@@ -137,11 +151,11 @@ const handleCategoryChange = (id,name)=>{
                 size='small'
                 style={{ background: "white" }}
                 fullWidth
-                value={selectedCategory}
+                value={selectedCategory.name}
                 // onChange={handleChange}
               >
                 {allCategories?.map((category) => (
-                  <MenuItem key={category.id} value = {category.category_name} onClick={()=>{handleCategoryChange(category.id,category_name)}}>
+                  <MenuItem key={category.id} value = {category.category_name} onClick={()=>{handleCategoryChange(category.id,category.category_name)}}>
                     {category.category_name}
                   </MenuItem>
                 ))}
@@ -155,11 +169,12 @@ const handleCategoryChange = (id,name)=>{
                 size='small'
                 style={{ background: "white" }}
                 fullWidth
+                value={selectedStyle.name}
                 // onChange={handleChange}
               >
-                {styles.map((style) => (
-                  <MenuItem value={style} key={style}>
-                    {style}
+                {filteredStyles?.map((style) => (
+                  <MenuItem value={style.style_name} key={style.id} onClick={()=>{setSelectedStyle({id:style.id,name:style.style_name})}}>
+                    {style.style_name}
                   </MenuItem>
                 ))}
               </Select>
@@ -234,7 +249,7 @@ const handleCategoryChange = (id,name)=>{
       </SplitLayout>
       <br />
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button variant='contained' size='large' style={{ minWidth: "33vw" }}>
+        <Button variant='contained' size='large' style={{ minWidth: "33vw" }} onClick={()=>{handleOrder()}} >
           issue custom order
         </Button>
       </div>
