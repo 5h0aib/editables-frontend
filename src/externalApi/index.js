@@ -28,21 +28,6 @@ function deleteAllCookies() {
 }
 
 
-
-
-// const access_token = localStorage.getItem("access_token");
-
-// if (access_token) {
-//   const headers = {
-//     "Content-Type": "application/json",
-//     Authorization: `JWT ${access_token}`,
-//   };
-//   // You can now use the 'headers' object for your HTTP requests.
-// } else {
-//   // Handle the case where the access token is not available.
-//   console.error("Access token is missing or invalid.");
-// }
-
   var item = ''
   if (typeof window !== 'undefined') {
     item = localStorage.getItem('access_token')
@@ -248,10 +233,8 @@ const getOrders = async () => {
 
 
 const getTransactions = async () => {
-  // console.log("cookies: ", document.cookie)
-  // console.log("access token: ")
   try {
-    const response = await fetch(`${baseUrl}/transactions/`, {
+    const response = await fetch(`${baseUrl}/invoices/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -268,6 +251,38 @@ const getTransactions = async () => {
     console.error("Error fetching data:", error)
   }
 }
+
+
+const getInvoice = async (inv_id) => {
+  try {
+    const response = await fetch(`${baseUrl}/invoices/${inv_id}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const blob = await response.blob(); // Get the response as a blob
+
+    // Create a URL for the blob and trigger the download
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Invoice_${inv_id}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+
+    // return response
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
+
+
 
 const getBookings = async () => {
   // console.log("cookies: ", document.cookie)
@@ -350,6 +365,7 @@ const createUpload = async (postData) => {
       body: JSON.stringify(postData),
     })
 
+    // change this theres a bug here ...............................................
     const responseData = await response.json()
     // console.log(responseData)
     if (localStorage.getItem("isStaff")){
@@ -445,5 +461,6 @@ export {
   login,
   logOut,
   getCookie,
-  createUpload
+  createUpload,
+  getInvoice
 }

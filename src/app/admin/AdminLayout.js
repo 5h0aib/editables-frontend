@@ -44,7 +44,7 @@ function AdminLayout(props) {
               sx={{ textAlign: "center" }}
               onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}
             >
-              <ListItemText primary={item} />
+              <ListItemText primary={item.toUpperCase()} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -56,7 +56,7 @@ function AdminLayout(props) {
               sx={{ textAlign: "center" }}
               onClick={logOut}
             >
-              <ListItemText primary={"logOut"} />
+              <ListItemText primary={"Log Out"} />
             </ListItemButton>
           </ListItem>
 
@@ -95,7 +95,7 @@ function AdminLayout(props) {
               </Button>
             ))}
 
-                    <Button key={"logOut"} variant="contained" onClick={logOut}>
+                    <Button key={"Log Out"} variant="contained" onClick={logOut}>
                       logOut
                     </Button>
           </Box>

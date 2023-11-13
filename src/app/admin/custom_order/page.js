@@ -13,9 +13,28 @@ import {
 import React, { useEffect } from "react"
 import AdminLayout from "../AdminLayout"
 import { categories, styles } from "@/hardCode/all_style_catergories"
-import { getBookings } from "@/externalApi"
+import { getAddons,getCategories,getStyles } from "@/externalApi"
 
 const CustomOrder = () => {
+
+  useEffect(() => {
+
+    getCategories()
+      .then((data) => {
+        console.log("categories: ", data)
+      })
+      .catch((err) => console.log(err))
+
+    getStyles()
+      .then((data) => {
+        console.log("styles:", data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
+
+
   const demoData = {
     addon: [
       { uid: "1", order_addon_description: "" },

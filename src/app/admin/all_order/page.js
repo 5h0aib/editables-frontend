@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
 import {
   Button,
   FormControl,
@@ -186,7 +185,7 @@ const AllOrders = () => {
     <AdminLayout>
       <div>
         <Typography variant='h5' gutterBottom display={"block"}>
-        {type.charAt(0).toUpperCase() + type.slice(1)} orders
+        {type.charAt(0).toUpperCase() + type.slice(1)} Orders
         </Typography>
 
 
@@ -208,7 +207,7 @@ const AllOrders = () => {
               All orders
             </Button>
             <Button
-              variant={type == "basic" ? "outlined" : "standard"}
+              variant={type == "standard" ? "outlined" : "standard"}
               sx={{
                 background: "white",
                 marginRight: "20px",
@@ -292,6 +291,10 @@ const AllOrders = () => {
                 variant="contained"
                 sx={{
                   background: "black",
+                  width:"300px",
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   '@media (max-width: 750px)': {
                     display: 'none' 
                   },
@@ -303,8 +306,9 @@ const AllOrders = () => {
                Custom order requests
                <AddCircleRoundedIcon  
                sx={{
-                  marginLeft: '40px',
-                }}/>
+                  marginLeft: '10px',
+                }}
+                />
               </Button>
           </Badge>
         </div>
@@ -313,7 +317,7 @@ const AllOrders = () => {
         <br />
         <TableContainer
           fullWidth
-          component={Paper}
+          // component={Paper}
           style={{ minWidth: "100%" }}
         >
           <Table aria-label='simple table' style={{ width: "100%" }}>

@@ -1,7 +1,7 @@
-import { Roboto } from "next/font/google"
+import { Roboto,Montserrat } from "next/font/google"
 import { createTheme, responsiveFontSizes } from "@mui/material/styles"
 
-const roboto = Roboto({
+const roboto = Montserrat({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",

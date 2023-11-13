@@ -49,7 +49,7 @@ const allBookings = () => {
         </Typography>
         <TableContainer
           fullWidth
-          component={Paper}
+          // component={Paper}
           style={{ minWidth: "100%" }}
         >
           <Table aria-label='simple table' style={{ width: "100%" }}>

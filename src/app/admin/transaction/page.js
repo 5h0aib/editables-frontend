@@ -6,155 +6,109 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
 import {
   Button,
-  MenuItem,
-  Select,
   Typography,
 } from "@mui/material"
 import AdminLayout from "../AdminLayout"
-import { getTransactions } from "@/externalApi"
+import { getTransactions,getInvoice } from "@/externalApi"
+
+import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/Download';
+
+
 const AllOrders = () => {
   const [type, setType] = useState("all")
-  const [selectedStatus, setStatus] = useState("all")
-  function createData(
-    order,
-    dateOfIssue,
-    statuss,
-    delivery,
-    rating,
-    type,
-    style,
-    totalBill
-  ) {
-    return {
-      order,
-      dateOfIssue,
-      statuss,
-      delivery,
-      rating,
-      type,
-      style,
-      totalBill,
-    }
-  }
-  const rows = [
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Processing",
-      "3rd September 2023",
-      5,
-      "basic",
-      "Classic film tones",
-      "$1200"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "In review",
-      "3rd September 2023",
-      0,
-      "express",
-      "Basic color correction",
-      "$1200"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Completed",
-      "3rd September 2023",
-      0,
-      "basic",
-      "Dark & moody",
-      "$1200"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "In review",
-      "3rd September 2023",
-      4,
-      "basic",
-      "Classic film tones",
-      "$1200"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Culling",
-      "3rd September 2023",
-      0,
-      "custom",
-      "Custom",
-      "$1200"
-    ),
-    createData(
-      `Helix’s wedding Order No. 9965`,
-      "3rd September 2023",
-      "Payment due",
-      "3rd September 2023",
-      3,
-      "custom",
-      "Custom",
-      "$1200"
-    ),
-  ]
+  const [allTransactions, setAllTransactions] = useState([])
+  const [filteredTransactions, setFilteredTransactions] = useState([])
 
-  function handleChange(event) {
-    console.log("status changed")
-    setStatus(event.target.value)
-  }
-  function filteredRows() {
-    if (type === "all") {
-      return rows
+
+  function filteredRows(name) {
+    setType(name)
+    if (name === "all") {
+      setFilteredTransactions(allTransactions)
     } else {
-      return rows.filter((row) => row.type === type)
+      setFilteredTransactions(
+        allTransactions.filter(
+        (row) => row.order_type.toLowerCase() === name
+      )
+      )
     }
   }
+
+
   useEffect(() => {
     getTransactions()
       .then((data) => {
-        console.log("Fetched orders:", data)
+        setAllTransactions(data)
+        setFilteredTransactions(data)
+        // console.log("Transactions", data)
       })
       .catch((error) => {
-        console.error("Error fetching orders:", error)
+        console.log(error)
       })
   }, [])
-  // const distinctStatuses =  [...new Set(rows.map((row) => row.status))]
-  // console.log(distinctStatuses)
+
+
+  const handleIvoiceDownload = (inv_id) =>{
+    getInvoice(inv_id)
+  }
+
   return (
     <AdminLayout>
       <div>
         <Typography variant='h5' gutterBottom display={"block"}>
-          All orders
+          All Orders
         </Typography>
         <Button
-          variant={type == "all" ? "outlined" : "stantdard"}
-          sx={{ background: "white", marginRight: "20px" }}
-          onClick={() => setType("all")}
+          variant={type == "all" ? "outlined" : "standard"}
+          sx={{
+            background: "white",
+            marginRight: "20px",
+            '@media (max-width: 600px)': {
+              marginTop: '10px', 
+            },
+          }}
+          onClick={() => filteredRows("all")}
         >
-          All orders
+          All Orders
         </Button>
         <Button
-          variant={type == "basic" ? "outlined" : "stantdard"}
-          sx={{ background: "white", marginRight: "20px" }}
-          onClick={() => setType("basic")}
+          variant={type == "standard" ? "outlined" : "standard"}
+          sx={{
+            background: "white",
+            marginRight: "20px",
+            '@media (max-width: 600px)': {
+              marginTop: '10px', 
+            },
+          }}
+          onClick={() => filteredRows("standard")}
         >
-          Basic
+          Standard
         </Button>
         <Button
-          variant={type == "express" ? "outlined" : "stantdard"}
-          sx={{ background: "white", marginRight: "20px" }}
-          onClick={() => setType("express")}
+          variant={type == "express" ? "outlined" : "standard"}
+          sx={{
+            background: "white",
+            marginRight: "20px",
+            '@media (max-width: 600px)': {
+              marginTop: '10px', 
+            },
+          }}
+          onClick={() => filteredRows("express")}
         >
           Express
         </Button>
         <Button
-          variant={type == "custom" ? "outlined" : "stantdard"}
-          sx={{ background: "white" }}
-          onClick={() => setType("custom")}
+          variant={type == "custom" ? "outlined" : "standard"}
+          sx={{
+            background: "white",
+
+            '@media (max-width: 600px)': {
+              marginTop: '10px', 
+            },
+          }}
+          onClick={() => filteredRows("custom")}
         >
           Custom
         </Button>
@@ -162,7 +116,7 @@ const AllOrders = () => {
         <br />
         <TableContainer
           fullWidth
-          component={Paper}
+          // component={Paper}
           style={{ minWidth: "100%" }}
         >
           <Table aria-label='simple table' style={{ width: "100%" }}>
@@ -171,47 +125,40 @@ const AllOrders = () => {
                 <TableCell>Order</TableCell>
                 <TableCell>Issue Date</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Type</TableCell>
                 <TableCell>Delivery</TableCell>
                 <TableCell>Total Bill</TableCell>
                 <TableCell>Invoice</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredRows().map((row) => (
+              {filteredTransactions?.map((row) => (
                 <TableRow
-                  key={row.name}
+                  key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  {/*  order, dateOfIssue, statuss, delivery, rating */}
                   <TableCell component='th' scope='row'>
-                    {row.order}
+                    {row.order_id}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.dateOfIssue}
+                    {row.issue_date}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    <Select
-                      value={row.statuss}
-                      placeholder='Status'
-                      onChange={handleChange}
-                      size='small'
-                      fullWidth
-                      style={{ color: "black" }}
-                    >
-                      <MenuItem value={"In review"}>In review</MenuItem>
-                      <MenuItem value={"Processing"}>processing</MenuItem>
-                      <MenuItem value={"Payment due"}>payment due</MenuItem>
-                      <MenuItem value={"Completed"}>completed</MenuItem>
-                    </Select>
+                  {row.order_status}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.delivery}
+                  {row.order_type}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.totalBill}
+                    {row.delivery_date}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.style}
+                    {row.gross_amount}
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <IconButton onClick={() => handleIvoiceDownload(row.id)}>
+                            <DownloadIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}

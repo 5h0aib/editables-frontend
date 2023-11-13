@@ -98,7 +98,9 @@ const AllOrders = () => {
       </Button>
       <br />
       <br />
-      <TableContainer fullWidth component={Paper} style={{ minWidth: "100%" }}>
+      <TableContainer fullWidth 
+      // component={Paper} 
+      style={{ minWidth: "100%" }}>
         <Table aria-label='simple table' style={{ width: "100%" }}>
           <TableHead>
             <TableRow>
