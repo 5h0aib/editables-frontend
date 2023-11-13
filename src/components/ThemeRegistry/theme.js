@@ -26,6 +26,8 @@ const roboto = Montserrat({
 //     },
 //   },
 // });
+
+
 const button = {
   variants: [
     {
@@ -83,6 +85,7 @@ const paper = {
     },
   ],
 }
+
 let theme = createTheme({
   palette: {
     primary: {
@@ -106,6 +109,11 @@ let theme = createTheme({
     MuiTextField: textField,
     MuiPaper: paper,
   },
+  // typography: {
+  //   button: {
+  //     textTransform: 'none'
+  //   }
+  // }
 })
 
 theme = responsiveFontSizes(theme)

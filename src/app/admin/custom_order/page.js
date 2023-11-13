@@ -19,10 +19,12 @@ import { useSearchParams } from "next/navigation"
 
 
 import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import CircularProgress from '@mui/material/CircularProgress';
+import { filter } from "jszip"
 
 
 const CustomOrder = () => {
@@ -35,6 +37,10 @@ const CustomOrder = () => {
   const [filteredStyles, setFilteredStyles] = useState([])
   const [selectedStyle , setSelectedStyle] = useState({id:"",name:""})
   const [dateValue, setDateValue] = useState(dayjs().add(4, 'day')  );
+
+
+
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -53,14 +59,21 @@ const CustomOrder = () => {
     getStyles()
       .then((data) => {
         setAllStyles(data)
-        filtered = data.filter((style) => style.category_id === initialCategory.id)
-        setFilteredStyles(filtered)
-        setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
         })
       .catch((error) => {
         console.log(error)
       })
   }, [])
+
+  useEffect(() => {
+        const filtered = allStyles.filter((style) => style.category_id === selectedCategory.id)
+        if(filtered.length>0){
+        setFilteredStyles(filtered)
+        setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+        }
+  }, [selectedCategory,allStyles])
+
+
 
 
   const demoData = {
@@ -81,12 +94,17 @@ const CustomOrder = () => {
   }
 
 const handleCategoryChange = (id,name)=>{
+  setLoading(true);
 
   setSelectedCategory({id:id,name:name})
 
   const filtered = allStyles.filter((style) => style.category_id === id);
   setFilteredStyles(filtered)
   setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 2000);
 
 }
 const handleOrder = () =>{
@@ -197,54 +215,75 @@ const handleOrder = () =>{
           <Typography variant='h6' gutterBottom display={"block"}>
             Add-ons
           </Typography>
-          <FormControlLabel
-            sx={{ fontSize: "5em" }}
-            control={<Checkbox size='medium' />}
-            label='Culling'
-          />
-          <div style={{ marginLeft: "32px" }}>
-            <Typography variant='p' gutterBottom display={"block"}>
-              Narrow down the number of images you want
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              Narrow down the number of images you want
-            </Typography>
-            <br />
-            <TextField size='small' variant='outlined' fullWidth />
-          </div>
 
-          <div>
-            <FormControlLabel
-              sx={{ fontSize: "5em" }}
-              control={<Checkbox size='medium' />}
-              label='Quick look'
-            />
-          </div>
-          <div style={{ marginLeft: "32px" }}>
-            <Typography variant='p' gutterBottom display={"block"}>
-              Get a preview of the 10% of your total edited pictures in 36-48
-              hours
-            </Typography>
-          </div>
 
-          <div>
-            <FormControlLabel
-              sx={{ fontSize: "5em" }}
-              control={<Checkbox size='medium' />}
-              label='Monochrome Melodies'
-            />
-          </div>
-          <div style={{ marginLeft: "32px" }}>
-            <Typography variant='p' gutterBottom display={"block"}>
-              Beautiful images in B&W, edited to highlight the best ambience.
-              We’ll keep 10% of them
-            </Typography>
-          </div>
-          <FormControlLabel
-            sx={{ fontSize: "5em" }}
-            control={<Checkbox size='medium' />}
-            label='Creative cropping'
-          />
+
+
+
+
+
+          {loading ? ( // Conditional rendering based on the loading state
+            <div style={{ display: "flex", justifyContent: "center" ,marginTop:"30px"}}>
+             <CircularProgress size={100} thickness={2}/>
+            </div>
+          ) : (
+            <>
+              <FormControlLabel
+                sx={{ fontSize: "5em" }}
+                control={<Checkbox size="medium" />}
+                label="Culling"
+              />
+              <div style={{ marginLeft: "32px" }}>
+                <Typography variant="p" gutterBottom display={"block"}>
+                  Narrow down the number of images you want
+                </Typography>
+                <Typography variant="caption" gutterBottom>
+                  Narrow down the number of images you want
+                </Typography>
+                <br />
+                <TextField size="small" variant="outlined" fullWidth />
+              </div>
+
+              <FormControlLabel
+                sx={{ fontSize: "5em" }}
+                control={<Checkbox size="medium" />}
+                label="Quick look"
+              />
+              <div style={{ marginLeft: "32px" }}>
+                <Typography variant="p" gutterBottom display={"block"}>
+                  Get a preview of the 10% of your total edited pictures in 36-48
+                  hours
+                </Typography>
+              </div>
+
+              <FormControlLabel
+                sx={{ fontSize: "5em" }}
+                control={<Checkbox size="medium" />}
+                label="Monochrome Melodies"
+              />
+              <div style={{ marginLeft: "32px" }}>
+                <Typography variant="p" gutterBottom display={"block"}>
+                  Beautiful images in B&W, edited to highlight the best ambience.
+                  We’ll keep 10% of them
+                </Typography>
+              </div>
+
+              <FormControlLabel
+                sx={{ fontSize: "5em" }}
+                control={<Checkbox size="medium" />}
+                label="Creative cropping"
+              />
+            </>
+          )}
+
+
+
+
+
+
+
+
+
         </div>
       </SplitLayout>
       <br />
