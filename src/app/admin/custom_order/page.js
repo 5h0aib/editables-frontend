@@ -10,23 +10,45 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import React, { useEffect } from "react"
+
+import React, { useEffect ,useState} from "react"
 import AdminLayout from "../AdminLayout"
-import { categories, styles } from "@/hardCode/all_style_catergories"
+import { styles } from "@/hardCode/all_style_catergories"
 import { getAddons,getCategories,getStyles } from "@/externalApi"
+import { useSearchParams } from "next/navigation"
+
+
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 
 const CustomOrder = () => {
+
+  const searchParams = useSearchParams()
+  const email = searchParams.get("email")
+  const [allStyles, setAllStyles] = useState([])
+  const [allCategories, setAllCategories] = useState([])
+  const [selectedCategory , setselectedCategory] = useState("")
+  const [dateValue, setDateValue] = useState(dayjs().add(4, 'day')  );
+
 
   useEffect(() => {
 
     getCategories()
       .then((data) => {
+        setAllCategories(data)
+        setselectedCategory(data[0].category_name)
         console.log("categories: ", data)
       })
       .catch((err) => console.log(err))
 
+
     getStyles()
       .then((data) => {
+        setAllStyles(data)
         console.log("styles:", data)
       })
       .catch((error) => {
@@ -40,17 +62,24 @@ const CustomOrder = () => {
       { uid: "1", order_addon_description: "" },
       { uid: "2", order_addon_description: "" },
     ],
-    cancel_url: "https://www.facebook.com/",
     category_id: "1",
+    delivery_method:"Custom",
     delivery_date: "2023-11-01",
     number_of_images: 234,
     order_amount: 100,
+    order_status: 'Payment-due',
     order_name: "Your Order Name",
     order_rating: 4.5,
     style_id: "1",
-    success_url: "https://www.facebook.com/",
     user_id: "7",
   }
+
+const handleCategoryChange = (id,name)=>{
+
+  setselectedCategory(name)
+}
+
+
   return (
     <AdminLayout>
       <Typography variant='h5' gutterBottom display={"block"}>
@@ -59,6 +88,12 @@ const CustomOrder = () => {
       <SplitLayout alignItems='flex-start'>
         <div>
           <Grid container spacing={4}>
+          <Grid item xs={12} sm={6} md={6}>
+              <Typography variant='p' gutterBottom display={"block"}>
+                User email
+              </Typography>
+              <TextField size='small' value ={email} fullWidth  disabled/>
+            </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
                 Number of Images
@@ -67,21 +102,32 @@ const CustomOrder = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
-                User email
-              </Typography>
-              <TextField size='small' fullWidth />
-            </Grid>
-            <Grid item xs={12} sm={6} md={6}>
-              <Typography variant='p' gutterBottom display={"block"}>
                 Issuing date
               </Typography>
-              <TextField size='small' fullWidth />
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}  style={{ width: '100%' }}>
+                  <DatePicker
+                    value={dayjs()}
+                    disabled
+                    style={{ width: '100%' }}
+                    sx={{ width:"100%" }}
+                  />
+              </LocalizationProvider>
+
+              {/* <TextField size='small' fullWidth /> */}
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
                 Delivery date
               </Typography>
-              <TextField size='small' fullWidth />
+              <LocalizationProvider dateAdapter={AdapterDayjs} fullWidth>
+                  <DatePicker
+                    value={dateValue}
+                    onChange={(newValue) => setDateValue(newValue)}
+                    fullWidth
+                    sx={{ width:"100%" }}
+                  />
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
@@ -91,16 +137,14 @@ const CustomOrder = () => {
                 size='small'
                 style={{ background: "white" }}
                 fullWidth
+                value={selectedCategory}
                 // onChange={handleChange}
               >
-                {categories.map((category) => (
-                  <MenuItem value={category} key={category}>
-                    {category}
+                {allCategories?.map((category) => (
+                  <MenuItem key={category.id} value = {category.category_name} onClick={()=>{handleCategoryChange(category.id,category_name)}}>
+                    {category.category_name}
                   </MenuItem>
                 ))}
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
               </Select>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
@@ -118,9 +162,6 @@ const CustomOrder = () => {
                     {style}
                   </MenuItem>
                 ))}
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
               </Select>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
