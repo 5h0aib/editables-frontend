@@ -200,7 +200,8 @@ const handleOrder = () =>{
     delivery_method: 'Custom',
     order_amount: price,
     booking_id:booking_id,
-    order_description:description
+    order_description:description,
+    order_status:"Payment-due"
   }
 
   

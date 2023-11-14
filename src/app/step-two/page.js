@@ -122,6 +122,7 @@ const StepTwo = () => {
       style_id: searchParams.get("style_id"),
       addon: transformedArray,
       delivery_method: deliveryDate == 10 ? 'Standard' : 'Express',
+      order_status:"Payment-due",
       // order_name: "Your Order Name",
       order_amount: totalPrice,
       // order_rating: 4.5,

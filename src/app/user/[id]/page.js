@@ -27,6 +27,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { getOrders} from "@/externalApi"
 
 
 const User = ({ params }) => {
@@ -34,40 +35,47 @@ const User = ({ params }) => {
   const [value, setValue] = React.useState(2);
   const [fullPageHeight, setFullPageHeight] = useState(0);
 
+  const [notificationNum , setNotificationNum] = useState(0);
+
   useEffect(() => {
-    // Function to update fullPageHeight
+
     const updateFullPageHeight = () => {
       const newHeight = document.documentElement.scrollHeight;
       setFullPageHeight(newHeight);
     };
-
-    // Check if the document object is available (client-side) before adding the event listener
+  
     if (typeof document !== 'undefined') {
-      updateFullPageHeight();
-      window.addEventListener('resize', updateFullPageHeight);
-    }
 
-    // Remove the event listener when the component is unmounted
-    return () => {
-      if (typeof document !== 'undefined') {
-        window.removeEventListener('resize', updateFullPageHeight);
-      }
-    };
+      const timeoutId = setTimeout(() => {
+        updateFullPageHeight();
+        window.addEventListener('resize', updateFullPageHeight);
+      }, 2000);
+  
+      return () => {
+        clearTimeout(timeoutId);
+  
+        if (typeof document !== 'undefined') {
+          window.removeEventListener('resize', updateFullPageHeight);
+        }
+      };
+    }
   }, []);
+  
 
 
   return (
     <div>
-      <Stack direction='row'>
+      <Stack direction='row' >
       <Hidden smDown>
         <div
           style={{
-            background: "#A9A9A9",
+            background: "black",
             display: "flex",
             flexDirection: "column",
             width: "300px",
             color: "white",
-            height: fullPageHeight + 'px',
+            height: fullPageHeight ? fullPageHeight + 'px' : '100vh',
+            position:"static"
           }}
         >
           <Stack spacing={2} style={{ padding: "20px" }}>
@@ -84,16 +92,16 @@ const User = ({ params }) => {
                   onClick={() => router.push("/step_one", { shallow: false })}
                 >
                   <ListItemIcon>
-                      <EditNoteIcon color='white' />
+                      <EditNoteIcon style={{ color: 'white' }} />
                   </ListItemIcon>
-                  <ListItemText primary='Place new order' />
+                  <ListItemText primary='New order' />
                 </ListItemButton>
               </ListItem>
               <Divider />
               <ListItem disablePadding>
                 <ListItemButton onClick={() => setValue(1)}>
                   <ListItemIcon>
-                    <AccountBoxIcon />
+                    <AccountBoxIcon style={{ color: 'white' }}/>
                   </ListItemIcon>
                   <ListItemText primary='My account' />
                 </ListItemButton>
@@ -102,8 +110,8 @@ const User = ({ params }) => {
               <ListItem disablePadding>
                 <ListItemButton onClick={() => setValue(2)}>
                   <ListItemIcon>
-                  <Badge badgeContent={4} color="primary">
-                    <FormatListNumberedIcon />
+                  <Badge badgeContent={notificationNum} color="secondary">
+                    <FormatListNumberedIcon style={{ color: 'white' }}/>
                     </Badge>
                   </ListItemIcon>
                   <ListItemText primary='All orders' />
@@ -113,7 +121,7 @@ const User = ({ params }) => {
               <ListItem disablePadding>
                 <ListItemButton onClick={logOut}>
                   <ListItemIcon>
-                    <LogoutIcon />
+                    <LogoutIcon style={{ color: 'white' }}/>
                   </ListItemIcon>
                   <ListItemText primary='Logout' />
                 </ListItemButton>
@@ -127,7 +135,7 @@ const User = ({ params }) => {
 
         <div style={{ padding: "30px", width: "100%" }}>
             {value === 1 && <MyAccount />}
-            {value === 2 && <AllOrders />}
+            {value === 2 && <AllOrders setNotificationNum={setNotificationNum}/>}
         </div>
 
 
@@ -151,17 +159,18 @@ const User = ({ params }) => {
                 onChange={(event, newValue) => {
                   setValue(newValue);
                 }}
+                sx={{ backgroundColor:"black"}}
               >
-                <BottomNavigationAction label="New Order" icon={<EditNoteIcon />}  onClick={() => router.push("/step_one", { shallow: false })}/>
-                <BottomNavigationAction label="Account" icon={<AccountBoxIcon />} />
+                <BottomNavigationAction style={{ color: 'white' }} label="New Order" icon={<EditNoteIcon />}  onClick={() => router.push("/step_one", { shallow: false })}/>
+                <BottomNavigationAction style={{ color: 'white' }} label="Account" icon={<AccountBoxIcon />} />
 
-                <BottomNavigationAction label="All Orders" icon={ 
-                <Badge badgeContent={4} color="primary">
+                <BottomNavigationAction style={{ color: 'white' }} label="All Orders" icon={ 
+                <Badge badgeContent={notificationNum} color="secondary">
                   <FormatListNumberedIcon />
                   </Badge>
                 } />
 
-                <BottomNavigationAction label="Log Out" icon={<LogoutIcon />} onClick={logOut}/>
+                <BottomNavigationAction style={{ color: 'white' }} label="Log Out" icon={<LogoutIcon />} onClick={logOut}/>
               </BottomNavigation>
             </Box>
           </div>

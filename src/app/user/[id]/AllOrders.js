@@ -6,7 +6,7 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
+// import Paper from "@mui/material/Paper"
 import {
   Button,
   FormControl,
@@ -16,10 +16,13 @@ import {
   Select,
   Typography,
 } from "@mui/material"
-import { getOrders} from "@/externalApi"
+import { getOrders ,checkoutCustom} from "@/externalApi"
 import { formatDate, formatDateString } from "@/utils"
 
-const AllOrders = () => {
+import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/Download';
+
+const AllOrders = ({setNotificationNum}) => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
   const [allOrders, setAllOrders] = useState([])
@@ -30,15 +33,25 @@ const AllOrders = () => {
     if (event.target.value === "all") {
       setFilteredOrders(allOrders)
     } else {
-      setFilteredOrders(
-        allOrders.filter(
-          (row) => row.order_status.toLowerCase() === event.target.value
-        )
-      )
+        if(type === "all"){
+          setFilteredOrders(
+            allOrders.filter(
+              (row) => row.order_status === event.target.value
+            )
+          )
+        }
+        else{
+          setFilteredOrders(
+            allOrders.filter(
+              (row) => row.order_status === event.target.value && row.delivery_method.toLowerCase() === type
+            )
+          )
+        }
     }
   }
 
   function filterOrder(name) {
+    setStatus("all")
     setType(name)
     if (name === "all") {
       setFilteredOrders(allOrders)
@@ -52,16 +65,41 @@ const AllOrders = () => {
     }
   }
 
-
   useEffect(() => {
     getOrders()
       .then((orders) => {
         setAllOrders(orders.results)
         setFilteredOrders(orders.results)
+
+        const paymentOrders = orders.results.filter(
+          (row) => row.order_status === "Payment-due"
+        )
+
+        setNotificationNum(paymentOrders.length)
+        
       })
       .catch((err) => console.log(err))
   }, [])
 
+
+  // const handleRatingChange = (id,value) =>{
+  //   console.log(value)
+  // }
+
+
+
+  const handlePayNow = (id) =>{
+    const current_domain = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
+
+    const checkOutDetails = {
+      order_id:id,
+      success_url: current_domain + "/payment-success",
+      cancel_url: current_domain + "/payment-failed"
+    }
+    // console.log(checkOutDetails)
+    checkoutCustom(checkOutDetails)
+  }
+  
   return (
     <div>
       
@@ -147,8 +185,28 @@ const AllOrders = () => {
                   {formatDateString(row.created_at)}
                 </TableCell>
                 <TableCell component='th' scope='row'>
-                  {row.order_status}
-                </TableCell>
+                    {row.order_status === "Completed" && (
+                      <>
+                      {row.download_url_customer ? (
+                        <IconButton onClick={() => window.open(row.download_url_customer, '_blank')}>
+                          <DownloadIcon />
+                        </IconButton>
+                      ) : (
+                        <IconButton disabled>
+                          <DownloadIcon />
+                        </IconButton>
+                      )}
+                      </>
+                    )}
+                    {row.order_status === "Payment-due" && (
+                      <Button variant="contained" color="primary" size="small" onClick={() => handlePayNow(row.id)}>
+                        Pay Now
+                      </Button>
+                    )}
+                    {row.order_status !== "Completed" && row.order_status !== "Payment-due" && (
+                     row.order_status
+                    )}
+                  </TableCell>
                 <TableCell component='th' scope='row'>
                   {formatDate(row.delivery_date)}
                 </TableCell>
@@ -156,8 +214,9 @@ const AllOrders = () => {
                   <Rating
                     name='read-only'
                     value={row.order_rating}
-                    precision={0.5}
+                    precision={1}
                     readOnly
+                    // onChange={(event, newValue) => handleRatingChange(row.id, newValue)}
                   />
                 </TableCell>
               </TableRow>

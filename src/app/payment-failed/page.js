@@ -1,7 +1,12 @@
+"use client"
 import Image from 'next/image';
 import { Button} from "@mui/material"
+import { useRouter } from "next/navigation"
 
 const PaymentSuccess = () => {
+
+  const router = useRouter()
+  
   const centerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -38,7 +43,7 @@ const PaymentSuccess = () => {
         width={300} // Set the width you desire
         height={300} // Set the height you desire
       />
-      <Button variant='contained' size='small'  style={buttonStyle}>
+      <Button variant='contained' size='small'  style={buttonStyle} onClick={() => router.push(`/user/${localStorage.getItem('uid')}`, { shallow: true })}>
                Go to Dashboard
       </Button>
     </div>

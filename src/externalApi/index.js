@@ -137,6 +137,30 @@ const checkout = async (postData) => {
   }
 }
 
+const checkoutCustom = async (postData) => {
+  try {
+    const response = await fetch(`${baseUrl}/create-checkout-session-custom/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify(postData),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    const responseData = await response.json()
+    // console.log("response", responseData)
+    window.location.replace(responseData.stripe_url)
+    return responseData
+  } catch (error) {
+    console.error("Error posting data:", error)
+  }
+}
+
 
 
 
@@ -483,5 +507,6 @@ export {
   getCookie,
   createUpload,
   getInvoice,
-  getAddons2
+  getAddons2,
+  checkoutCustom
 }

@@ -1,8 +1,13 @@
+"use client"
 import Image from 'next/image';
 import { Button} from "@mui/material"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const PaymentSuccess = () => {
+
+  const router = useRouter()
+  
   const centerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -43,7 +48,7 @@ const PaymentSuccess = () => {
         style = {{ marginTop:"50px" }}
       />
       <Link href="step_final">
-      <Button variant='contained' size='small'  style={buttonStyle}>
+      <Button variant='contained' size='small'  style={buttonStyle} onClick={() => router.push(`/user/${localStorage.getItem('uid')}`, { shallow: true })}>
                 Proceed to Upload Images
       </Button>
       </Link>

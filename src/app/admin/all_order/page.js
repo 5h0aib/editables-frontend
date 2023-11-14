@@ -85,9 +85,8 @@ const AllOrders = () => {
 
     getBookings()
       .then((data) => {
-
-        setNumBookings(data.length)
-        console.log(numBookings)
+        const filteredBookings = data.filter((booking) => booking.booking_status === "Scheduled");
+        setNumBookings(filteredBookings.length)
         // console.log("Bookings:", data)
       })
       .catch((error) => {
@@ -101,11 +100,20 @@ const AllOrders = () => {
     if (event.target.value === "all") {
       setFilteredOrders(allOrders)
     } else {
-      setFilteredOrders(
-        allOrders.filter(
-          (row) => row.order_status === event.target.value && row.delivery_method.toLowerCase() === type
-        )
-      )
+        if(type === "all"){
+          setFilteredOrders(
+            allOrders.filter(
+              (row) => row.order_status === event.target.value
+            )
+          )
+        }
+        else{
+          setFilteredOrders(
+            allOrders.filter(
+              (row) => row.order_status === event.target.value && row.delivery_method.toLowerCase() === type
+            )
+          )
+        }
     }
   }
 
