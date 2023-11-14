@@ -365,6 +365,23 @@ const AllOrders = () => {
                   <TableCell component='th' scope='row'>
                     {formatDateString(row.created_at)}
                   </TableCell>
+                  {row.order_status === "Payment-due" ? 
+                  (
+                    
+                    <TableCell component='th' scope='row'>
+                    <Select
+                      labelId='demo-multiple-name-label'
+                      id='demo-multiple-name'
+                      value={row.order_status}
+                      size='small'
+                      fullWidth
+                      disabled
+                    >
+                       <MenuItem value={"Payment-due"}>Payment-due</MenuItem>
+                    </Select>
+                  </TableCell>
+                    
+                    ):(
                   <TableCell component='th' scope='row'>
                     <Select
                       labelId='demo-multiple-name-label'
@@ -384,6 +401,7 @@ const AllOrders = () => {
                       <MenuItem value={"Completed"}>Completed</MenuItem>
                     </Select>
                   </TableCell>
+                  )}   
                   <TableCell component='th' scope='row'>
                     {formatDate(row.delivery_date)}
                   </TableCell>

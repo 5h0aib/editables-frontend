@@ -7,13 +7,14 @@ import {
   Grid,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material"
 
 import React, { useEffect ,useState} from "react"
 import AdminLayout from "../AdminLayout"
-import { getAddons2,getCategories,getStyles } from "@/externalApi"
+import { getAddons2,getCategories,getStyles,postOrders } from "@/externalApi"
 import { useSearchParams } from "next/navigation"
 
 
@@ -23,13 +24,24 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import CircularProgress from '@mui/material/CircularProgress';
-import { filter } from "jszip"
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
+import { useRouter } from "next/navigation"
+
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const CustomOrder = () => {
 
+  const router = useRouter()
+
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
+  const uid = searchParams.get("uid")
+  const booking_id = searchParams.get("booking_id")
 
   const [allCategories, setAllCategories] = useState([])
   const [selectedCategory , setSelectedCategory] = useState({id:"",name:""})
@@ -40,10 +52,23 @@ const CustomOrder = () => {
 
   const [allAddons, setAllAddons] = useState([])
   const [filteredAddons, setFilteredAddons] = useState([])
-  const [selectedAddons , setSelectedAddons] = useState([])
+  const [selectedAddons, setSelectedAddons] = useState([])
+  const [isCullingChecked, setCullingChecked] = useState(false)
+  const [culling_number, setCullingNumber] = useState(0)
 
 
-  const [dateValue, setDateValue] = useState(dayjs().add(4, 'day')  );
+  const [dateValue, setDateValue] = useState(dayjs().add(4, 'day'));
+  const [numImages, setNumImages] = useState(0);
+  const [price, setPrice] = useState(5);
+  const [description, setDescription] = useState("")
+
+  const [orderButton, setOrderButton] = useState(false)
+
+
+  const [toastMessage, setToastMessage] = useState("Order being Created, Please wait, You'll be redirected shortly.")
+  const [open, setOpen] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("info");
+
 
   const [loading, setLoading] = useState(false);
 
@@ -70,7 +95,7 @@ const CustomOrder = () => {
 
     getAddons2()
     .then((data) => {
-      console.log(data)
+      setAllAddons(data)
       })
     .catch((error) => {
       console.log(error)
@@ -78,50 +103,118 @@ const CustomOrder = () => {
   }, [])
 
   useEffect(() => {
-        const filtered = allStyles.filter((style) => style.category_id === selectedCategory.id)
-        if(filtered.length>0){
-        setFilteredStyles(filtered)
-        setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+
+
+        const styles = allStyles.filter((style) => style.category_id === selectedCategory.id)
+        if(styles.length>0){
+        setFilteredStyles(styles)
+        setSelectedStyle({id:styles[0].id,name:styles[0].style_name})
         }
-  }, [selectedCategory,allStyles])
 
 
 
 
-  const demoData = {
-    addon: [
-      { uid: "1", order_addon_description: "" },
-      { uid: "2", order_addon_description: "" },
-    ],
-    category_id: "1",
-    delivery_method:"Custom",
-    delivery_date: "2023-11-01",
-    number_of_images: 234,
-    order_amount: 100,
-    order_status: 'Payment-due',
-    order_name: "Your Order Name",
-    order_rating: 4.5,
-    style_id: "1",
-    user_id: "7",
-  }
+        const addons = allAddons.filter((addon) => addon.category_id === selectedCategory.id)
+        if(addons.length>0){
+          setFilteredAddons(addons)
+          }
+
+
+
+  }, [selectedCategory,allStyles,allAddons])
 
 const handleCategoryChange = (id,name)=>{
-  setLoading(true);
 
+  setLoading(true);
+  setSelectedAddons([])
   setSelectedCategory({id:id,name:name})
 
-  const filtered = allStyles.filter((style) => style.category_id === id);
-  setFilteredStyles(filtered)
-  setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+  // const filtered = allStyles.filter((style) => style.category_id === id);
+  // setFilteredStyles(filtered)
+  // setSelectedStyle({id:filtered[0].id,name:filtered[0].style_name})
+  // const addons = allAddons.filter((addon) => addon.category_id === selectedCategory.id)
+  // setFilteredAddons(addons)
 
   setTimeout(() => {
     setLoading(false);
   }, 2000);
 
 }
+
+
+
+const handleCheck = (isChecked, addon) => {
+  if (isChecked) {
+    // Check if the addon with the given id exists in the selectedAddons array
+    if (!selectedAddons.some((item) => item.uid === addon.id)) {
+      setSelectedAddons([...selectedAddons, addon])
+    }
+  } else {
+    // Filter out the addon with the given id from selectedAddons
+    setSelectedAddons(selectedAddons.filter((item) => item.id !== addon.id))
+  }
+}
+
+
 const handleOrder = () =>{
-  console.log(selectedCategory)
-  console.log(selectedStyle)
+  setOrderButton(true)
+  
+
+  if(!numImages || numImages==0){
+    setOrderButton(false)
+    alert("Please input the number of images")
+    return
+  }
+  if(!price || price==0){
+    setOrderButton(false)
+    alert("Please input price of this order")
+    return
+  }
+
+  setOpen(true)
+
+  const transformedArray = selectedAddons.map(item => {
+        if(item.addon_name == "Culling")
+            return {
+                uid: item.id,
+                order_addon_description:culling_number
+            };
+        else{
+          return {
+            uid: item.id,
+            order_addon_description:""
+        };
+        }
+
+    });
+
+  const formattedDate = dateValue.format('YYYY-MM-DD');
+
+  const orderDetails = {
+    delivery_date: formattedDate,
+    number_of_images: parseInt(numImages),
+    user_id: uid,
+    category_id: selectedCategory.id,
+    style_id: selectedStyle.id,
+    addon: transformedArray,
+    delivery_method: 'Custom',
+    order_amount: price,
+    booking_id:booking_id,
+    order_description:description
+  }
+
+  
+
+  postOrders(orderDetails)
+  .then((order) => {
+    setTimeout(() => {
+      setAlertSeverity("success")
+      setToastMessage("Order Created Successfully")
+    }, 2000);
+    router.push(`/admin/all_order`, { shallow: true })
+  })
+  .catch((err) => console.log(err))
+
 }
 
   return (
@@ -142,7 +235,15 @@ const handleOrder = () =>{
               <Typography variant='p' gutterBottom display={"block"}>
                 Number of Images
               </Typography>
-              <TextField size='small' fullWidth />
+              <TextField
+              placeholder='Number of Images to upload'
+              variant='outlined'
+              size='small'
+              type='number'
+              fullWidth
+              sx={{ display: "block" }}
+              onChange={(e) => setNumImages(e.target.value)}
+            />
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant='p' gutterBottom display={"block"}>
@@ -213,26 +314,44 @@ const handleOrder = () =>{
               <Typography variant='p' gutterBottom display={"block"}>
                 Price
               </Typography>
-              <TextField size='small' fullWidth />
+              <TextField
+              placeholder='Order Price'
+              variant='outlined'
+              size='small'
+              type='number'
+              fullWidth
+              sx={{ display: "block" }}
+              onChange={(e) => setPrice(e.target.value)}
+            />
             </Grid>
             <Grid item xs={12}>
               <Typography variant='p' gutterBottom display={"block"}>
                 Additional Instructions (if any)
               </Typography>
-              <TextField size='small' fullWidth multiline rows={4} />
+              <TextField
+              placeholder='Order Description'
+              variant='outlined'
+              size='small'
+              fullWidth
+              multiline rows={4}
+              sx={{ display: "block" }}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+         
             </Grid>
           </Grid>
         </div>
         <div>
+
+
+
+
+
+
+
           <Typography variant='h6' gutterBottom display={"block"}>
             Add-ons
           </Typography>
-
-
-
-
-
-
 
           {loading ? ( // Conditional rendering based on the loading state
             <div style={{ display: "flex", justifyContent: "center" ,marginTop:"30px"}}>
@@ -240,51 +359,73 @@ const handleOrder = () =>{
             </div>
           ) : (
             <>
-              <FormControlLabel
-                sx={{ fontSize: "5em" }}
-                control={<Checkbox size="medium" />}
-                label="Culling"
-              />
-              <div style={{ marginLeft: "32px" }}>
-                <Typography variant="p" gutterBottom display={"block"}>
-                  Narrow down the number of images you want
-                </Typography>
-                <Typography variant="caption" gutterBottom>
-                  Narrow down the number of images you want
-                </Typography>
-                <br />
-                <TextField size="small" variant="outlined" fullWidth />
-              </div>
-
-              <FormControlLabel
-                sx={{ fontSize: "5em" }}
-                control={<Checkbox size="medium" />}
-                label="Quick look"
-              />
-              <div style={{ marginLeft: "32px" }}>
-                <Typography variant="p" gutterBottom display={"block"}>
-                  Get a preview of the 10% of your total edited pictures in 36-48
-                  hours
-                </Typography>
-              </div>
-
-              <FormControlLabel
-                sx={{ fontSize: "5em" }}
-                control={<Checkbox size="medium" />}
-                label="Monochrome Melodies"
-              />
-              <div style={{ marginLeft: "32px" }}>
-                <Typography variant="p" gutterBottom display={"block"}>
-                  Beautiful images in B&W, edited to highlight the best ambience.
-                  We’ll keep 10% of them
-                </Typography>
-              </div>
-
-              <FormControlLabel
-                sx={{ fontSize: "5em" }}
-                control={<Checkbox size="medium" />}
-                label="Creative cropping"
-              />
+              {filteredAddons
+                ?.sort((a, b) => {
+                  if (a.addon_name === "Culling") return -1;
+                  if (b.addon_name === "Culling") return 1;
+                  return 0;
+                })
+                .map((addon) => (
+                  addon.addon_name === "Culling" ? (
+                    <Stack direction='row' alignItems={"top"} justifyContent={"space-between"}>
+                      <div>
+                        <FormControlLabel
+                          sx={{ fontSize: "5em",marginTop:"20px" }}
+                          control={
+                            <Checkbox
+                              size='medium'
+                              // disabled
+                              // checked={culling_number > 0}
+                              onChange={(e) => {
+                                handleCheck(e.target.checked, addon);
+                                setCullingChecked(e.target.checked);
+                              }}
+                            />
+                          }
+                          label={addon.addon_name}
+                        />
+                        <div style={{ marginLeft: "32px" }}>
+                          <Typography variant='p' gutterBottom display={"block"}>
+                            Narrow down the number of images you want
+                          </Typography>
+                          <Typography variant='caption' gutterBottom>
+                            Narrow down the number of images you want
+                          </Typography>
+                          <br />
+                          <TextField
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            type='number'
+                            onChange={(e) => setCullingNumber(e.target.value)}
+                            disabled={!isCullingChecked}
+                          />
+                        </div>
+                      </div>
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "28px" }}>
+                        {addon.addon_starting_price}/photo
+                      </Typography>
+                    </Stack>
+                  ) : (
+                    <Stack direction='row' alignItems={"center"} justifyContent={"space-between"}>
+                      <div>
+                        <FormControlLabel
+                          sx={{ fontSize: "5em",marginTop:"20px"}}
+                          control={
+                            <Checkbox
+                              size='medium'
+                              onChange={(e) => handleCheck(e.target.checked, addon)}
+                            />
+                          }
+                          label={addon.addon_name}
+                        />
+                      </div>
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "26px" }}>
+                        {addon.addon_starting_price}/photo
+                      </Typography>
+                    </Stack>
+                  )
+                ))}
             </>
           )}
 
@@ -300,10 +441,16 @@ const handleOrder = () =>{
       </SplitLayout>
       <br />
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button variant='contained' size='large' style={{ minWidth: "33vw" }} onClick={()=>{handleOrder()}} >
+        <Button variant='contained' size='large' style={{ minWidth: "33vw" }} onClick={()=>{handleOrder()}} disabled={orderButton}>
           issue custom order
         </Button>
       </div>
+
+      <Snackbar open={open} autoHideDuration={6000} >
+        <Alert severity={alertSeverity} sx={{ width: '100%' }}>
+          {toastMessage}
+        </Alert>
+      </Snackbar>
     </AdminLayout>
   )
 }

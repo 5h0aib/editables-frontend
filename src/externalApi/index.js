@@ -348,9 +348,11 @@ const changeOrderStatus = async (order_status, id) => {
   }
 }
 
+
+
 const postOrders = async (postData) => {
   try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    const response = await fetch(`${baseUrl}/post_order/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -364,7 +366,7 @@ const postOrders = async (postData) => {
     }
 
     const responseData = await response.json()
-    console.log("response", responseData)
+    // console.log("response", responseData)
     return responseData
   } catch (error) {
     console.error("Error posting data:", error)

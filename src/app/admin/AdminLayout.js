@@ -31,6 +31,11 @@ function AdminLayout(props) {
     setMobileOpen((prevState) => !prevState)
   }
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant='h6' sx={{ my: 2 }}>
@@ -44,7 +49,7 @@ function AdminLayout(props) {
               sx={{ textAlign: "center" }}
               onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}
             >
-              <ListItemText primary={item.toUpperCase()} />
+              <ListItemText primary={capitalizeFirstLetter(item)} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -91,12 +96,12 @@ function AdminLayout(props) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Button key={item} variant="contained" onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}>
-                {item}
+               {capitalizeFirstLetter(item)}
               </Button>
             ))}
 
                     <Button key={"Log Out"} variant="contained" onClick={logOut}>
-                      logOut
+                      Log Out
                     </Button>
           </Box>
         </Toolbar>
