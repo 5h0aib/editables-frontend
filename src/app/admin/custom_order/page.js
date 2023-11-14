@@ -13,8 +13,7 @@ import {
 
 import React, { useEffect ,useState} from "react"
 import AdminLayout from "../AdminLayout"
-import { styles } from "@/hardCode/all_style_catergories"
-import { getAddons,getCategories,getStyles } from "@/externalApi"
+import { getAddons2,getCategories,getStyles } from "@/externalApi"
 import { useSearchParams } from "next/navigation"
 
 
@@ -31,14 +30,20 @@ const CustomOrder = () => {
 
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
+
   const [allCategories, setAllCategories] = useState([])
   const [selectedCategory , setSelectedCategory] = useState({id:"",name:""})
+
   const [allStyles, setAllStyles] = useState([])
   const [filteredStyles, setFilteredStyles] = useState([])
   const [selectedStyle , setSelectedStyle] = useState({id:"",name:""})
+
+  const [allAddons, setAllAddons] = useState([])
+  const [filteredAddons, setFilteredAddons] = useState([])
+  const [selectedAddons , setSelectedAddons] = useState([])
+
+
   const [dateValue, setDateValue] = useState(dayjs().add(4, 'day')  );
-
-
 
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +51,6 @@ const CustomOrder = () => {
 
   useEffect(() => {
     let initialCategory = { id: "", name: "" };
-    let filtered = []
     getCategories()
       .then((data) => {
         setAllCategories(data)
@@ -63,6 +67,14 @@ const CustomOrder = () => {
       .catch((error) => {
         console.log(error)
       })
+
+    getAddons2()
+    .then((data) => {
+      console.log(data)
+      })
+    .catch((error) => {
+      console.log(error)
+    })
   }, [])
 
   useEffect(() => {

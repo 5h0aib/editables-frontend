@@ -24,8 +24,10 @@ const StepTwo = () => {
   const category = searchParams.get("category")
   const category_id = searchParams.get("category_id")
   const style = searchParams.get("style")
+
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
+
   const [imageCount, setImageCount] = useState(0)
   const [isCullingChecked, setCullingChecked] = useState(false)
   const [deliveryDate, setDeliveryDate] = useState(10)
@@ -137,9 +139,9 @@ const StepTwo = () => {
       subLines=''
       step=''
     >
-      <SplitLayout form>
-        <div style={{ maxWidth: "700px" }}>
-          <Typography variant='h5' gutterBottom>
+      <SplitLayout form alignItems={"top"}>
+        <div>
+          <Typography variant='h5' marginTop={"20px"}>
             Add-ons
           </Typography>
           {addons
@@ -153,7 +155,7 @@ const StepTwo = () => {
                     <Stack direction='row' alignItems={"top"} justifyContent={"space-between"}>
                       <div>
                         <FormControlLabel
-                          sx={{ fontSize: "5em" }}
+                          sx={{ fontSize: "5em",marginTop:"20px" }}
                           control={
                             <Checkbox
                               size='medium'
@@ -185,7 +187,7 @@ const StepTwo = () => {
                           />
                         </div>
                       </div>
-                      <Typography variant='p' gutterBottom sx={{ marginTop: "8px" }}>
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "28px" }}>
                         {addon.addon_starting_price}/photo
                       </Typography>
                     </Stack>
@@ -193,7 +195,7 @@ const StepTwo = () => {
                     <Stack direction='row' alignItems={"center"} justifyContent={"space-between"}>
                       <div>
                         <FormControlLabel
-                          sx={{ fontSize: "5em" }}
+                          sx={{ fontSize: "5em",marginTop:"20px"}}
                           control={
                             <Checkbox
                               size='medium'
@@ -203,7 +205,7 @@ const StepTwo = () => {
                           label={addon.addon_name}
                         />
                       </div>
-                      <Typography variant='p' gutterBottom sx={{ marginTop: "6px" }}>
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "26px" }}>
                         {addon.addon_starting_price}/photo
                       </Typography>
                     </Stack>
@@ -214,7 +216,7 @@ const StepTwo = () => {
 
 
 
-          <Stack direction={"row"} spacing={2}>
+          <Stack direction={"row"} spacing={2} sx={{marginTop:"20px"}}>
             <Paper
               padding
               onClick={() => setDeliveryDate(10)}
@@ -223,7 +225,7 @@ const StepTwo = () => {
                   ? { background: "black", color: "white"}
                   : { }   
               }
-              sx={{ padding: "10px" }}
+              sx={{ padding: "10px"}}
             >
               <Stack
                 spacing={3}
@@ -276,64 +278,64 @@ const StepTwo = () => {
 
 
 
-  <Paper padding elevation={4} sx={{ background: "white", p: 2, }}> {/* Add padding to the left */}
-  <Stack spacing={2}>
-    <div>
-      <Typography variant='h6' gutterBottom>
-        Category
-      </Typography>
-      <Chip label={category} />
-    </div>
-    <div>
-      <Typography variant='h6' gutterBottom>
-        Style
-      </Typography>
-      <Chip label={style} />
-    </div>
-    <TextField
-      placeholder='Number of Images to upload'
-      variant='outlined'
-      size='small'
-      type='number'
-      fullWidth
-      sx={{ display: "block" }}
-      onChange={(e) => setImageCount(e.target.value)}
-    />
-    <Stack>
-      <Typography variant='h6' gutterBottom>
-        Price per image : ${pricePerImage}
-      </Typography>
-      {/* <Typography variant='h6' gutterBottom>
-        VAT $7.5
-      </Typography> */}
-    </Stack>
-    <Divider />
-    <Typography variant='h4' gutterBottom>
-      Total Payment
-    </Typography>
-    <Typography variant='h3' gutterBottom>
-      ${totalPrice}
-    </Typography>
-    {/* <Link href={"step_final"}> */}
-    <Button
-      variant='contained'
-      size='large'
-      fullWidth
-      onClick={handleCheckout}
-      disabled={imageCount == 0 || !imageCount}
-    >
-      Checkout
-    </Button>
-    {/* </Link> */}
-    <Typography variant='caption' display='block' gutterBottom>
-      Please note that the total amount is rounded up.
-    </Typography>
-    <Typography variant='caption' display='block' gutterBottom>
-      This payment is secured by an SSL connection courtesy of Stripe.
-      Payments.
-    </Typography>
-  </Stack>
-</Paper>
+          <Paper padding elevation={4} sx={{ background: "white", p: 2, }}> {/* Add padding to the left */}
+          <Stack spacing={2}>
+            <div>
+              <Typography variant='h6' gutterBottom>
+                Category
+              </Typography>
+              <Chip label={category} />
+            </div>
+            <div>
+              <Typography variant='h6' gutterBottom>
+                Style
+              </Typography>
+              <Chip label={style} />
+            </div>
+            <TextField
+              placeholder='Number of Images to upload'
+              variant='outlined'
+              size='small'
+              type='number'
+              fullWidth
+              sx={{ display: "block" }}
+              onChange={(e) => setImageCount(e.target.value)}
+            />
+            <Stack>
+              <Typography variant='h6' gutterBottom>
+                Price per image : ${pricePerImage}
+              </Typography>
+              {/* <Typography variant='h6' gutterBottom>
+                VAT $7.5
+              </Typography> */}
+            </Stack>
+            <Divider />
+            <Typography variant='h4' gutterBottom>
+              Total Payment
+            </Typography>
+            <Typography variant='h3' gutterBottom>
+              ${totalPrice}
+            </Typography>
+            {/* <Link href={"step_final"}> */}
+            <Button
+              variant='contained'
+              size='large'
+              fullWidth
+              onClick={handleCheckout}
+              disabled={imageCount == 0 || !imageCount}
+            >
+              Checkout
+            </Button>
+            {/* </Link> */}
+            <Typography variant='caption' display='block' gutterBottom>
+              Please note that the total amount is rounded up.
+            </Typography>
+            <Typography variant='caption' display='block' gutterBottom>
+              This payment is secured by an SSL connection courtesy of Stripe.
+              Payments.
+            </Typography>
+          </Stack>
+        </Paper>
 
       </SplitLayout>
     </ServiceLayout>

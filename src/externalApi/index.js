@@ -95,6 +95,24 @@ const getAddons = async (style_id) => {
   }
 }
 
+const getAddons2 = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/addons/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const responseData = await response.json()
+    return responseData
+  } catch (error) {
+    console.error("Error fetching data:", error)
+  }
+}
+
 const checkout = async (postData) => {
   try {
     const response = await fetch(`${baseUrl}/create-checkout-session/`, {
@@ -462,5 +480,6 @@ export {
   logOut,
   getCookie,
   createUpload,
-  getInvoice
+  getInvoice,
+  getAddons2
 }

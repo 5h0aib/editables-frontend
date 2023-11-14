@@ -8,11 +8,7 @@ const ServiceLayout = ({ children, formTitle, subLines }) => {
   return (
     <div style={{ padding: "2em" }}>
       <Stack direction='row' justifyContent='center' alignItems='center'>
-        {/* <Link href='/'>
-          <span>back</span>
-        </Link> */}
         <Nav />
-        {/* <span>Sign In</span> */}
       </Stack>
       <div style={{ padding: "2em 0" }}>
         <Typography variant='h4' gutterBottom>

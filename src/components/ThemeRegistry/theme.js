@@ -1,93 +1,16 @@
-import { Roboto,Montserrat } from "next/font/google"
-import { createTheme, responsiveFontSizes } from "@mui/material/styles"
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { Montserrat } from "next/font/google";
 
-const roboto = Montserrat({
+const montserrat = Montserrat({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
-})
+});
 
-// const theme = createTheme({
-//   palette: {
-//     mode: 'light',
-//   },
-//   typography: {
-//     fontFamily: roboto.style.fontFamily,
-//   },
-//   components: {
-//     MuiAlert: {
-//       styleOverrides: {
-//         root: ({ ownerState }) => ({
-//           ...(ownerState.severity === 'info' && {
-//             backgroundColor: '#60a5fa',
-//           }),
-//         }),
-//       },
-//     },
-//   },
-// });
+const theme = createTheme({
 
-
-const button = {
-  variants: [
-    {
-      props: { variant: "outlined" },
-      style: {
-        // textTransform: 'none',
-        border: `2px solid black`,
-        fontWeight: "500",
-      },
-    },
-    {
-      props: { variant: "contained" },
-      style: {
-        background: "black",
-      },
-    },
-    {
-      props: { large: "true" },
-      style: { padding: "18px" },
-    },
-  ],
-  styleOverrides: {
-    root: {
-      borderRadius: "10px",
-      background: "white",
-      padding: "12px",
-    },
-  },
-}
-const textField = {
-  styleOverrides: {
-    root: {
-      background: "white",
-      borderRadius: "10px",
-      border: "3px solid black",
-    },
-  },
-}
-const paper = {
-  styleOverrides: {
-    root: {
-      background: "white",
-      borderRadius: "10px",
-      border: "3px solid black",
-    },
-  },
-  variants: [
-    {
-      props: { color: "gray" },
-      style: { background: "#f4f4f8" },
-    },
-    {
-      props: { padding: "true" },
-      style: { padding: "20px" },
-    },
-  ],
-}
-
-let theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
       main: "rgba(0,0,0,1)",
       light: "rgba(0,0,0,1)",
@@ -104,18 +27,78 @@ let theme = createTheme({
       contrastText: "#616161",
     },
   },
-  components: {
-    MuiButton: button,
-    MuiTextField: textField,
-    MuiPaper: paper,
+  typography: {
+    button:{
+      textTransform : "none"
+    },
+    fontFamily: montserrat.style.fontFamily,
   },
-  // typography: {
-  //   button: {
-  //     textTransform: 'none'
-  //   }
-  // }
-})
+  components: {
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: "outlined" },
+          style: {
+            fontFamily: montserrat.style.fontFamily,
+            border: `2px solid black`,
+            fontWeight: "500",
+          },
+        },
+        {
+          props: { variant: "contained" },
+          style: {
+            fontFamily: montserrat.style.fontFamily,
+            background: "black",
+          },
+        },
+        {
+          props: { large: "true" },
+          style: { fontFamily: montserrat.style.fontFamily, padding: "18px" },
+        },
 
-theme = responsiveFontSizes(theme)
+      ],
+      styleOverrides: {
+        root: {
+          fontFamily: montserrat.style.fontFamily,
+          borderRadius: "10px",
+          background: "white",
+          padding: "12px",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          fontFamily: montserrat.style.fontFamily,
+          background: "white",
+          borderRadius: "10px",
+          border: "3px solid black",
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          fontFamily: montserrat.style.fontFamily,
+          background: "white",
+          borderRadius: "10px",
+          border: "3px solid black",
+        },
+      },
+      variants: [
+        {
+          props: { color: "gray" },
+          style: { background: "#f4f4f8" },
+        },
+        {
+          props: { padding: "true" },
+          style: { padding: "20px" },
+        },
+      ],
+    },
+  },
+});
 
-export default theme
+const responsiveTheme = responsiveFontSizes(theme);
+
+export default responsiveTheme;
