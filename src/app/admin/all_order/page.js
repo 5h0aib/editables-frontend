@@ -79,7 +79,7 @@ const AllOrders = () => {
       .then((orders) => {
         setAllOrders(orders.results)
         setFilteredOrders(orders.results)
-        // console.log("fectched Orders: ", orders)
+        console.log("fectched Orders: ", orders)
       })
       .catch((err) => console.log(err))
 
@@ -359,6 +359,7 @@ const AllOrders = () => {
                 <TableCell>Delivery</TableCell>
                 <TableCell>Images</TableCell>
                 <TableCell>Style</TableCell>
+                <TableCell>Add-ons</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -434,6 +435,9 @@ const AllOrders = () => {
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     {row.style_name}
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                  {row.addons && row.addons.length > 0 ? row.addons.join(', ') : '-'}
                   </TableCell>
                 </TableRow>
               ))}
