@@ -3,19 +3,20 @@ import React, { useState,useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button, Stack} from "@mui/material/"
 import Link from "next/link"
-import { logOut } from "@/externalApi"
+import { logOut,isAuthenticated } from "@/externalApi"
 
 const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if "localStorage" is available (client-side) before using it
-    if (typeof window !== 'undefined') {
-      const storedIsLoggedIn = window.localStorage.getItem("isLoggedIn");
-      if (storedIsLoggedIn) {
-        setIsLoggedIn(JSON.parse(storedIsLoggedIn));
-      }
-    }
+
+    isAuthenticated()
+    .then((data) => {
+      setIsLoggedIn(data)
+    })
+    .catch((err) => {
+      setIsLoggedIn(false)
+    })
   }, []);
 
 
@@ -40,9 +41,11 @@ const Nav = () => {
         justifyContent='center'
         style={{ marginBottom: "2em" }}
       >
+        
         <Link href='/'>Home</Link>
         <Link href='#'>About</Link>
         <Link href='#'>Contact</Link>
+        {isLoggedIn==true ?<Link href={`user/${localStorage.getItem('uid')}`}  onClick={()=>{router.push(`user/${localStorage.getItem('uid')}`, { shallow: false })}}>Dashboard</Link>: ""}
         <Button  onClick={handleClick}>{isLoggedIn==true ? "Logout" : "Login/Signup"}</Button>
       </Stack>
     </nav>

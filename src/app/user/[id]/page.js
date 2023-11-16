@@ -27,7 +27,6 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { getOrders} from "@/externalApi"
 
 
 const User = ({ params }) => {

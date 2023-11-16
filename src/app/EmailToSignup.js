@@ -2,8 +2,26 @@
 import React, { useState } from "react"
 import { Button, Stack, TextField, Typography } from "@mui/material"
 import Link from "next/link"
+
 const EmailToSignup = () => {
+
+
   const [emailAddress, setEmail] = useState()
+  const [isValidEmail, setValidEmail] = useState(true);
+
+
+
+  const validateEmail = (email) => {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e);
+    setValidEmail(!validateEmail(e));
+  };
+
+
   return (
     <>
       <Typography variant='subtitle1' gutterBottom align='center'>
@@ -20,7 +38,7 @@ const EmailToSignup = () => {
         <TextField
           style={{ maxWidth: "600px" }}
           placeholder='Enter email address'
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => handleEmailChange(e.target.value)}
           size='normal'
           variant='outlined'
           fullWidth
@@ -31,6 +49,7 @@ const EmailToSignup = () => {
             large
             fullWidth={{ xs: true, sm: false }}
             style={{ whiteSpace: "nowrap" }}
+            disabled={isValidEmail}
           >
             Start Editing
           </Button>

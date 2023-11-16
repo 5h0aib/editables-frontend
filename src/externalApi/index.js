@@ -40,6 +40,36 @@ const headers = {
 
 
 
+const isAuthenticated = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/isAuthenticated/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${localStorage.getItem("access_token")}`,
+      },
+    })
+    if (response.status === 401) {
+      localStorage.removeItem("uid")
+      localStorage.removeItem("access_token")
+      localStorage.removeItem("refresh_token")
+      localStorage.removeItem("isStaff")
+      localStorage.setItem("isLoggedIn", false)
+      return false
+      // window.location.replace(`/auth`)
+    }
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! Status: ${response.status}`)
+    // }
+    const responseData = await response.json()
+    // console.log(responseData)
+    return true
+    
+  } catch (error) {
+    return false
+    console.error("Error fetching data:", error)
+  }
+}
 // Step 1
 const getCategories = async () => {
   try {
@@ -508,5 +538,6 @@ export {
   createUpload,
   getInvoice,
   getAddons2,
-  checkoutCustom
+  checkoutCustom,
+  isAuthenticated
 }
