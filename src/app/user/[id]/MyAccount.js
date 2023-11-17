@@ -62,7 +62,7 @@ const MyAccount = () => {
     if (Object.keys(updateUserData).length > 0) {
       putUserDetails(updateUserData)
         .then((data) => {
-          setToastMessage("User Data Updated")
+          setToastMessage("Your changes have been updated")
           setOpen(true)
           // setIsSaved(true);
           setTimeout(() => {
