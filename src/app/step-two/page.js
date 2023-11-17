@@ -19,6 +19,9 @@ import { useSearchParams } from "next/navigation"
 import { checkout, getAddons } from "@/externalApi"
 import { getDateDaysFromNow } from "@/utils"
 
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 const StepTwo = () => {
   const searchParams = useSearchParams()
   const category = searchParams.get("category")
@@ -140,8 +143,16 @@ const StepTwo = () => {
       subLines=''
       step=''
     >
+
+
+      
+<Button onClick={() => window.location.href = 'step_one'} style={{ marginTop:"-10px" }}> 
+            <ArrowBackIcon style={{ fontSize: 'small', marginRight: '8px' }} />
+            Step One
+          </Button>
+
       <SplitLayout form alignItems={"top"}>
-        <div>
+        <div >
           <Typography variant='h5' marginTop={"20px"}>
             Add-ons
           </Typography>
@@ -188,15 +199,15 @@ const StepTwo = () => {
                           />
                         </div>
                       </div>
-                      <Typography variant='p' gutterBottom sx={{ marginTop: "28px" }}>
-                        {addon.addon_starting_price}/photo
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "33px" ,paddingRight:"20px"}}>
+                        ${addon.addon_starting_price}/photo
                       </Typography>
                     </Stack>
                   ) : (
                     <Stack direction='row' alignItems={"center"} justifyContent={"space-between"}>
                       <div>
                         <FormControlLabel
-                          sx={{ fontSize: "5em",marginTop:"20px"}}
+                          sx={{ fontSize: "5em",marginTop:"25px"}}
                           control={
                             <Checkbox
                               size='medium'
@@ -206,8 +217,8 @@ const StepTwo = () => {
                           label={addon.addon_name}
                         />
                       </div>
-                      <Typography variant='p' gutterBottom sx={{ marginTop: "26px" }}>
-                        {addon.addon_starting_price}/photo
+                      <Typography variant='p' gutterBottom sx={{ marginTop: "24px" ,paddingRight:"20px"}}>
+                        ${addon.addon_starting_price}/photo
                       </Typography>
                     </Stack>
                   )
@@ -217,16 +228,15 @@ const StepTwo = () => {
 
 
 
-          <Stack direction={"row"} spacing={2} sx={{marginTop:"20px"}}>
+          <Stack direction={"row"} spacing={4} sx={{marginTop:"20px"}} >
             <Paper
-              padding
               onClick={() => setDeliveryDate(10)}
               style={
                 deliveryDate == 10
-                  ? { background: "black", color: "white"}
-                  : { }   
+                  ? { background: "black", color: "white",  width: "50%" }
+                  : { width: "50%" }   
               }
-              sx={{ padding: "10px"}}
+              sx={{ padding: "12px"}}
             >
               <Stack
                 spacing={3}
@@ -234,7 +244,7 @@ const StepTwo = () => {
                 alignItems={"center"}
                 justifyContent={"space-between"}
               >
-                <Typography variant='h6' gutterBottom display={"block"}>
+                <Typography variant='h6' gutterBottom display={"block"} style={{ marginBottom:"7px" }}>
                   Standard
                 </Typography>
                 <Typography variant='p' gutterBottom>
@@ -242,16 +252,18 @@ const StepTwo = () => {
                 </Typography>
               </Stack>
               <Typography variant='p' gutterBottom>
-                standard pricing, delivery time: 10 days
+                Standard pricing, delivery time: 10 days
               </Typography>
             </Paper>
+
+
+
             <Paper
-              padding
               onClick={() => setDeliveryDate(4)}
               style={
-                deliveryDate == 4 ? { background: "black", color: "white", p: 2 } : { p: 2}
+                deliveryDate == 4 ? { background: "black", color: "white", width: "50%"} : {width: "50%"}
               }
-              sx={{ padding: "10px" }}
+              sx={{ padding: "12px" }}
             >
               <Stack
                 direction='row'
@@ -266,7 +278,7 @@ const StepTwo = () => {
                 </Typography>
               </Stack>
               <Typography variant='p' gutterBottom>
-                premium pricing, delivery time: 4 days
+                Premium pricing, delivery time: 4 days
               </Typography>
             </Paper>
           </Stack>
@@ -279,7 +291,7 @@ const StepTwo = () => {
 
 
 
-          <Paper padding elevation={4} sx={{ background: "white", p: 2, }}> {/* Add padding to the left */}
+          <Paper padding elevation={4} sx={{ background: "white", p:3, marginTop:"-55px"}}> {/* Add padding to the left */}
           <Stack spacing={2}>
             <div>
               <Typography variant='h6' gutterBottom>

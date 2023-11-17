@@ -11,7 +11,7 @@ const ServiceLayout = ({ children, formTitle, subLines }) => {
         <Nav />
       </Stack>
       <div style={{ padding: "2em 0" }}>
-        <Typography variant='h4' gutterBottom>
+        <Typography variant='h4' gutterBottom style={{ marginBottom:"50px" }}>
           {formTitle}
         </Typography>
         {subLines&&subLines?.map((line,i) => (

@@ -33,7 +33,8 @@ const Auth = () => {
           router.push(`admin/all_order`, { shallow: false });
         } else {
           console.log("logging in as client");
-          router.push(`user/${res?.uid}`, { shallow: false });
+          // router.push(`user/${res?.uid}`, { shallow: false });
+          router.push(`step_one`, { shallow: false });
         }
       })
       .catch((err) => {

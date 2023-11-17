@@ -32,14 +32,14 @@ const Nav = () => {
   }
 
   return (
-    <nav className={""}>
+    <nav>
       {/* <h1 style={{ textAlign: 'center' }}>Editable Studios</h1> */}
       <Stack
         spacing={2}
         direction='row'
         alignItems='center'
         justifyContent='center'
-        style={{ marginBottom: "2em" }}
+        // style={{ marginBottom: "1em" }}
       >
         
         <Link href='/'>Home</Link>

@@ -103,23 +103,50 @@ const StepOne = () => {
       >
         <SplitLayout form>
           <div>
-            <br />
-            <Typography variant='h5' gutterBottom>
-              Choose a Category
-            </Typography>
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-              {/* {categories.map((category, i) => ( */}
-              {allCatergories.map((category, i) => (
+            <div>
+              <Typography variant='h5' gutterBottom>
+                Choose a Category
+              </Typography>
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+
+                {allCatergories?.map((category, i) => (
+                  <Button
+                    variant={
+                      category.category_name == selectedCategory ? "outlined" : "contained"
+                    }
+                    onClick={() => setCategory(category.category_name)}
+                    style = {buttonStyle}
+                  >
+                    {category.category_name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div style={{ marginTop:"50px"}}>
+                <Typography variant='h5' gutterBottom>
+                  Choose a Style
+                </Typography>
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+
                 <Button
-                  variant={
-                    category.category_name == selectedCategory ? "outlined" : "contained"
-                  }
-                  onClick={() => setCategory(category.category_name)}
+                  medium
+                  variant={selectedStyle === "custom" ? "outlined" : "contained"}
+                  onClick={() => setStyle("custom")}
                   style = {buttonStyle}
                 >
-                  {category.category_name}
+                  Custom
                 </Button>
-              ))}
+                {uniqueStyles?.map((style, i) => (
+                  <Button
+                    medium
+                    variant={style.style_name === selectedStyle ? "outlined" : "contained"}
+                    onClick={() => setStyle(style.style_name)}
+                    style = {buttonStyle}
+                  >
+                    {style.style_name}
+                  </Button>
+                ))}
+                </div>
             </div>
           </div>
           <Paper color='gray' padding sx={{minHeight:"auto"}}>
@@ -127,33 +154,7 @@ const StepOne = () => {
                   width={400} alt="Style" layout={'responsive'} />
           </Paper>
         </SplitLayout>
-        <div>
-          <br />
-          <Typography variant='h5' gutterBottom>
-            Choose a Style
-          </Typography>
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-
-            <Button
-              medium
-              variant={selectedStyle === "custom" ? "outlined" : "contained"}
-              onClick={() => setStyle("custom")}
-              style = {buttonStyle}
-            >
-              Custom
-            </Button>
-            {uniqueStyles.map((style, i) => (
-              <Button
-                medium
-                variant={style.style_name === selectedStyle ? "outlined" : "contained"}
-                onClick={() => setStyle(style.style_name)}
-                style = {buttonStyle}
-              >
-                {style.style_name}
-              </Button>
-            ))}
-          </div>
-        </div>
+       
         <br />
         <br />
         <div style={{ display: "flex", justifyContent: "center" }}>

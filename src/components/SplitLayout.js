@@ -3,7 +3,7 @@ import React from "react"
 
 const SplitLayout = ({ children, form, alignItems }) => {
   return form ? (
-    <Grid container spacing={2} alignItems={alignItems || "center"}>
+    <Grid container spacing={2} alignItems={alignItems || "center"} p={1}>
       <Grid item xs={12} md={7}>
         {children[0]}
       </Grid>
