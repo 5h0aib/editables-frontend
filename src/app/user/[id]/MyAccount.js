@@ -13,6 +13,13 @@ import {
 import React, { useEffect, useState } from "react"
 import CircularProgress from '@mui/material/CircularProgress';
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const MyAccount = () => {
 
   
@@ -24,7 +31,7 @@ const MyAccount = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [isSaved, setIsSaved] = useState(false);
+  // const [isSaved, setIsSaved] = useState(false);
 
 
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -32,6 +39,12 @@ const MyAccount = () => {
 
 
   const [newsletterOptIn, setNewsletterOptIn] = useState(false);
+
+
+
+  const [toastMessage, setToastMessage] = useState("password")
+  const [open, setOpen] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("primary");
 
 
   useEffect(() => {
@@ -45,11 +58,16 @@ const MyAccount = () => {
 
 
   const handleSave = () => {
-    console.log(updateUserData)
+    
     if (Object.keys(updateUserData).length > 0) {
       putUserDetails(updateUserData)
         .then((data) => {
-          setIsSaved(true);
+          setToastMessage("User Data Updated")
+          setOpen(true)
+          // setIsSaved(true);
+          setTimeout(() => {
+            setOpen(false);
+          }, 3000);
         })
         .catch((error) => {
           console.error("Error uploading data:", error);
@@ -62,14 +80,13 @@ const MyAccount = () => {
       setPasswordError("Passwords do not match");
       return;
     }
-    setIsChangingPassword(true); // Show the CircularProgress
+    setIsChangingPassword(true); 
 
     setTimeout(() => {
-      // Simulate a delay of 2 seconds
-      // Replace this with your actual API call
       putUserDetails(updateUserPassword)
         .then(() => {
-          setPasswordChangeSuccess("Password changed successfully");
+          setToastMessage("Password changed successfully")
+          setOpen(true)
         })
         .catch((error) => {
           setPasswordChangeSuccess("Something went wrong");
@@ -77,11 +94,14 @@ const MyAccount = () => {
         })
         .finally(() => {
           setTimeout(() => {
-            setIsChangingPassword(false); // Hide the CircularProgress after 2 seconds
+            setOpen(false)
+            setPassword("")
+            setConfirmPassword("")// Emptying the fields
+            setIsChangingPassword(false); // Hiding the CircularProgress after 2 seconds
             setPasswordDialogOpen(false); // Close the dialog
           }, 2000);
         });
-    }, 2000);
+    }, 1000);
   }
 
   const handlePasswordChange = (e) => {
@@ -203,11 +223,11 @@ const MyAccount = () => {
         </Button>
       </div>
 
-      {isSaved && (
+      {/* {isSaved && (
         <Typography variant="body1" style={{ color: "green", marginTop: "10px" }}>
           Your changes have been updated
         </Typography>
-      )}
+      )} */}
 
 
 
@@ -218,7 +238,7 @@ const MyAccount = () => {
         }}
         maxWidth="sm"
       >
-        <Box p={2} style={{ overflow: "hidden", width: "400px" }}>
+        <Box p={4} style={{ overflow: "hidden", width: "400px" }}>
           <Typography variant="h6" gutterBottom>
             Change Password
           </Typography>
@@ -273,6 +293,15 @@ const MyAccount = () => {
           )}
         </Box>
       </Dialog>
+
+
+
+      <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert severity={alertSeverity} sx={{ width: '100%' }}>
+          {toastMessage}
+        </Alert>
+      </Snackbar>
+
     </div>
   )
 }

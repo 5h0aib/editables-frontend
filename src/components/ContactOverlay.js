@@ -13,6 +13,7 @@ import React, { useState } from "react";
 
 const ContactOverlay = ({ setOpen, open }) => {
   const [phone, setPhone] = useState("");
+  const [isValidPhone, setValidPhone] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
 
@@ -29,10 +30,20 @@ const ContactOverlay = ({ setOpen, open }) => {
       });
   };
 
+  const validatePhoneNumber = (number) => {
+    // Basic validation: 11 digits and only numbers
+    const phoneRegex = /^\d{11}$/;
+    return phoneRegex.test(number);
+  };
+
+  const handlePhoneChange = (e) => {
+    setPhone(e);
+    setValidPhone(!validatePhoneNumber(e));
+  };
   return (
-    <Dialog onClose={() => setOpen(false)} open={open}>
+    <Dialog onClose={() => setOpen(false)} open={open} >
       <DialogContent>
-        <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "300px" }}>
+        <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "400px" }} p= {2}>
           <Typography variant='h4' gutterBottom align='center'>
             Scheduling Call
           </Typography>
@@ -41,14 +52,14 @@ const ContactOverlay = ({ setOpen, open }) => {
           </Typography>
           <TextField
             placeholder='Your Contact Number'
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => handlePhoneChange(e.target.value)}
           />
           {successMessage && (
             <Typography variant='body1' color='success' align='center'>
               {successMessage}
             </Typography>
           )}
-          <Button variant='contained' size='large' onClick={handleClick}>
+          <Button variant='contained' size='large' onClick={handleClick} disabled={isValidPhone}>
             Next
           </Button>
         </Stack>

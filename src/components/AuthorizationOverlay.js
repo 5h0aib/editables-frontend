@@ -67,11 +67,11 @@ const AuthorizationOverlay = ({
   return (
     <Dialog onClose={() => setOpen(false)} open={open}>
       <DialogContent>
-        <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "350px" }}>
-          <Typography variant='h4' gutterBottom align='center'>
+        <Stack justifyContent='center' spacing={3} sx={{ maxWidth: "400px" }} p={4}>
+          <Typography variant='h4' gutterBottom align='center' style={{fontSize: "25px"}}>
               Finish setting up your account 
           </Typography>
-          <Typography variant='h6' gutterBottom align='center' style={{fontSize: "1.5vw"}}>
+          <Typography variant='h6' align='center' style={{fontSize: "15px"}}>
               Sign in with your email and password
           </Typography>
 
