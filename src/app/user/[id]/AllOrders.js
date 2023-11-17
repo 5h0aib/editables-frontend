@@ -166,6 +166,7 @@ const AllOrders = ({setNotificationNum}) => {
                   </Select>
                 </FormControl>
               </TableCell>
+              <TableCell>Total Cost</TableCell>
               <TableCell>Delivery</TableCell>
               <TableCell>Rating</TableCell>
             </TableRow>
@@ -207,6 +208,9 @@ const AllOrders = ({setNotificationNum}) => {
                      row.order_status
                     )}
                   </TableCell>
+                  <TableCell component='th' scope='row'>
+                  ${row.order_amount}
+                </TableCell>
                 <TableCell component='th' scope='row'>
                   {formatDate(row.delivery_date)}
                 </TableCell>

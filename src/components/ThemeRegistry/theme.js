@@ -71,8 +71,8 @@ const theme = createTheme({
         root: {
           fontFamily: montserrat.style.fontFamily,
           background: "white",
-          borderRadius: "10px",
-          border: "3px solid black",
+          borderRadius: "5px",
+          border: ".5px solid black",
         },
       },
     },
@@ -82,7 +82,7 @@ const theme = createTheme({
           fontFamily: montserrat.style.fontFamily,
           background: "white",
           borderRadius: "10px",
-          border: "3px solid black",
+          border: "2px solid black",
         },
       },
       variants: [

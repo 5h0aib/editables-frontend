@@ -11,6 +11,14 @@ import ContactOverlay from "@/components/ContactOverlay"
 import { useSearchParams } from "next/navigation"
 
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 const StepOne = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -23,15 +31,13 @@ const StepOne = () => {
   const [openLogin, setOpenLogin] = useState(false)
   const [openCustom, setOpenCustom] = useState(false)
   const [nextUrl, setNextURL] = useState('step-two')
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
 
     getStyles()
       .then((data) => {
-        // console.log("Styles:", data)
         setStyles(data)
-
-        // Create a set to keep track of unique style names
         const uniqueStyleNames = new Set()
 
         // Filter out unique styles
@@ -59,11 +65,8 @@ const StepOne = () => {
       })
   }, [])
 
-  // const nextUrl = `step_two?style=${selectedStyle.style_name}&style_id=${selectedStyle.id}&category=${selectedCategory.category_name}&category_id=${selectedCategory.id}`
-    // const nextUrl = `step_two`
   const handleClick = () => {
     if (localStorage.getItem("isLoggedIn") != "true") {
-      // console.log("not logged in")
       setOpenLogin(true)//open login overlay when not logged in
     } else {
       if (selectedStyle == "custom") {
@@ -83,7 +86,11 @@ const StepOne = () => {
         router.push(url, { shallow: false })
         }
         else{
-          alert("Please make sure to select a category.");
+          setOpen(true)
+          setTimeout(() => {
+            setOpen(false);
+          }, 3000);
+          // alert("Please make sure to select a category.");
         }
       }
     }
@@ -176,6 +183,15 @@ const StepOne = () => {
         setOpenCustom={setOpenCustom}
       />
       <ContactOverlay open={openCustom} setOpen={setOpenCustom} />
+
+
+      <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert severity={"primary"} sx={{ width: '100%' }}>
+          Please make sure to select a category.
+        </Alert>
+      </Snackbar>
+
+
     </>
   )
 }

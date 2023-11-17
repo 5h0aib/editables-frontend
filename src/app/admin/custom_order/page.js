@@ -59,7 +59,7 @@ const CustomOrder = () => {
 
   const [dateValue, setDateValue] = useState(dayjs().add(4, 'day'));
   const [numImages, setNumImages] = useState(0);
-  const [price, setPrice] = useState(5);
+  const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("")
 
   const [orderButton, setOrderButton] = useState(false)
@@ -67,7 +67,7 @@ const CustomOrder = () => {
 
   const [toastMessage, setToastMessage] = useState("Order being Created, Please wait, You'll be redirected shortly.")
   const [open, setOpen] = useState(false);
-  const [alertSeverity, setAlertSeverity] = useState("info");
+  const [alertSeverity, setAlertSeverity] = useState("primary");
 
 
   const [loading, setLoading] = useState(false);
@@ -162,12 +162,22 @@ const handleOrder = () =>{
 
   if(!numImages || numImages==0){
     setOrderButton(false)
-    alert("Please input the number of images")
+    setOpen(true)
+    setToastMessage("Please input the number of images")
+    setTimeout(() => {
+      setOpen(false)
+    }, 3000);
+
     return
   }
   if(!price || price==0){
     setOrderButton(false)
-    alert("Please input price of this order")
+    setOpen(true)
+    setToastMessage("Please input the price of this order")
+    setTimeout(() => {
+      setOpen(false)
+    }, 3000);
+
     return
   }
 
@@ -208,11 +218,14 @@ const handleOrder = () =>{
 
   postOrders(orderDetails)
   .then((order) => {
+    setOpen(true)
+    setAlertSeverity("success")
+    setToastMessage("Order Created Successfully")
     setTimeout(() => {
-      setAlertSeverity("success")
-      setToastMessage("Order Created Successfully")
-    }, 2000);
-    router.push(`/admin/all_order`, { shallow: true })
+      setOpen(false)
+      router.push(`/admin/all_order`, { shallow: true })
+    }, 5000);
+
   })
   .catch((err) => console.log(err))
 
@@ -447,7 +460,7 @@ const handleOrder = () =>{
         </Button>
       </div>
 
-      <Snackbar open={open} autoHideDuration={6000} >
+      <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert severity={alertSeverity} sx={{ width: '100%' }}>
           {toastMessage}
         </Alert>

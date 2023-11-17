@@ -72,6 +72,10 @@ const StepFinal = () => {
         setUser(window.localStorage.getItem("uid"))
       }
     }
+    if (order_id === null) {
+      window.location.href = "/";
+    }
+
   }, []);
 
   useEffect(() => {
@@ -103,10 +107,6 @@ const StepFinal = () => {
         const zipFileNamesArray = Object.keys(zip.files).filter((fileName) => {
           return !fileName.startsWith("__MACOSX/");
         });
-        // console.log(zipFileNamesArray)
-        // console.log(zipFileNamesArray.length -1)
-
-        // console.log(num_of_images)
 
         if(zipFileNamesArray.length - 1 > num_of_images){
             sethasExtraImages(true)
@@ -209,11 +209,12 @@ const StepFinal = () => {
                 0/100 characters
               </Typography>
             </Stack>
-            <TextField variant='outlined' fullWidth />
+            <TextField fullWidth />
             <Stack
               direction='row'
               alignItems={"center"}
               justifyContent={"space-between"}
+              marginTop={"20px"}
             >
               <Typography variant='h6' gutterBottom>
                 Description
@@ -222,8 +223,10 @@ const StepFinal = () => {
                 0/300 characters
               </Typography>
             </Stack>
-            <TextField variant='outlined' fullWidth />
-            <Typography variant='h6' gutterBottom>
+            <TextField fullWidth />
+
+
+            <Typography variant='h6' gutterBottom marginTop={"20px"}>
               File type you would like to receive
             </Typography>
             <RadioGroup
@@ -251,7 +254,7 @@ const StepFinal = () => {
           handleChange={handleChange}  
           name="file" 
           types={fileTypes}> 
-            <Paper sx={{ height: "350px" }}>
+            <Paper sx={{ height: "400px" }}>
               <div
                 style={{
                   border: "1px dashed 5px",
@@ -260,7 +263,7 @@ const StepFinal = () => {
                 }}
               >
                 <Typography variant='h5' gutterBottom>
-                  <b>Drag & drop your zip file here</b>
+                  Drag & drop your zip file here
                 </Typography>
 
                 {isLoading ? ( // Show loading indicator when isLoading is true

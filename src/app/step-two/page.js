@@ -27,6 +27,7 @@ const StepTwo = () => {
   const category = searchParams.get("category")
   const category_id = searchParams.get("category_id")
   const style = searchParams.get("style")
+  const style_id = searchParams.get("style_id")
 
   const [addons, setAddons] = useState()
   const [selectedAddons, setSelectedAddons] = useState([])
@@ -47,6 +48,11 @@ const StepTwo = () => {
       .catch((error) => {
         console.error("Error fetching orders:", error)
       })
+
+      if(category==null || category_id==null || style==null || style_id==null){
+        window.location.href = '/step_one'
+      }
+   
   }, [])
 
   useEffect(() => {
