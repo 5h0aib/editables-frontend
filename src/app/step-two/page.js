@@ -146,7 +146,7 @@ const StepTwo = () => {
 
 
       
-<Button onClick={() => window.location.href = 'step_one'} style={{ marginTop:"-10px" }}> 
+          <Button onClick={() => window.location.href = 'step_one'} style={{ marginTop:"-10px",marginLeft: '10px' }}> 
             <ArrowBackIcon style={{ fontSize: 'small', marginRight: '8px' }} />
             Step One
           </Button>
@@ -228,7 +228,7 @@ const StepTwo = () => {
 
 
 
-          <Stack direction={"row"} spacing={4} sx={{marginTop:"20px"}} >
+          <Stack direction={"row"} spacing={4} sx={{marginTop:"20px"}}>
             <Paper
               onClick={() => setDeliveryDate(10)}
               style={

@@ -72,6 +72,8 @@ const Auth = () => {
       .then((res) => {
         setRegistrationResponse(res);
         setIsLoading(false);
+        setEmail("")
+        setPassword("")
       })
       .catch((err) => {
         setRegistrationResponse("Registration failed. Please try again.");
