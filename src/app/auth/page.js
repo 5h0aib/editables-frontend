@@ -30,11 +30,11 @@ const Auth = () => {
         window.localStorage.setItem("isStaff", res.is_staff);
         if (res.is_staff) {
           console.log("logging in as staff");
-          router.push(`admin/all_order`, { shallow: false });
+          router.push(`admin/all-order`, { shallow: false });
         } else {
           console.log("logging in as client");
           // router.push(`user/${res?.uid}`, { shallow: false });
-          router.push(`step_one`, { shallow: false });
+          router.push(`step-one`, { shallow: false });
         }
       })
       .catch((err) => {

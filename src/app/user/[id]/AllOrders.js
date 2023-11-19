@@ -22,6 +22,11 @@ import { formatDate, formatDateString } from "@/utils"
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
 
+
+
+
+
+
 const AllOrders = ({setNotificationNum}) => {
   const [type, setType] = useState("all")
   const [selectedStatus, setStatus] = useState("all")
@@ -93,7 +98,7 @@ const AllOrders = ({setNotificationNum}) => {
 
     const checkOutDetails = {
       order_id:id,
-      success_url: current_domain + "/payment-success",
+      success_url: current_domain + "/step-final",
       cancel_url: current_domain + "/payment-failed"
     }
     // console.log(checkOutDetails)
@@ -228,6 +233,11 @@ const AllOrders = ({setNotificationNum}) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+
+      
+
+      
     </div>
   )
 }

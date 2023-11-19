@@ -44,6 +44,13 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
 import { useRouter } from "next/navigation"
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const fileTypes = ["ZIP"]; 
 
 const firebaseConfig = {
@@ -71,6 +78,11 @@ const AllOrders = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   const [numBookings, setNumBookings] = useState(0);
+
+
+  const [toastMessage, setToastMessage] = useState("")
+  const [open, setOpen] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState("primary");
 
 
   useEffect(() => {
@@ -178,14 +190,24 @@ const AllOrders = () => {
       changeOrderStatus(e.target.value, id)
       .then((res) =>{
         if (rowIndex !== -1) {
-          
+          setOpen(true)
+          setToastMessage(`Order-${id}, Status changed Succesfully`)
           updatedOrders[rowIndex].order_status = newStatus;
           setFilteredOrders(updatedOrders); 
+          setTimeout(() => {
+            setOpen(false);
+          }, 3000);
         }
-        console.log(res)
       }
       )
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setOpen(true)
+        setToastMessage(`Something Went wrong, try again later`)
+        console.log(err)
+        setTimeout(() => {
+          setOpen(false);
+        }, 3000);
+      })
   }
 
 
@@ -456,6 +478,14 @@ const AllOrders = () => {
               </DialogContent>
             </Box>
         </Dialog>
+
+        <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert severity={alertSeverity} sx={{ width: '100%' }}>
+          {toastMessage}
+        </Alert>
+      </Snackbar>
+
+      
       </div>
     </AdminLayout>
   )

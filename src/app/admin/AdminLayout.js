@@ -47,7 +47,7 @@ function AdminLayout(props) {
           <ListItem key={item} disablePadding>
             <ListItemButton
               sx={{ textAlign: "center" }}
-              onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}
+              onClick={() => router.push(item.replace(/ /g, '-'), { shallow: true })}
             >
               <ListItemText primary={capitalizeFirstLetter(item)} />
             </ListItemButton>
@@ -95,7 +95,7 @@ function AdminLayout(props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} variant="contained" onClick={() => router.push(item.replace(/ /g, '_'), { shallow: true })}>
+              <Button key={item} variant="contained" onClick={() => router.push(item.replace(/ /g, '-'), { shallow: true })}>
                {capitalizeFirstLetter(item)}
               </Button>
             ))}

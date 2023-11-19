@@ -52,7 +52,7 @@ const CategorySelection = ({categories}) => {
                 </Button>
               ))}
             </div>
-            <Link href={`step_one?category=${selectedCategory ? selectedCategory.category_name : ''}`}>
+            <Link href={`step-one?category=${selectedCategory ? selectedCategory.category_name : ''}`}>
               <Button variant='contained' size='large' sx={{ marginTop:"5px" }}>
                 Get Started
               </Button>

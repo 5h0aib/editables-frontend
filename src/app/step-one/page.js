@@ -108,7 +108,9 @@ const StepOne = () => {
         subLines=''
         step=''
       >
-        <SplitLayout form>
+        <SplitLayout form 
+        // alignItems={"top"}
+        >
           <div>
             <div>
               <Typography variant='h5' gutterBottom>
@@ -156,10 +158,10 @@ const StepOne = () => {
                 </div>
             </div>
           </div>
-          <Paper color='gray' padding sx={{minHeight:"auto"}}>
+          {/* <Paper color='gray' padding sx={{minHeight:"auto"}}> */}
             <Image src='/morphTo.jpg' height={400}
-                  width={400} alt="Style" layout={'responsive'} />
-          </Paper>
+                  width={400} alt="Style" layout={'responsive'} style={{ marginTop:"20px" , borderRadius: "20px"}}/>
+          {/* </Paper> */}
         </SplitLayout>
        
         <br />

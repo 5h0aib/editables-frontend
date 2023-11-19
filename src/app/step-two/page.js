@@ -136,7 +136,7 @@ const StepTwo = () => {
       order_amount: totalPrice,
       // order_rating: 4.5,
       // culling_number: String(25),
-      success_url: current_domain + "/payment-success",
+      success_url: current_domain + "/step-final",
       cancel_url: current_domain + "/payment-failed"
     }
 

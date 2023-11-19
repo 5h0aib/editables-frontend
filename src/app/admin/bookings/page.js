@@ -84,7 +84,7 @@ const allBookings = () => {
                   <Button 
                   variant="contained" 
                   size="small" 
-                  onClick={()=>router.push(`/admin/custom_order?uid=${row.user_id}&email=${row.email}&booking_id=${row.id}`, { shallow: true })}
+                  onClick={()=>router.push(`/admin/custom-order?uid=${row.user_id}&email=${row.email}&booking_id=${row.id}`, { shallow: true })}
                   style={{ backgroundColor: "#F4F4F8",color :"black" ,textTransform: "none"}}>
                     Issue
                   </Button>
