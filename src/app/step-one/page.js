@@ -125,6 +125,7 @@ const StepOne = () => {
 
                 {allCatergories?.map((category, i) => (
                   <Button
+                    key={category.id}
                     variant={
                       category.category_name == selectedCategory ? "outlined" : "contained"
                     }
@@ -153,6 +154,7 @@ const StepOne = () => {
                 {uniqueStyles?.map((style, i) => (
                   <Button
                     medium
+                    key={style.id}
                     variant={style.style_name === selectedStyle ? "outlined" : "contained"}
                     onClick={() => setStyle(style.style_name)}
                     style = {buttonStyle}

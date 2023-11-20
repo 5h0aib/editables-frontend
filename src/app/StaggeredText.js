@@ -32,7 +32,7 @@ const StaggeredText = () => {
     }, 50) // Adjust the interval as needed
 
     return () => clearInterval(interval)
-  }, [count])
+  },  [count, dontText.length, increment, weDo])
 
   return (
     <Typography variant='h5' gutterBottom className="staggeredText" minHeight="1.5em">
