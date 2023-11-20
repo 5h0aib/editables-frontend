@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow"
 import {
   Button,
   Typography,
+  Box
 } from "@mui/material"
 import AdminLayout from "../AdminLayout"
 import { getTransactions,getInvoice } from "@/externalApi"
@@ -16,11 +17,17 @@ import { getTransactions,getInvoice } from "@/externalApi"
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+
 
 const AllOrders = () => {
   const [type, setType] = useState("all")
   const [allTransactions, setAllTransactions] = useState([])
   const [filteredTransactions, setFilteredTransactions] = useState([])
+
+  const [isLoaded, setIsLoaded] = useState(false)
 
 
   function filteredRows(name) {
@@ -42,6 +49,8 @@ const AllOrders = () => {
       .then((data) => {
         setAllTransactions(data)
         setFilteredTransactions(data)
+
+        setIsLoaded(true)
         // console.log("Transactions", data)
       })
       .catch((error) => {
@@ -56,6 +65,7 @@ const AllOrders = () => {
 
   return (
     <AdminLayout>
+      {isLoaded ? (
       <div>
         <Typography variant='h5' gutterBottom display={"block"}>
           All Orders
@@ -166,6 +176,16 @@ const AllOrders = () => {
           </Table>
         </TableContainer>
       </div>
+      ):(
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="80vh"
+        >
+          <CircularProgress size={60} thickness={2}/>
+        </Box>
+      )}
     </AdminLayout>
   )
 }

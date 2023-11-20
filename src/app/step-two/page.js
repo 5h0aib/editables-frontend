@@ -11,10 +11,13 @@ import {
   Typography,
   Stack,
   FormControlLabel,
+  Box,
   Checkbox,
 } from "@mui/material"
 
-import Link from "next/link"
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 import { useSearchParams } from "next/navigation"
 import { checkout, getAddons } from "@/externalApi"
 import { getDateDaysFromNow } from "@/utils"
@@ -39,18 +42,22 @@ const StepTwo = () => {
   const [pricePerImage, setPricePerImage] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
 
+
+  const [isLoaded, setIsLoaded] = useState(false)
+
   useEffect(() => {
     getAddons(category_id)
       .then((data) => {
         // console.log("Addons:", data)
         setAddons(data)
+        setIsLoaded(true)
       })
       .catch((error) => {
         console.error("Error fetching orders:", error)
       })
 
       if(category==null || category_id==null || style==null || style_id==null){
-        window.location.href = '/step_one'
+        window.location.href = '/step-one'
       }
    
   }, [])
@@ -150,9 +157,9 @@ const StepTwo = () => {
       step=''
     >
 
-
-      
-          <Button onClick={() => window.location.href = 'step_one'} style={{ marginTop:"-10px",marginLeft: '10px' }}> 
+    {isLoaded ? (
+      <>
+          <Button onClick={() => window.location.href = 'step-one'} style={{ marginTop:"-10px",marginLeft: '10px' }}> 
             <ArrowBackIcon style={{ fontSize: 'small', marginRight: '8px' }} />
             Step One
           </Button>
@@ -357,6 +364,17 @@ const StepTwo = () => {
         </Paper>
 
       </SplitLayout>
+      </>
+      ):(
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="70vh" // Adjust the height based on your design
+        >
+          <CircularProgress size={80} thickness={2}/>
+        </Box>
+      )}
     </ServiceLayout>
   )
 }

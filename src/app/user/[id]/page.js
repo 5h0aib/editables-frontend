@@ -36,6 +36,8 @@ const User = ({ params }) => {
 
   const [notificationNum , setNotificationNum] = useState(0);
 
+
+
   useEffect(() => {
 
     const updateFullPageHeight = () => {

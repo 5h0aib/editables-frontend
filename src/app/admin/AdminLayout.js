@@ -73,7 +73,7 @@ function AdminLayout(props) {
     window !== undefined ? () => window().document.body : undefined
 
   return (
-    <Box sx={{ display: "flex", borderRadius: "0" }}>
+    <Box sx={{ display: "flex", borderRadius: "0" }} p={2}>
       <CssBaseline />
       <AppBar component='nav' sx={{ borderRadius: "0", padding: "0px" }}>
         <Toolbar>

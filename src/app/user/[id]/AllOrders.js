@@ -13,6 +13,7 @@ import {
   InputLabel,
   MenuItem,
   Rating,
+  Box,
   Select,
   Typography,
 } from "@mui/material"
@@ -21,6 +22,8 @@ import { formatDate, formatDateString } from "@/utils"
 
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
+
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
@@ -32,6 +35,9 @@ const AllOrders = ({setNotificationNum}) => {
   const [selectedStatus, setStatus] = useState("all")
   const [allOrders, setAllOrders] = useState([])
   const [filteredOrders, setFilteredOrders] = useState([])
+
+  const [isLoaded, setIsLoaded] = useState(false)
+
 
   function handleChange(event) {
     setStatus(event.target.value)
@@ -79,9 +85,12 @@ const AllOrders = ({setNotificationNum}) => {
         const paymentOrders = orders.results.filter(
           (row) => row.order_status === "Payment-due"
         )
-
-        setNotificationNum(paymentOrders.length)
         
+        setNotificationNum(paymentOrders.length)
+
+        setTimeout(() => {
+          setIsLoaded(true);
+        }, 500);
       })
       .catch((err) => console.log(err))
   }, [])
@@ -106,8 +115,11 @@ const AllOrders = ({setNotificationNum}) => {
   }
   
   return (
+    
     <div>
-      
+
+      {isLoaded ? (
+      <>
       <Typography variant='h5' gutterBottom display={"block"}>
         {type.charAt(0).toUpperCase() + type.slice(1)} orders
       </Typography>
@@ -133,7 +145,7 @@ const AllOrders = ({setNotificationNum}) => {
         Express
       </Button>
       <Button
-        variant={type == "custom" ? "outlined" : "stantdard"}
+        variant={type == "custom" ? "outlined" : "standard"}
         sx={{ background: "white" }}
         onClick={() => filterOrder("custom")}
       >
@@ -233,12 +245,21 @@ const AllOrders = ({setNotificationNum}) => {
           </TableBody>
         </Table>
       </TableContainer>
+      </>
+      ):(
 
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="100vh" // Adjust the height based on your design
+        >
+          <CircularProgress size={70} thickness={2}/>
+        </Box>
 
-      
-
-      
-    </div>
+      )
+}
+      </div>
   )
 }
 

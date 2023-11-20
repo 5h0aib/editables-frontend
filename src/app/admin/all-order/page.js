@@ -85,13 +85,17 @@ const AllOrders = () => {
   const [alertSeverity, setAlertSeverity] = useState("primary");
 
 
+  const [isLoaded, setIsLoaded] = useState(false)
+
   useEffect(() => {
 
     getOrders()
       .then((orders) => {
         setAllOrders(orders.results)
         setFilteredOrders(orders.results)
-        console.log("fectched Orders: ", orders)
+
+        setIsLoaded(true)
+
       })
       .catch((err) => console.log(err))
 
@@ -218,9 +222,8 @@ const AllOrders = () => {
         {type.charAt(0).toUpperCase() + type.slice(1)} Orders
         </Typography>
 
-
-
-
+        {isLoaded ? (
+          <>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <Button
@@ -484,9 +487,19 @@ const AllOrders = () => {
           {toastMessage}
         </Alert>
       </Snackbar>
-
-      
+      </>
+        ):(
+        <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="80vh" // Adjust the height based on your design
+          >
+            <CircularProgress size={60} thickness={2}/>
+          </Box>
+        )}
       </div>
+     
     </AdminLayout>
   )
 }

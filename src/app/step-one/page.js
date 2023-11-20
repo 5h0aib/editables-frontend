@@ -3,13 +3,13 @@ import ServiceLayout from "@/components/ServiceLayout"
 import { useRouter } from "next/navigation"
 import SplitLayout from "@/components/SplitLayout"
 import React, { useEffect, useState } from "react"
-import { Button, Paper, Typography } from "@mui/material"
+import { Button,Box,Typography } from "@mui/material"
 import Image from "next/image"
 import { getCategories, getStyles } from "@/externalApi"
 import AuthorizationOverlay from "@/components/AuthorizationOverlay"
 import ContactOverlay from "@/components/ContactOverlay"
 import { useSearchParams } from "next/navigation"
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -32,6 +32,8 @@ const StepOne = () => {
   const [openCustom, setOpenCustom] = useState(false)
   const [nextUrl, setNextURL] = useState('step-two')
   const [open, setOpen] = useState(false);
+
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
 
@@ -59,6 +61,7 @@ const StepOne = () => {
       .then((data) => {
         // console.log("Categories:", data)
         setCategories(data)
+        setIsLoaded(true)
       })
       .catch((error) => {
         console.error("Error fetching orders:", error)
@@ -102,12 +105,14 @@ const StepOne = () => {
   };
 
   return (
-    <>
+      <>
       <ServiceLayout
         formTitle='Choose the category & style that fits your images'
         subLines=''
         step=''
-      >
+      > 
+      {isLoaded ? (
+        <>
         <SplitLayout form 
         // alignItems={"top"}
         >
@@ -176,25 +181,39 @@ const StepOne = () => {
             Next
           </Button>
         </div>
+
+        <AuthorizationOverlay
+          open={openLogin}
+          setOpen={setOpenLogin}
+          isCustom={selectedStyle == "custom"}
+          hRef={nextUrl}
+          setOpenCustom={setOpenCustom}
+        />
+        <ContactOverlay open={openCustom} setOpen={setOpenCustom} />
+
+
+        <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+          <Alert severity={"primary"} sx={{ width: '100%' }}>
+            Please make sure to select a category.
+          </Alert>
+        </Snackbar>
+
+        </>
+        ):(
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="60vh" // Adjust the height based on your design
+        >
+          <CircularProgress size={70} thickness={2}/>
+        </Box>
+
+        )}
       </ServiceLayout>
-      <AuthorizationOverlay
-        open={openLogin}
-        setOpen={setOpenLogin}
-        isCustom={selectedStyle == "custom"}
-        hRef={nextUrl}
-        setOpenCustom={setOpenCustom}
-      />
-      <ContactOverlay open={openCustom} setOpen={setOpenCustom} />
 
 
-      <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Alert severity={"primary"} sx={{ width: '100%' }}>
-          Please make sure to select a category.
-        </Alert>
-      </Snackbar>
-
-
-    </>
+      </>
   )
 }
 
