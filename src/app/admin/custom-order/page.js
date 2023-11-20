@@ -381,7 +381,7 @@ const handleOrder = () =>{
                 })
                 .map((addon) => (
                   addon.addon_name === "Culling" ? (
-                    <Stack direction='row' alignItems={"top"} justifyContent={"space-between"}>
+                    <Stack key={addon.id} direction='row' alignItems={"top"} justifyContent={"space-between"}>
                       <div>
                         <FormControlLabel
                           sx={{ fontSize: "5em",marginTop:"20px" }}
@@ -421,7 +421,7 @@ const handleOrder = () =>{
                       </Typography>
                     </Stack>
                   ) : (
-                    <Stack direction='row' alignItems={"center"} justifyContent={"space-between"}>
+                    <Stack key={addon.id} direction='row' alignItems={"center"} justifyContent={"space-between"}>
                       <div>
                         <FormControlLabel
                           sx={{ fontSize: "5em",marginTop:"20px"}}

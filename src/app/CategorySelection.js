@@ -41,6 +41,7 @@ const CategorySelection = ({categories}) => {
             <div style={{}}>
             {categories.map((category, i) => (
                 <Button
+                  key={category.id}
                   variant={
                     category == selectedCategory ? "outlined": "contained"  
                   }

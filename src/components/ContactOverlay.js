@@ -48,7 +48,7 @@ const ContactOverlay = ({ setOpen, open }) => {
             Scheduling Call
           </Typography>
           <Typography variant='h6' gutterBottom align='center' fontSize={"2vw"}>
-            We'll reach out to you on WhatsApp
+            We&rsquo;ll reach out to you on WhatsApp
           </Typography>
           <TextField
             placeholder='Your Contact Number'

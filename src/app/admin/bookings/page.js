@@ -19,7 +19,7 @@ import {
 
 import { useRouter } from "next/navigation"
 
-const allBookings = () => {
+const AllBookings = () => {
 
   const router = useRouter()
 
@@ -36,8 +36,8 @@ const allBookings = () => {
       })
       .catch((error) => {
         console.error("Error fetching orders:", error)
-      })
-  }, [])
+      });
+  }, []);
 
 
 
@@ -99,4 +99,4 @@ const allBookings = () => {
   )
 }
 
-export default allBookings
+export default AllBookings
