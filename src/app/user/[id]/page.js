@@ -118,10 +118,18 @@ const User = ({ params }) => {
 
 
               putUserDetails({ thumbnail_url: downloadURL })
+              .then((data) => {
+                
+              })
+              .catch((error) => {
+                setProfileImage("/man.png");
+                console.error("Error uploading data:", error);
+              });
 
 
           })
           .catch((error) => {
+              setProfileImage("/man.png");
               console.error("Error uploading image:", error);
           });
     }
