@@ -1,5 +1,5 @@
 "use client"
-import { getUserDetails, putUserDetails } from "@/externalApi"
+import { putUserDetails } from "@/externalApi"
 import {
   Button,
   Checkbox,
@@ -20,10 +20,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const MyAccount = () => {
+const MyAccount = ({userData}) => {
 
   
-  const [userData, setUserData] = useState({})
+ 
   const [updateUserData, setUpdateUserData] = useState({})
   const [updateUserPassword, setUpdateUserPassword] = useState({})
   const [isPasswordDialogOpen, setPasswordDialogOpen] = useState(false);
@@ -38,23 +38,13 @@ const MyAccount = () => {
   const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(null);
 
 
-  const [newsletterOptIn, setNewsletterOptIn] = useState(false);
+  const [newsletterOptIn, setNewsletterOptIn] = useState(userData.newsletter_opt_in);
 
 
 
   const [toastMessage, setToastMessage] = useState("password")
   const [open, setOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("primary");
-
-
-  useEffect(() => {
-    getUserDetails()
-      .then((user) => {
-        setUserData(user)
-        setNewsletterOptIn(user.newsletter_opt_in)
-      })
-      .catch((err) => console.log(err))
-  }, [])
 
 
   const handleSave = () => {
