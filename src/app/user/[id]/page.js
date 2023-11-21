@@ -62,7 +62,17 @@ const User = ({ params }) => {
     }
   }, []);
   
+  const [isHovered, setIsHovered] = useState(false);
 
+  const handleEditButtonClick = () => {
+    // Trigger file input click
+    document.getElementById("fileInput").click();
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log("Selected File:", selectedFile);
+  };
 
   return (
     <div>
@@ -80,17 +90,76 @@ const User = ({ params }) => {
           }}
         >
           <Stack spacing={2} style={{ padding: "20px" }}>
-            <Image
-              src='/man.png'
-              alt='editable studio background image'
-              style={{ margin: "0 auto" }}
-              width={100}
-              height={100}
-            />
+
+
+
+
+
+          <div
+                style={{
+                  position: "relative",
+                  marginBottom: "10px",
+                  borderRadius: "50px",
+                  overflow: "hidden",
+                  display:"flex",
+                  justifyContent:"center"
+                }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <Image
+                  src="/man.png"
+                  alt="editable studio background image"
+                  style={{ margin: "0 auto", borderRadius: "50px" }}
+                  width={100}
+                  height={100}
+                />
+                {isHovered && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                    }}
+                  >
+                    <button
+                      style={{
+                        color: "white",
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleEditButtonClick}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                )}
+              </div>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+
+
+
+
+
+
+
+
             <List>
               <ListItem disablePadding>
                 <ListItemButton
-                  onClick={() => router.push("/step_one", { shallow: false })}
+                  onClick={() => router.push("/step-one", { shallow: false })}
                 >
                   <ListItemIcon>
                       <EditNoteIcon style={{ color: 'white' }} />
