@@ -35,6 +35,7 @@ const StepOne = () => {
   const [imgageToShow,setImage] = useState('/morphTo.jpg')
 
   const [isLoaded, setIsLoaded] = useState(false)
+  const [message , setMessage]  = useState("")
 
   const buttonStyle = {
     backgroundColor: '#F1F1F1',
@@ -78,10 +79,23 @@ const StepOne = () => {
           });
           setCategory(category.category_name)
           setImage(category.category_image_url)
+
+
+          setMessage("Please Wait the Image is being loaded")
+          setOpen(true)
+          setTimeout(() => {
+            setOpen(false);
+          }, 1000);
         }
         else{
           setCategory(data[0].category_name)
           setImage(data[0].category_image_url)
+
+          setMessage("Please Wait the Image is being loaded")
+          setOpen(true)
+          setTimeout(() => {
+            setOpen(false);
+          }, 1000);
         }
 
 
@@ -113,13 +127,6 @@ const StepOne = () => {
         setNextURL(url)
         router.push(url, { shallow: false })
         }
-        else{
-          setOpen(true)
-          setTimeout(() => {
-            setOpen(false);
-          }, 3000);
-          // alert("Please make sure to select a category.");
-        }
       }
     }
   }
@@ -134,6 +141,12 @@ const StepOne = () => {
     const imageUrl = category.category_image_url || '/morphTo.jpg';
 
   setImage(imageUrl);
+
+  setMessage("Please Wait the Image is being loaded")
+          setOpen(true)
+          setTimeout(() => {
+            setOpen(false);
+          }, 2000);
 
   }
 
@@ -152,10 +165,15 @@ const StepOne = () => {
       const imageUrl = style.style_image_url || '/morphTo.jpg';
 
       setImage(imageUrl)
+      setMessage("Please wait, the styles are being applied.")
+      setOpen(true)
+          setTimeout(() => {
+            setOpen(false);
+          }, 2000);
     }
   }
 
-
+ 
 
   return (
       <>
@@ -220,7 +238,7 @@ const StepOne = () => {
           </div>
           
             <Image src={imgageToShow} height={400}
-                  width={400} alt="Style" layout={'responsive'} style={{ marginTop:"20px" , borderRadius: "20px"}}/>
+                  width={400} alt="Style" layout={'responsive'} style={{ marginTop:"20px" , borderRadius: "20px"}} />
    
         </SplitLayout>
        
@@ -249,7 +267,10 @@ const StepOne = () => {
 
         <Snackbar open={open} autoHideDuration={6000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
           <Alert severity={"primary"} sx={{ width: '100%' }}>
-            Please make sure to select a category.
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <CircularProgress size={24} sx={{ marginRight: 1 ,color:"white"}} />
+                {message}
+            </div>
           </Alert>
         </Snackbar>
 
