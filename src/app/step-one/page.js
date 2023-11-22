@@ -32,13 +32,21 @@ const StepOne = () => {
   const [openCustom, setOpenCustom] = useState(false)
   const [nextUrl, setNextURL] = useState('step-two')
   const [open, setOpen] = useState(false);
+  const [imgageToShow,setImage] = useState('/morphTo.jpg')
 
   const [isLoaded, setIsLoaded] = useState(false)
+
+  const buttonStyle = {
+    backgroundColor: '#F1F1F1',
+    color:'black',
+    borderRadius: '15px'
+  };
 
   useEffect(() => {
 
     getStyles()
       .then((data) => {
+        // console.log(data)
         setStyles(data)
         const uniqueStyleNames = new Set()
 
@@ -62,10 +70,27 @@ const StepOne = () => {
         // console.log("Categories:", data)
         setCategories(data)
         setIsLoaded(true)
+
+
+        if(selectedCategory){
+          const category = data.find((category) => {
+            return category.category_name === selectedCategory 
+          });
+          setCategory(category.category_name)
+          setImage(category.category_image_url)
+        }
+        else{
+          setCategory(data[0].category_name)
+          setImage(data[0].category_image_url)
+        }
+
+
       })
       .catch((error) => {
         console.error("Error fetching orders:", error)
       })
+
+
   }, [])
 
   const handleClick = () => {
@@ -98,11 +123,39 @@ const StepOne = () => {
       }
     }
   }
-  const buttonStyle = {
-    backgroundColor: '#F1F1F1',
-    color:'black',
-    borderRadius: '15px'
-  };
+
+  const handleCategoryClick = (category_name) =>{
+    setCategory(category_name)
+
+    const category = allCatergories.find((category) => {
+      return category.category_name === category_name 
+    });
+
+    const imageUrl = category.category_image_url || '/morphTo.jpg';
+
+  setImage(imageUrl);
+
+  }
+
+  const handleStyleClick = (style_name) =>{
+    setStyle(style_name)
+
+    const category = allCatergories.find((category) => {
+      return category.category_name === selectedCategory 
+    });
+
+    if(selectedCategory && style_name!="custom"){
+      const style = allStyles.find((style) => {
+        return style.category_id === category.id && style.style_name === style_name;
+      });
+
+      const imageUrl = style.style_image_url || '/morphTo.jpg';
+
+      setImage(imageUrl)
+    }
+  }
+
+
 
   return (
       <>
@@ -129,7 +182,7 @@ const StepOne = () => {
                     variant={
                       category.category_name == selectedCategory ? "outlined" : "contained"
                     }
-                    onClick={() => setCategory(category.category_name)}
+                    onClick={() => handleCategoryClick(category.category_name)}
                     style = {buttonStyle}
                   >
                     {category.category_name}
@@ -156,7 +209,7 @@ const StepOne = () => {
                     medium
                     key={style.id}
                     variant={style.style_name === selectedStyle ? "outlined" : "contained"}
-                    onClick={() => setStyle(style.style_name)}
+                    onClick={() => handleStyleClick(style.style_name)}
                     style = {buttonStyle}
                   >
                     {style.style_name}
@@ -165,10 +218,10 @@ const StepOne = () => {
                 </div>
             </div>
           </div>
-          {/* <Paper color='gray' padding sx={{minHeight:"auto"}}> */}
-            <Image src='/morphTo.jpg' height={400}
+          
+            <Image src={imgageToShow} height={400}
                   width={400} alt="Style" layout={'responsive'} style={{ marginTop:"20px" , borderRadius: "20px"}}/>
-          {/* </Paper> */}
+   
         </SplitLayout>
        
         <br />

@@ -106,7 +106,7 @@ const User = ({ params }) => {
 
   const handleChange = (uploadedFile) => {
     if (uploadedFile){
-      const storageRef = ref(storage, `user_profile_images/${userData.userId}/${uploadedFile.name}`);
+      const storageRef = ref(storage, `user_profile_images/${localStorage.getItem("uid")}/${uploadedFile.name}`);
 
       uploadBytes(storageRef, uploadedFile)
           .then((snapshot) => {
