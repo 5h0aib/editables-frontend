@@ -47,7 +47,7 @@ const StepOne = () => {
 
     getStyles()
       .then((data) => {
-        // console.log(data)
+        console.log(data)
         setStyles(data)
         const uniqueStyleNames = new Set()
 
@@ -68,7 +68,7 @@ const StepOne = () => {
 
     getCategories()
       .then((data) => {
-        // console.log("Categories:", data)
+        console.log("Categories:", data)
         setCategories(data)
         setIsLoaded(true)
 
@@ -78,24 +78,14 @@ const StepOne = () => {
             return category.category_name === selectedCategory 
           });
           setCategory(category.category_name)
-          setImage(category.category_image_url)
+          // setImage(category.category_image_url)
+          setImage(`/${category.category_description}`)
+          
 
-
-          setMessage("Please Wait the Image is being loaded")
-          setOpen(true)
-          setTimeout(() => {
-            setOpen(false);
-          }, 1000);
         }
         else{
           setCategory(data[0].category_name)
-          setImage(data[0].category_image_url)
-
-          setMessage("Please Wait the Image is being loaded")
-          setOpen(true)
-          setTimeout(() => {
-            setOpen(false);
-          }, 1000);
+          setImage(`/${data[0].category_description}`)
         }
 
 
@@ -138,15 +128,9 @@ const StepOne = () => {
       return category.category_name === category_name 
     });
 
-    const imageUrl = category.category_image_url || '/morphTo.jpg';
+    const imageUrl = `/${category.category_description}` || '/morphTo.jpg';
 
   setImage(imageUrl);
-
-  setMessage("Please Wait the Image is being loaded")
-          setOpen(true)
-          setTimeout(() => {
-            setOpen(false);
-          }, 2000);
 
   }
 
@@ -162,14 +146,9 @@ const StepOne = () => {
         return style.category_id === category.id && style.style_name === style_name;
       });
 
-      const imageUrl = style.style_image_url || '/morphTo.jpg';
+      const imageUrl = `/${style.style_description}` || '/morphTo.jpg';
 
       setImage(imageUrl)
-      setMessage("Please wait, the styles are being applied.")
-      setOpen(true)
-          setTimeout(() => {
-            setOpen(false);
-          }, 2000);
     }
   }
 
@@ -237,8 +216,14 @@ const StepOne = () => {
             </div>
           </div>
           
-            <Image src={imgageToShow} height={400}
-                  width={400} alt="Style" layout={'responsive'} style={{ marginTop:"20px" , borderRadius: "20px"}} />
+            <Image src={imgageToShow} 
+                  height={400}
+                  width={400} 
+                  alt="Style" 
+                  layout={'responsive'} 
+                  style={{ marginTop:"20px" , borderRadius: "20px"}} 
+                  loading="eager"
+                  />
    
         </SplitLayout>
        
@@ -280,7 +265,7 @@ const StepOne = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          height="60vh" // Adjust the height based on your design
+          height="60vh" 
         >
           <CircularProgress size={70} thickness={2}/>
         </Box>
