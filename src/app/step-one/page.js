@@ -80,12 +80,20 @@ const StepOne = () => {
           setCategory(category.category_name)
           // setImage(category.category_image_url)
           setImage(`/${category.category_description}`)
-          
+          setOpen(true)
+          setTimeout(() => {
+            setOpen(false);
+          }, 500);
 
         }
         else{
           setCategory(data[0].category_name)
           setImage(`/${data[0].category_description}`)
+
+          setOpen(true)
+            setTimeout(() => {
+              setOpen(false);
+            }, 500);
         }
 
 
