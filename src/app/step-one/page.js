@@ -149,6 +149,12 @@ const StepOne = () => {
       const imageUrl = `/${style.style_description}` || '/morphTo.jpg';
 
       setImage(imageUrl)
+
+
+      setOpen(true)
+      setTimeout(() => {
+        setOpen(false);
+      }, 500);
     }
   }
 
@@ -254,7 +260,7 @@ const StepOne = () => {
           <Alert severity={"primary"} sx={{ width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <CircularProgress size={24} sx={{ marginRight: 1 ,color:"white"}} />
-                {message}
+                {/* {message} */}
             </div>
           </Alert>
         </Snackbar>
