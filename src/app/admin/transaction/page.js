@@ -163,7 +163,7 @@ const AllOrders = () => {
                     {row.delivery_date}
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    {row.gross_amount}
+                    ${row.gross_amount/100}
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     <IconButton onClick={() => handleIvoiceDownload(row.id)}>
