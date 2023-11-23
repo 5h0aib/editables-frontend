@@ -36,7 +36,7 @@ const Footer = () => {
     };
 
     return (
-        <Grid container spacing={3} justifyContent="center" p={5}>
+        <Grid container spacing={3} justifyContent="center" p={5} id="contact">
             <Grid item xs={12} md={4}>
                 <Box style={EditablesStyle} >
                    Editables Studios

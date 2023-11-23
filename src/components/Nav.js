@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { Button, Stack} from "@mui/material/"
 import Link from "next/link"
 import { logOut,isAuthenticated } from "@/externalApi"
+import { Link as ScrollLink } from 'react-scroll';
 
 const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,7 +45,12 @@ const Nav = () => {
         
         <Link href='/'>Home</Link>
         <Link href='#'>About</Link>
-        <Link href='#'>Contact</Link>
+
+        
+        <ScrollLink to="contact" smooth={true} duration={3000} style={{ cursor:"pointer" }}>
+        Contact
+        </ScrollLink>
+
         {isLoggedIn==true ?<Link href={`user/${localStorage.getItem('uid')}`}  onClick={()=>{router.push(`user/${localStorage.getItem('uid')}`, { shallow: false })}}>Dashboard</Link>: ""}
         <Button  onClick={handleClick}>{isLoggedIn==true ? "Logout" : "Login/Signup"}</Button>
       </Stack>
