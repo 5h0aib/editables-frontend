@@ -195,12 +195,10 @@ const StepTwo = () => {
                           label={addon.addon_name}
                         />
                         <div style={{ marginLeft: "32px" }}>
-                          <Typography variant='p' gutterBottom display={"block"}>
+                          <Typography variant='p'>
                             Narrow down the number of images you want
                           </Typography>
-                          <Typography variant='caption' gutterBottom>
-                            Narrow down the number of images you want
-                          </Typography>
+                
                           <br />
                           <TextField
                             variant='outlined'

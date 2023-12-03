@@ -203,13 +203,13 @@ const StepFinal = () => {
               justifyContent={"space-between"}
             >
               <Typography variant='h6' gutterBottom>
-                Album Title
+                Album title
               </Typography>
               <Typography variant='caption' gutterBottom>
                 0/100 characters
               </Typography>
             </Stack>
-            <TextField fullWidth />
+            <TextField fullWidth size={"small"}/>
             <Stack
               direction='row'
               alignItems={"center"}
@@ -223,7 +223,7 @@ const StepFinal = () => {
                 0/300 characters
               </Typography>
             </Stack>
-            <TextField fullWidth />
+            <TextField fullWidth size={"small"}/>
 
 
             <Typography variant='h6' gutterBottom marginTop={"20px"}>
@@ -243,7 +243,7 @@ const StepFinal = () => {
               <FormControlLabel
                 value='captured'
                 control={<Radio />}
-                label='Captured catalogue'
+                label='Capture one catalogue'
               />
             </RadioGroup>
           </div>
@@ -294,7 +294,8 @@ const StepFinal = () => {
                   ) : (
                     // Display BackupOutlinedIcon if no file is selected
                     <>
-                      <BackupOutlinedIcon style={{ fontSize: "130px" }} />
+                      <BackupOutlinedIcon style={{ fontSize: "130px",marginTop:"30px" }}/>
+
                       <Typography variant="body1" gutterBottom style={{ marginTop: "-10px", marginBottom: "18px" }}>
                         or
                       </Typography>

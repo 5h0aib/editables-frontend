@@ -14,6 +14,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -32,10 +34,14 @@ const StepOne = () => {
   const [openCustom, setOpenCustom] = useState(false)
   const [nextUrl, setNextURL] = useState('step-two')
   const [open, setOpen] = useState(false);
-  const [imgageToShow,setImage] = useState('/morphTo.jpg')
+  const [categoryImage,setCategoryImage] = useState('/Portrait-1.jpg')
+  const [StyleImage,setStyleImage] = useState('/Portrait-2.jpg')
 
   const [isLoaded, setIsLoaded] = useState(false)
-  const [message , setMessage]  = useState("")
+  
+
+  const[isDisabled, setIsDisabled] = useState(true)
+  
 
   const buttonStyle = {
     backgroundColor: '#F1F1F1',
@@ -47,7 +53,7 @@ const StepOne = () => {
 
     getStyles()
       .then((data) => {
-        console.log(data)
+
         setStyles(data)
         const uniqueStyleNames = new Set()
 
@@ -68,18 +74,20 @@ const StepOne = () => {
 
     getCategories()
       .then((data) => {
-        console.log("Categories:", data)
+        // console.log("Categories:", data)
         setCategories(data)
         setIsLoaded(true)
 
 
         if(selectedCategory){
+
           const category = data.find((category) => {
-            return category.category_name === selectedCategory 
+            return category.category_name.toLowerCase() === selectedCategory.toLowerCase();
           });
           setCategory(category.category_name)
           // setImage(category.category_image_url)
-          setImage(`/${category.category_description}`)
+          setCategoryImage(`/${category.category_description}`)
+          setStyleImage(`/${category.category_description}`)
           setOpen(true)
           setTimeout(() => {
             setOpen(false);
@@ -131,19 +139,24 @@ const StepOne = () => {
 
   const handleCategoryClick = (category_name) =>{
     setCategory(category_name)
+    setStyle("custom")
+    setIsDisabled(true)
 
     const category = allCatergories.find((category) => {
       return category.category_name === category_name 
     });
 
-    const imageUrl = `/${category.category_description}` || '/morphTo.jpg';
+    const imageUrl = `/${category.category_description}` || '/Portrait-1.jpg';
 
-  setImage(imageUrl);
+
+    setCategoryImage(imageUrl)
+    setStyleImage(imageUrl)
 
   }
 
   const handleStyleClick = (style_name) =>{
     setStyle(style_name)
+    setIsDisabled(false)
 
     const category = allCatergories.find((category) => {
       return category.category_name === selectedCategory 
@@ -154,9 +167,10 @@ const StepOne = () => {
         return style.category_id === category.id && style.style_name === style_name;
       });
 
-      const imageUrl = `/${style.style_description}` || '/morphTo.jpg';
+      const imageUrl = `/${style.style_description}` || '/Portrait-2.jpg';
 
-      setImage(imageUrl)
+
+      setStyleImage(imageUrl)
 
 
       setOpen(true)
@@ -178,7 +192,7 @@ const StepOne = () => {
       {isLoaded ? (
         <>
         <SplitLayout form 
-        // alignItems={"top"}
+        alignItems={"top"}
         >
           <div>
             <div>
@@ -201,7 +215,7 @@ const StepOne = () => {
                 ))}
               </div>
             </div>
-            <div style={{ marginTop:"50px"}}>
+            <div style={{ marginTop:"50px" ,maxWidth:"600px"}}>
                 <Typography variant='h5' gutterBottom>
                   Choose a Style
                 </Typography>
@@ -229,15 +243,34 @@ const StepOne = () => {
                 </div>
             </div>
           </div>
+
+
+
+
           
-            <Image src={imgageToShow} 
+            {/* <Image src={imgageToShow} 
                   height={400}
                   width={400} 
                   alt="Style" 
                   layout={'responsive'} 
                   style={{ marginTop:"20px" , borderRadius: "20px"}} 
                   loading="eager"
-                  />
+                  /> */}
+                  <ReactCompareSlider
+                      itemOne={<ReactCompareSliderImage src={categoryImage}  srcSet={categoryImage} alt="Image one" />}
+                      itemTwo={<ReactCompareSliderImage src={StyleImage}  srcSet={StyleImage} alt="Image two" />}
+                      height={400}
+                      width={400}
+                      layout={'responsive'} 
+                      style={{borderRadius: "20px"}} 
+                      loading="eager"
+                      disabled={isDisabled}
+                      position={2}
+                     />
+
+   
+
+
    
         </SplitLayout>
        
