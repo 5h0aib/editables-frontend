@@ -322,8 +322,9 @@ const StepTwo = () => {
               size='small'
               type='number'
               fullWidth
-              sx={{ display: "block" }}
+              sx={{ display: "block",width:"60%"}}
               onChange={(e) => setImageCount(e.target.value)}
+     
             />
             <Stack>
               <Typography variant='h6' gutterBottom>
