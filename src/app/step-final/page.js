@@ -196,11 +196,12 @@ const StepFinal = () => {
       >
           <SplitLayout>
             
-          <div>
+          <div style={{ padding:"20px" }}>
             <Stack
               direction='row'
               alignItems={"center"}
               justifyContent={"space-between"}
+              // sx={{ width:"75%" }}
             >
               <Typography variant='h6' gutterBottom>
                 Album title
@@ -209,12 +210,13 @@ const StepFinal = () => {
                 0/100 characters
               </Typography>
             </Stack>
-            <TextField fullWidth size={"small"}/>
+            <TextField fullWidth size={"small"} />
             <Stack
               direction='row'
               alignItems={"center"}
               justifyContent={"space-between"}
               marginTop={"20px"}
+              // sx={{ width:"75%" }}
             >
               <Typography variant='h6' gutterBottom>
                 Description
@@ -223,7 +225,7 @@ const StepFinal = () => {
                 0/300 characters
               </Typography>
             </Stack>
-            <TextField fullWidth size={"small"}/>
+            <TextField fullWidth size={"small"} />
 
 
             <Typography variant='h6' gutterBottom marginTop={"20px"}>
@@ -249,7 +251,10 @@ const StepFinal = () => {
           </div>
 
 
-
+        <>
+              <Typography variant='p' gutterBottom>
+              *Please zip your images to a file and upload.
+              </Typography>
           <FileUploader  
           handleChange={handleChange}  
           name="file" 
@@ -308,12 +313,15 @@ const StepFinal = () => {
 
               </div>
             </Paper>
+            <Typography variant='p' gutterBottom>
+              We only accept LR catalog, capture one catalog, JPEG raw & PNG 
+              </Typography>
           </FileUploader>
-
+          </>
 
                       
         </SplitLayout>
-            <div style={{ display: "flex", gap: "20px", justifyContent: "center",marginTop: "20px"}}>
+            <div style={{ display: "flex", gap: "20px", justifyContent: "center",marginTop: "50px"}}>
               
                 <Button variant='contained' size='medium' onClick={handleUpload}>
                   Save & go to dashboard

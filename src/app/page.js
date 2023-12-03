@@ -57,20 +57,16 @@ export default async function Home() {
 
       <section>
         <SplitLayout>
-          <Paper>
-             <Carousel />
-          </Paper>
 
-  
           
-
-        
-          <>
-            <Typography variant='h4' gutterBottom>
+          <Carousel />
+          
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <Typography variant='h4' gutterBottom paddingLeft={2}>
               We don&apos;t just edit your pictures
             </Typography>
             <StaggeredText />
-          </>
+          </div>
         </SplitLayout>
       </section>
 

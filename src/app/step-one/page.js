@@ -34,8 +34,8 @@ const StepOne = () => {
   const [openCustom, setOpenCustom] = useState(false)
   const [nextUrl, setNextURL] = useState('step-two')
   const [open, setOpen] = useState(false);
-  const [categoryImage,setCategoryImage] = useState('/Portrait-1.jpg')
-  const [StyleImage,setStyleImage] = useState('/Portrait-2.jpg')
+  const [categoryImage,setCategoryImage] = useState('/Wedding-1.jpg')
+  const [StyleImage,setStyleImage] = useState('/Wedding-2.jpg')
 
   const [isLoaded, setIsLoaded] = useState(false)
   

@@ -165,7 +165,7 @@ const StepTwo = () => {
           </Button>
 
       <SplitLayout form alignItems={"top"}>
-        <div >
+        <div style={{ width:"90%" }}>
           <Typography variant='h5' marginTop={"20px"}>
             Add-ons
           </Typography>
