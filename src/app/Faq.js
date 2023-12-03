@@ -15,13 +15,14 @@ const Faq = () => {
     },
   ]
   return (
-    <Accordion>
+    <Accordion style={{ marginTop:"15px"}}>
       {faqList.map((faq) => (
         <>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
+   
           >
             <Typography>{faq.q}</Typography>
           </AccordionSummary>

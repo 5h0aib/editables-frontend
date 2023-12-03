@@ -3,7 +3,7 @@ import SplitLayout from "@/components/SplitLayout"
 import { Button, Paper, Typography } from "@mui/material"
 import Link from "next/link"
 import React, { useState } from "react"
-import categoryImage from '../../public/category.png'
+import categoryImage from '../../public/category.jpg'
 import Image from "next/image"
 
 const CategorySelection = ({categories}) => {
@@ -59,9 +59,9 @@ const CategorySelection = ({categories}) => {
               </Button>
             </Link>
           </div>
-          <Paper color='gray' padding sx={{minHeight:"auto"}}>
-          <Image src={categoryImage} alt="Category" layout={'responsive'} />
-          </Paper>
+          {/* <Paper color='gray' padding sx={{minHeight:"auto",padding:"5px"}}> */}
+          <Image src={categoryImage} alt="Category" layout={'responsive'} style={{ borderRadius: '2%' }}/>
+          {/* </Paper> */}
         </SplitLayout>
       </div>
     </section>

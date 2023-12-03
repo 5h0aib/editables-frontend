@@ -14,10 +14,15 @@ import Footer from "@/components/footer"
 
 import { getCategories } from "@/externalApi"
 
+import Carousel from "./carousel"
+
+
+
+
 export default async function Home() {
 
   const data = await getCategories()
-
+  
 
   return (
     <main className={styles.main}>
@@ -37,7 +42,7 @@ export default async function Home() {
               Get your images edited by professionals, anytime
             </Typography>
           </div>
-          {/* <Demo /> */}
+    
           <Image src={gif} 
            layout={'responsive'}
             alt="Home Gif" />
@@ -52,9 +57,14 @@ export default async function Home() {
 
       <section>
         <SplitLayout>
-          <Paper padding>
-            <MorphImage />
+          <Paper>
+             <Carousel />
           </Paper>
+
+  
+          
+
+        
           <>
             <Typography variant='h4' gutterBottom>
               We don&apos;t just edit your pictures
@@ -78,7 +88,7 @@ export default async function Home() {
 
 
       <section>
-        <Stack spacing={4}>
+        <Stack spacing={4} >
           <Typography variant='h4' gutterBottom align='center'>
             Frequently Asked Questions
           </Typography>
