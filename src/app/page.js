@@ -58,9 +58,9 @@ export default async function Home() {
       <section>
         <SplitLayout>
 
-          
+          <Paper style={{ height:"50vh",overflow:"hidden" }}>
           <Carousel />
-          
+          </Paper>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <Typography variant='h4' gutterBottom paddingLeft={2}>
               We don&apos;t just edit your pictures

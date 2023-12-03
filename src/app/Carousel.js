@@ -24,7 +24,7 @@ const Carousel = () => {
     >
       {images.map((image, index) => (
         <SwiperSlide key={index}>
-          <div style={{ overflow:"hidden"}}>
+          <div>
             <Image src={image} width={400} height={400} layout={'responsive'} style={{ borderRadius: '10px',overflow:"hidden"}}/>
           </div>
         </SwiperSlide>
