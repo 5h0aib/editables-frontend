@@ -14,7 +14,7 @@ import Footer from "@/components/footer"
 
 import { getCategories } from "@/externalApi"
 
-import Carousel from "./carousel"
+import Carousel from "./Carousel"
 
 
 
