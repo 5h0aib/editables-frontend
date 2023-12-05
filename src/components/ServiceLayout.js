@@ -6,12 +6,12 @@ import Link from "next/link"
 
 const ServiceLayout = ({ children, formTitle, subLines }) => {
   return (
-    <div style={{ padding: "2em" }}>
+    <div style={{ padding: "2em"}}>
       <Stack direction='row' justifyContent='center' alignItems='center'>
         <Nav />
       </Stack>
-      <div style={{ padding: "2em 0" }}>
-        <Typography variant='h4' gutterBottom style={{ marginBottom:"50px" }}>
+      <div style={{ padding: "2em 0", marginTop:"20px" }}>
+        <Typography variant='h4' gutterBottom style={{ marginBottom:"50px", fontWeight:"500", paddingLeft:"16px"}}>
           {formTitle}
         </Typography>
         {subLines&&subLines?.map((line,i) => (

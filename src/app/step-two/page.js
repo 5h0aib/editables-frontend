@@ -159,14 +159,14 @@ const StepTwo = () => {
 
     {isLoaded ? (
       <>
-          <Button onClick={() => window.location.href = 'step-one'} style={{ marginTop:"-10px",marginLeft: '10px' }}> 
+          <a onClick={() => window.location.href = 'step-one'} style={{ marginTop:"-10px",marginLeft: '10px', cursor:"pointer" ,textDecoration:"underline" , color:"#8A8A8A" ,fontWeight:"500"}}> 
             <ArrowBackIcon style={{ fontSize: 'small', marginRight: '8px' }} />
-            Step One
-          </Button>
+              Step One
+          </a>
 
       <SplitLayout form alignItems={"top"}>
         <div style={{ width:"90%" }}>
-          <Typography variant='h5' marginTop={"20px"}>
+          <Typography variant='h5' marginTop={"20px"} fontSize={"20px"} fontWeight={"500"}>
             Add-ons
           </Typography>
           {addons
@@ -177,7 +177,7 @@ const StepTwo = () => {
                 })
                 .map((addon) => (
                   addon.addon_name === "Culling" ? (
-                    <Stack key={addon.id} direction='row' alignItems={"top"} justifyContent={"space-between"}>
+                    <Stack key={addon.id} direction='row' alignItems={"top"} justifyContent={"space-between"} > 
                       <div>
                         <FormControlLabel
                           sx={{ fontSize: "5em",marginTop:"20px" }}
@@ -192,6 +192,7 @@ const StepTwo = () => {
                               }}
                             />
                           }
+
                           label={addon.addon_name}
                         />
                         <div style={{ marginLeft: "32px" }}>
@@ -223,6 +224,7 @@ const StepTwo = () => {
                             <Checkbox
                               size='medium'
                               onChange={(e) => handleCheck(e.target.checked, addon)}
+                             
                             />
                           }
                           label={addon.addon_name}
@@ -247,7 +249,7 @@ const StepTwo = () => {
                   ? { background: "black", color: "white",  width: "50%" }
                   : { width: "50%" }   
               }
-              sx={{ padding: "12px"}}
+              sx={{ padding: "12px" , border:"2px solid black"}}
             >
               <Stack
                 spacing={3}
@@ -274,7 +276,7 @@ const StepTwo = () => {
               style={
                 deliveryDate == 4 ? { background: "black", color: "white", width: "50%"} : {width: "50%"}
               }
-              sx={{ padding: "12px" }}
+              sx={{ padding: "12px", border:"2px solid black" }}
             >
               <Stack
                 direction='row'
@@ -302,7 +304,7 @@ const StepTwo = () => {
 
 
 
-          <Paper padding elevation={4} sx={{ background: "white", p:3, marginTop:"-55px"}}> {/* Add padding to the left */}
+          <Paper padding elevation={6} sx={{ background: "white", p:3, marginTop:"-55px" , borderColor:"#DBDBDB"}}> {/* Add padding to the left */}
           <Stack spacing={2}>
             <div>
               <Typography variant='h6' gutterBottom>

@@ -36,7 +36,7 @@ const Nav = () => {
     <nav>
       {/* <h1 style={{ textAlign: 'center' }}>Editable Studios</h1> */}
       <Stack
-        spacing={2}
+        spacing={4}
         direction='row'
         alignItems='center'
         justifyContent='center'
@@ -52,7 +52,7 @@ const Nav = () => {
         </ScrollLink>
 
         {isLoggedIn==true ?<Link href={`user/${localStorage.getItem('uid')}`}  onClick={()=>{router.push(`user/${localStorage.getItem('uid')}`, { shallow: false })}}>Dashboard</Link>: ""}
-        <Button  onClick={handleClick}>{isLoggedIn==true ? "Logout" : "Login/Signup"}</Button>
+        <Button  onClick={handleClick}>{isLoggedIn==true ? "Logout" : "Login"}</Button>
       </Stack>
     </nav>
   )

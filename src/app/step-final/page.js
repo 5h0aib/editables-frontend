@@ -194,9 +194,14 @@ const StepFinal = () => {
         subLines=''
         step=''
       >
-          <SplitLayout>
+          <SplitLayout
+           alignItems={"top"}
+          >
             
-          <div style={{ padding:"20px" }}>
+          <div 
+          // style={{ padding:"20px" }}
+          style={{ width:"75%", padding:"0px 20px" }}
+          >
             <Stack
               direction='row'
               alignItems={"center"}
@@ -206,16 +211,16 @@ const StepFinal = () => {
               <Typography variant='h6' gutterBottom>
                 Album title
               </Typography>
-              <Typography variant='caption' gutterBottom>
+              <Typography variant='caption'>
                 0/100 characters
               </Typography>
             </Stack>
-            <TextField fullWidth size={"small"} />
+            <TextField fullWidth size={"small"}/>
             <Stack
               direction='row'
               alignItems={"center"}
               justifyContent={"space-between"}
-              marginTop={"20px"}
+              marginTop={"40px"}
               // sx={{ width:"75%" }}
             >
               <Typography variant='h6' gutterBottom>
@@ -225,10 +230,10 @@ const StepFinal = () => {
                 0/300 characters
               </Typography>
             </Stack>
-            <TextField fullWidth size={"small"} />
+            <TextField fullWidth size={"large"} />
 
 
-            <Typography variant='h6' gutterBottom marginTop={"20px"}>
+            <Typography variant='h6' gutterBottom marginTop={"40px"}>
               File type you would like to receive
             </Typography>
             <RadioGroup
@@ -252,14 +257,16 @@ const StepFinal = () => {
 
 
         <>
-              <Typography variant='p' gutterBottom>
-              *Please zip your images to a file and upload.
-              </Typography>
+
+          <Typography variant='p' sx={{ fontSize:"12px" }}>
+          *Please zip your images to a file and upload.
+          </Typography>
+
           <FileUploader  
           handleChange={handleChange}  
           name="file" 
           types={fileTypes}> 
-            <Paper sx={{ height: "400px" }}>
+            <Paper sx={{ height: "380px",borderColor:"#CBCBCB" }}>
               <div
                 style={{
                   border: "1px dashed 5px",
@@ -267,7 +274,7 @@ const StepFinal = () => {
                   padding: "20px",
                 }}
               >
-                <Typography variant='h5' gutterBottom>
+                <Typography variant='h5' gutterBottom  style={{ marginTop:"30px" }}>
                   Drag & drop your zip file here
                 </Typography>
 
@@ -299,12 +306,19 @@ const StepFinal = () => {
                   ) : (
                     // Display BackupOutlinedIcon if no file is selected
                     <>
-                      <BackupOutlinedIcon style={{ fontSize: "130px",marginTop:"30px" }}/>
+                      <Image 
+                      src="/upload_vector.svg"
+                      width={100}
+                      height={100}
+                      alt="Uplaod icon"
+                      style={{ marginTop:"30px" }}
+                      />
+                      {/* <BackupOutlinedIcon style={{ fontSize: "130px",marginTop:"30px" }}/> */}
 
                       <Typography variant="body1" gutterBottom style={{ marginTop: "-10px", marginBottom: "18px" }}>
                         or
                       </Typography>
-                      <Button variant="outlined" size="medium" style={{ marginTop: "10px" }}>
+                      <Button variant="outlined" size="medium" style={{ marginTop: "10px", padding:"5px 20px" }}>
                         Upload files
                       </Button>
                     </>
@@ -313,17 +327,19 @@ const StepFinal = () => {
 
               </div>
             </Paper>
-            <Typography variant='p' gutterBottom>
+            <Typography variant='p' gutterBottom sx={{ fontSize:"12px" }}>
               We only accept LR catalog, capture one catalog, JPEG raw & PNG 
               </Typography>
+
+
           </FileUploader>
           </>
 
                       
         </SplitLayout>
-            <div style={{ display: "flex", gap: "20px", justifyContent: "center",marginTop: "50px"}}>
+            <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginTop: "50px"}}>
               
-                <Button variant='contained' size='medium' onClick={handleUpload}>
+                <Button variant='contained' size='medium' onClick={handleUpload} sx={{ padding:"10px 150px" , fontWeight:"600"}}>
                   Save & go to dashboard
                 </Button>
 

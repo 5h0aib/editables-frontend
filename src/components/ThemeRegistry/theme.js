@@ -1,7 +1,7 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import { Montserrat } from "next/font/google";
+import { Poppins } from "next/font/google";
 
-const montserrat = Montserrat({
+const poppins = Poppins({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
@@ -31,7 +31,7 @@ const theme = createTheme({
     button:{
       textTransform : "none"
     },
-    fontFamily: montserrat.style.fontFamily,
+    fontFamily: poppins.style.fontFamily,
   },
   components: {
     MuiButton: {
@@ -39,7 +39,7 @@ const theme = createTheme({
         {
           props: { variant: "outlined" },
           style: {
-            fontFamily: montserrat.style.fontFamily,
+            fontFamily: poppins.style.fontFamily,
             border: `2px solid black`,
             fontWeight: "500",
           },
@@ -47,19 +47,19 @@ const theme = createTheme({
         {
           props: { variant: "contained" },
           style: {
-            fontFamily: montserrat.style.fontFamily,
+            fontFamily: poppins.style.fontFamily,
             background: "black",
           },
         },
         {
           props: { large: "true" },
-          style: { fontFamily: montserrat.style.fontFamily, padding: "18px" },
+          style: { fontFamily: poppins.style.fontFamily, padding: "18px" },
         },
 
       ],
       styleOverrides: {
         root: {
-          fontFamily: montserrat.style.fontFamily,
+          fontFamily: poppins.style.fontFamily,
           borderRadius: "10px",
           background: "white",
           padding: "12px",
@@ -69,20 +69,20 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          fontFamily: montserrat.style.fontFamily,
+          fontFamily: poppins.style.fontFamily,
           background: "white",
           borderRadius: "5px",
-          border: ".5px solid black",
+          border: ".5px solid #CBCBCB",
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-          fontFamily: montserrat.style.fontFamily,
+          fontFamily: poppins.style.fontFamily,
           background: "white",
           borderRadius: "10px",
-          border: "2px solid black",
+          border: "1px solid black",
         },
       },
       variants: [

@@ -46,9 +46,9 @@ const EmailToSignup = () => {
         <Link href={`auth?email=${emailAddress}`}>
           <Button
             variant='contained'
-            large
+            size="small"
             fullWidth={{ xs: true, sm: false }}
-            style={{ whiteSpace: "nowrap" }}
+            style={{ whiteSpace: "nowrap",marginTop:"5px" }}
             disabled={isValidEmail}
           >
             Start Editing
